@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -72,20 +73,35 @@ namespace Civilization0
 
 		public static void Load()
 		{
-			grass = Game.instance.Content.Load<Texture2D>(Path + "grass");
-			mountain = Game.instance.Content.Load<Texture2D>(Path + "mountain");
-			water = Game.instance.Content.Load<Texture2D>(Path + "water");
+            grass = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("grass.jpg", FileMode.Open));
+            grass.Tag = "Grass Texture";
+			mountain = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("mountain.jpg", FileMode.Open));
+            grass.Tag = "mountain Texture";
+            water = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("water.jpg", FileMode.Open));
+            grass.Tag = "water Texture";
 
-			town = Game.instance.Content.Load<Texture2D>(Path + "town");
+            town = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("town.png", FileMode.Open));
+            grass.Tag = "town Texture";
+            barracks = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("barracks.png", FileMode.Open));
+            grass.Tag = "barracks Texture";
 
-			builder = Game.instance.Content.Load<Texture2D>(Path + "builder");
+            builder = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("builder.png", FileMode.Open));
+            grass.Tag = "builder Texture";
+            swordman = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("swordman.png", FileMode.Open));
+            grass.Tag = "swordman Texture";
 
-			menu = Game.instance.Content.Load<Texture2D>(Path + "menu");
-			greenHighlight = Game.instance.Content.Load<Texture2D>(Path + "greenHighlight");
-			blueHighlight = Game.instance.Content.Load<Texture2D>(Path + "blueHighlight");
-			myTurn = Game.instance.Content.Load<Texture2D>(Path + "myTurn");
-			enemyTurn = Game.instance.Content.Load<Texture2D>(Path + "enemyTurn");
-		}
+
+            menu = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("menu.png", FileMode.Open));
+            grass.Tag = "menu Texture";
+            greenHighlight = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("greenHighlight.png", FileMode.Open));
+            grass.Tag = "greenHighlight Texture";
+            blueHighlight = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("blueHighlight.png", FileMode.Open));
+            grass.Tag = "blueHighlight Texture";
+            myTurn = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("myTurn.png", FileMode.Open));
+            grass.Tag = "myTurn Texture";
+            enemyTurn = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("enemyTurn.png", FileMode.Open));
+            grass.Tag = "enemyTurn Texture";
+        }
 
 	}
 }

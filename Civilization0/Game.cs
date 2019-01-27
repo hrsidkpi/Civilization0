@@ -87,7 +87,7 @@ namespace Civilization0
 			}
 
 			tiles[0, 0].unitsOn.Add(new Town(0, 0));
-			turnButton = new Button(new Rectangle(GAME_WIDTH - 300 - 80, GAME_HEIGHT - 80, 80, 80),PLAYER_START?Assets.myTurn:Assets.enemyTurn);
+			turnButton = new Button(new Rectangle(GAME_WIDTH - 300 - 80, GAME_HEIGHT - 80, 80, 80),PLAYER_START?Assets.myTurn:Assets.enemyTurn, false);
 		}
 
 		protected override void Update(GameTime gameTime)
@@ -181,6 +181,7 @@ namespace Civilization0
 			{
 				b.Draw(spriteBatch);
 			}
+            turnButton.Draw(spriteBatch);
 
 			spriteBatch.End();
 

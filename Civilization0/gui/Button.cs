@@ -20,21 +20,21 @@ namespace Civilization0.gui
 
 		public ClickEvent Click;
 
-		public Button(Rectangle hitbox, Texture2D texture)
+		public Button(Rectangle hitbox, Texture2D texture, bool add = true)
 		{
 			this.hitbox = hitbox;
 			this.texture = texture;
 
-			Game.instance.buttons.Add(this);
+			if(add) Game.instance.buttons.Add(this);
 		}
 
-		public Button(Rectangle hitbox, Texture2D texture, bool scrolled)
+		public Button(Rectangle hitbox, Texture2D texture, bool scrolled, bool add = true)
 		{
 			this.hitbox = hitbox;
 			this.texture = texture;
 			this.scrolled = scrolled;
 
-			Game.instance.buttons.Add(this);
+			if(add) Game.instance.buttons.Add(this);
 		}
 
 		internal void Draw(SpriteBatch canvas)

@@ -14,43 +14,13 @@ using System.Threading.Tasks;
 namespace Civilization0.units
 {
 
-	public enum UnitType
-	{
-		town, builder
-	}
-
-	public static class UnitTypeInfo
-	{
-		public static Texture2D GetSprite(this UnitType t)
-		{
-			switch (t)
-			{
-				case UnitType.town:
-					return Assets.town;
-				case UnitType.builder:
-					return Assets.builder;
-			}
-			return Assets.builder;
-		}
-
-		public static Unit Build(this UnitType t, int x, int y)
-		{
-			switch (t)
-			{
-				case UnitType.town:
-					return new Town(x, y);
-				case UnitType.builder:
-					return new Builder(x, y);
-			}
-			return null;
-		}
-	}
-
 	public abstract class Unit
 	{
 
 		public int x, y;
 		private Texture2D sprite;
+
+        public int movesLeft;
 
 		public Unit(int x, int y, Texture2D sprite)
 		{
@@ -79,13 +49,15 @@ namespace Civilization0.units
 			{
 				if (!(m is MovementMove)) continue;
 				MovementMove move = m as MovementMove;
-				Button select = new Button(new Rectangle(move.x, move.y, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.greenHighlight, true);
-				select.Click += () =>
+                int xPixels = move.x * Tile.TILE_WIDTH + Game.instance.xScroll;
+                int yPixels = move.y * Tile.TILE_HEIGHT + Game.instance.yScroll;
+				Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.greenHighlight, true);
+                select.Click += () =>
 				{
-					Game.instance.tiles[move.x / Tile.TILE_WIDTH, move.y / Tile.TILE_HEIGHT].unitsOn.Add(this);
+					Game.instance.tiles[move.x, move.y].unitsOn.Add(this);
 					Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].unitsOn.Remove(this);
-					x = move.x;
-					y = move.y;
+					x = move.x * Tile.TILE_WIDTH;
+					y = move.y * Tile.TILE_WIDTH;
 					Game.instance.SwitchTurn();
 				};
 				movementButtons.Add(select);
@@ -105,15 +77,21 @@ namespace Civilization0.units
 					{
 						if (!(m is BuildMove)) continue;
 						BuildMove move = m as BuildMove;
-						if (move.unit != t) continue;
-						Button place = new Button(new Rectangle(move.x, move.y, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.blueHighlight, true);
+
+                        int xPixels = move.x * Tile.TILE_WIDTH + Game.instance.xScroll;
+                        int yPixels = move.y * Tile.TILE_HEIGHT + Game.instance.yScroll;
+
+
+                        if (move.unit != t) continue;
+						Button place = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.blueHighlight, true);
 						place.Click += () =>
 						{
-							Game.instance.tiles[move.x / Tile.TILE_WIDTH, move.y / Tile.TILE_HEIGHT].unitsOn.Add(t.Build(move.x, move.y));
+							Game.instance.tiles[move.x, move.y].unitsOn.Add(t.BuildOnTile(move.x, move.y));
 							Game.instance.SwitchTurn();
 						};
 					}
 				};
+				x++;
 				buildButtons.Add(b);
 			}
 		}
@@ -125,6 +103,15 @@ namespace Civilization0.units
 
 		public abstract List<Move> GetMoves();
 		public abstract List<UnitType> GetBuildable();
+
+        private void SubtractMove()
+        {
+            movesLeft--;
+            if(movesLeft == 0)
+            {
+                
+            }
+        }
 
 	}
 }

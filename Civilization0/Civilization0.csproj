@@ -85,9 +85,13 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tiles\Tile.cs" />
+    <Compile Include="units\BasicUnitMoves.cs" />
+    <Compile Include="units\buildings\Barracks.cs" />
     <Compile Include="units\buildings\Town.cs" />
     <Compile Include="units\human\Builder.cs" />
+    <Compile Include="units\human\Swordman.cs" />
     <Compile Include="units\Unit.cs" />
+    <Compile Include="units\UnitInfo.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
