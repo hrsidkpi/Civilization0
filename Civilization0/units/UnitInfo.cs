@@ -47,6 +47,10 @@ namespace Civilization0.units
                     return Assets.barracks;
                 case UnitType.swordman:
                     return Assets.swordman;
+                case UnitType.axeman:
+                    return Assets.axeman;
+                case UnitType.spearman:
+                    return Assets.spearman;
             }
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.GetSprite(this UnitType)");
         }
@@ -62,7 +66,7 @@ namespace Civilization0.units
                 case UnitType.barracks:
                     return new Barracks(x, y);
                 case UnitType.swordman:
-                    return new Swordman(x, y);
+                    return new Axeman(x, y);
             }
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.Build(this UnitType)");
         }
@@ -81,6 +85,10 @@ namespace Civilization0.units
                     return new Barracks(x, y);
                 case UnitType.swordman:
                     return new Swordman(x, y);
+                case UnitType.spearman:
+                    return new Spearman(x, y);
+                case UnitType.axeman:
+                    return new Axeman(x, y);
             }
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.Build(this UnitType)");
         }

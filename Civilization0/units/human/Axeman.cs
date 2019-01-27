@@ -4,29 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Civilization0.moves;
-using Civilization0.tiles;
 
-namespace Civilization0.units.buildings
+namespace Civilization0.units.human
 {
-	public class Barracks : Unit
+	public class Axeman : Unit
 	{
 
-		public Barracks(int x, int y) : base(x, y, Assets.barracks)
+		public Axeman(int x, int y) : base(x, y, Assets.axeman)
 		{
-
+			
 		}
 
 		public override List<UnitType> GetBuildable()
 		{
-			return new List<UnitType>() { UnitType.swordman, UnitType.spearman, UnitType.axeman };
+			return new List<UnitType>();
 		}
 
 		public override List<Move> GetMoves()
 		{
-            return this.BuildAroundMoveAll(1);
-        }
+			throw new NotImplementedException();
+		}
 
-        public override void Initialize()
+		public override void Initialize()
 		{
 			throw new NotImplementedException();
 		}

@@ -11,9 +11,6 @@ namespace Civilization0
 {
 	public static class Assets
 	{
-
-		private static readonly string Path = @"..\bin\";
-
 		public static Texture2D grass;
 		public static Texture2D mountain;
 		public static Texture2D water;
@@ -44,15 +41,19 @@ namespace Civilization0
 		public static Texture2D gate;
 
 		public static Texture2D builder;
+
 		public static Texture2D spearman;
 		public static Texture2D swordman;
 		public static Texture2D axeman;
+
 		public static Texture2D lightCavalry;
 		public static Texture2D heavyCavalry;
 		public static Texture2D mountedArcher;
+
 		public static Texture2D archer;
 		public static Texture2D levy;
 		public static Texture2D crossbowman;
+
 		public static Texture2D scorpio;
 		public static Texture2D catapult;
 		public static Texture2D ram;
@@ -73,34 +74,59 @@ namespace Civilization0
 
 		public static void Load()
 		{
-            grass = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("grass.jpg", FileMode.Open));
+            grass = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/grass.jpg", FileMode.Open));
             grass.Tag = "Grass Texture";
-			mountain = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("mountain.jpg", FileMode.Open));
-            grass.Tag = "mountain Texture";
-            water = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("water.jpg", FileMode.Open));
-            grass.Tag = "water Texture";
+			mountain = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/mountain.jpg", FileMode.Open));
+            mountain.Tag = "mountain Texture";
+            water = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/water.jpg", FileMode.Open));
+            water.Tag = "water Texture";
 
-            town = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("town.png", FileMode.Open));
-            grass.Tag = "town Texture";
-            barracks = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("barracks.png", FileMode.Open));
-            grass.Tag = "barracks Texture";
+            town = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/town.png", FileMode.Open));
+            town.Tag = "town Texture";
+            barracks = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/barracks.png", FileMode.Open));
+            barracks.Tag = "barracks Texture";
 
-            builder = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("builder.png", FileMode.Open));
-            grass.Tag = "builder Texture";
-            swordman = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("swordman.png", FileMode.Open));
-            grass.Tag = "swordman Texture";
+            builder = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/builder.png", FileMode.Open));
+            builder.Tag = "builder Texture";
 
+            swordman = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/swordman.png", FileMode.Open));
+            swordman.Tag = "swordman Texture";
+            axeman = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/axeman.png", FileMode.Open));
+            axeman.Tag = "axeman Texture";
+            spearman = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/spearman.png", FileMode.Open));
+            spearman.Tag = "spearman Texture";
 
-            menu = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("menu.png", FileMode.Open));
-            grass.Tag = "menu Texture";
-            greenHighlight = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("greenHighlight.png", FileMode.Open));
-            grass.Tag = "greenHighlight Texture";
-            blueHighlight = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("blueHighlight.png", FileMode.Open));
-            grass.Tag = "blueHighlight Texture";
-            myTurn = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("myTurn.png", FileMode.Open));
-            grass.Tag = "myTurn Texture";
-            enemyTurn = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("enemyTurn.png", FileMode.Open));
-            grass.Tag = "enemyTurn Texture";
+            archer = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/archer.png", FileMode.Open));
+            archer.Tag = "archer Texture";
+            levy = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/levy.png", FileMode.Open));
+            levy.Tag = "levy Texture";
+            crossbowman = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/crossbowman.png", FileMode.Open));
+            crossbowman.Tag = "crossbowman Texture";
+
+            lightCavalry = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/lightCavalry.png", FileMode.Open));
+            lightCavalry.Tag = "lightCavalry Texture";
+            heavyCavalry = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/heavyCavalry.png", FileMode.Open));
+            heavyCavalry.Tag = "heavyCavalry Texture";
+            mountedArcher = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/mountedArcher.png", FileMode.Open));
+            mountedArcher.Tag = "mountedArcher Texture";
+
+            catapult = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/catapult.png", FileMode.Open));
+            catapult.Tag = "catapult Texture";
+            ram = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/ram.png", FileMode.Open));
+            ram.Tag = "ram Texture";
+            airship = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/airship.png", FileMode.Open));
+            airship.Tag = "airship Texture";
+
+            menu = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/menu.png", FileMode.Open));
+            menu.Tag = "menu Texture";
+            greenHighlight = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/greenHighlight.png", FileMode.Open));
+            greenHighlight.Tag = "greenHighlight Texture";
+            blueHighlight = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/blueHighlight.png", FileMode.Open));
+            blueHighlight.Tag = "blueHighlight Texture";
+            myTurn = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/myTurn.png", FileMode.Open));
+            myTurn.Tag = "myTurn Texture";
+            enemyTurn = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/enemyTurn.png", FileMode.Open));
+            enemyTurn.Tag = "enemyTurn Texture";
         }
 
 	}
