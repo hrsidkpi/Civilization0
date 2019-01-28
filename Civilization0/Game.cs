@@ -37,6 +37,7 @@ namespace Civilization0
 		public int yScroll;
 
 		public List<Button> buttons = new List<Button>();
+        public List<Button> selectionButtons = new List<Button>();
 
 		public Button turnButton;
 		public bool playerTurn = PLAYER_START;
@@ -86,8 +87,9 @@ namespace Civilization0
 				}
 			}
 
-			tiles[0, 0].unitsOn.Add(new Town(0, 0));
-			turnButton = new Button(new Rectangle(GAME_WIDTH - 300 - 80, GAME_HEIGHT - 80, 80, 80),PLAYER_START?Assets.myTurn:Assets.enemyTurn, false);
+			tiles[0, 0].unitsOn.Add(new Town(0, 0, true));
+			turnButton = new Button(new Rectangle(GAME_WIDTH - 300 - 80, GAME_HEIGHT - 80, 80, 80),PLAYER_START?Assets.myTurn:Assets.enemyTurn);
+            turnButton.Click += SwitchTurn;
 		}
 
 		protected override void Update(GameTime gameTime)
@@ -181,7 +183,6 @@ namespace Civilization0
 			{
 				b.Draw(spriteBatch);
 			}
-            turnButton.Draw(spriteBatch);
 
 			spriteBatch.End();
 
@@ -192,7 +193,14 @@ namespace Civilization0
 		{
 			playerTurn = false;
 			turnButton.texture = Assets.enemyTurn;
-			buttons.Clear();
+
+            foreach(Tile t in tiles)
+            {
+                foreach(Unit u in t.unitsOn)
+                {
+                    u.NewTurn();
+                }
+            }
 
 			DoComputerTurn();
 		}
@@ -203,7 +211,6 @@ namespace Civilization0
 
 			playerTurn = true;
 			turnButton.texture = Assets.myTurn;
-			buttons.Clear();
 		}
 
 	}

@@ -11,7 +11,7 @@ namespace Civilization0.units.human
 	public class Swordman : Unit
 	{
 
-		public Swordman(int x, int y) : base(x, y, Assets.swordman)
+		public Swordman(int x, int y, bool player) : base(x, y, UnitType.swordman, player)
 		{
 			
 		}
@@ -23,10 +23,10 @@ namespace Civilization0.units.human
 
 		public override List<Move> GetMoves()
 		{
-			throw new NotImplementedException();
-		}
+            return this.DefaultMoveAroundMove();
+        }
 
-		public override void Initialize()
+        public override void Initialize()
 		{
 			throw new NotImplementedException();
 		}

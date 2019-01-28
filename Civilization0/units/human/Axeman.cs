@@ -10,7 +10,7 @@ namespace Civilization0.units.human
 	public class Axeman : Unit
 	{
 
-		public Axeman(int x, int y) : base(x, y, Assets.axeman)
+		public Axeman(int x, int y, bool player) : base(x, y, UnitType.axeman, player)
 		{
 			
 		}
@@ -22,10 +22,10 @@ namespace Civilization0.units.human
 
 		public override List<Move> GetMoves()
 		{
-			throw new NotImplementedException();
-		}
+            return this.DefaultMoveAroundMove();
+        }
 
-		public override void Initialize()
+        public override void Initialize()
 		{
 			throw new NotImplementedException();
 		}

@@ -30,8 +30,23 @@ namespace Civilization0.units
             {
                 case UnitType.cavelry:
                     return 3;
+                case UnitType.swordman:
+                    return 2;
                 default:
                     return 1;
+            }
+        }
+
+        public static int GetMaxHp(this UnitType t)
+        {
+            switch (t)
+            {
+                case UnitType.swordman:
+                    return 3;
+                case UnitType.spearman:
+                    return 5;
+                default:
+                    return 2;
             }
         }
 
@@ -60,13 +75,13 @@ namespace Civilization0.units
             switch (t)
             {
                 case UnitType.town:
-                    return new Town(x, y);
+                    return new Town(x, y, true);
                 case UnitType.builder:
-                    return new Builder(x, y);
+                    return new Builder(x, y, true);
                 case UnitType.barracks:
-                    return new Barracks(x, y);
+                    return new Barracks(x, y, true);
                 case UnitType.swordman:
-                    return new Axeman(x, y);
+                    return new Axeman(x, y, true);
             }
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.Build(this UnitType)");
         }
@@ -78,17 +93,17 @@ namespace Civilization0.units
             switch (t)
             {
                 case UnitType.town:
-                    return new Town(x, y);
+                    return new Town(x, y, true);
                 case UnitType.builder:
-                    return new Builder(x, y);
+                    return new Builder(x, y, true);
                 case UnitType.barracks:
-                    return new Barracks(x, y);
+                    return new Barracks(x, y, true);
                 case UnitType.swordman:
-                    return new Swordman(x, y);
+                    return new Swordman(x, y, true);
                 case UnitType.spearman:
-                    return new Spearman(x, y);
+                    return new Spearman(x, y, true);
                 case UnitType.axeman:
-                    return new Axeman(x, y);
+                    return new Axeman(x, y, true);
             }
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.Build(this UnitType)");
         }

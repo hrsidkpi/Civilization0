@@ -10,7 +10,7 @@ namespace Civilization0.units.human
 	public class Spearman : Unit
 	{
 
-		public Spearman(int x, int y) : base(x, y, Assets.spearman)
+		public Spearman(int x, int y, bool player) : base(x, y, UnitType.spearman, player)
 		{
 			
 		}
@@ -22,10 +22,10 @@ namespace Civilization0.units.human
 
 		public override List<Move> GetMoves()
 		{
-			throw new NotImplementedException();
-		}
+            return this.DefaultMoveAroundMove();
+        }
 
-		public override void Initialize()
+        public override void Initialize()
 		{
 			throw new NotImplementedException();
 		}

@@ -71,6 +71,9 @@ namespace Civilization0
 		public static Texture2D yellowHighlight;
 		public static Texture2D myTurn;
 		public static Texture2D enemyTurn;
+        public static Texture2D done;
+
+        public static SpriteFont font;
 
 		public static void Load()
 		{
@@ -127,6 +130,11 @@ namespace Civilization0
             myTurn.Tag = "myTurn Texture";
             enemyTurn = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/enemyTurn.png", FileMode.Open));
             enemyTurn.Tag = "enemyTurn Texture";
+            done = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/done.png", FileMode.Open));
+            done.Tag = "done Texture";
+
+            font = Game.instance.Content.Load<SpriteFont>("Font");
+
         }
 
 	}

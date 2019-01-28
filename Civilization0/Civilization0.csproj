@@ -99,6 +99,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="bin\Debug\Content.mgcb" />
+    <None Include="bin\Debug\Font.spritefont" />
     <None Include="packages.config" />
     <None Include="res\airship.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -185,6 +186,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="res\crossbowman.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\done.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="res\enemyTurn.png">

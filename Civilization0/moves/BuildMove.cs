@@ -1,4 +1,5 @@
-﻿using Civilization0.units;
+﻿using Civilization0.tiles;
+using Civilization0.units;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Civilization0.moves
 		public UnitType unit;
 		public int x, y;
 
-		public BuildMove(int x, int y, UnitType type)
+        public BuildMove(Unit u, int x, int y, UnitType type) : base(Math.Abs(u.x/Tile.TILE_WIDTH - x) + Math.Abs(u.y/Tile.TILE_HEIGHT - y))
 		{
 			this.x = x;
 			this.y = y;

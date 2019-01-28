@@ -11,7 +11,7 @@ namespace Civilization0.units.human
 {
 	class Builder : Unit
 	{
-		public Builder(int x, int y) : base(x, y, Assets.builder)
+		public Builder(int x, int y, bool player) : base(x, y, UnitType.builder, player)
 		{
 		}
 

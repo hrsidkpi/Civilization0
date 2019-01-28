@@ -8,6 +8,12 @@ namespace Civilization0.moves
 {
 	public abstract class Move
 	{
+        public int cost;
 
-	}
+        public Move(int cost)
+        {
+            this.cost = cost;
+        }
+
+    }
 }

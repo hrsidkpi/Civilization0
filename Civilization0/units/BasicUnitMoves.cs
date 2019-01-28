@@ -29,7 +29,7 @@ namespace Civilization0.units
                     Tile t = Game.instance.tiles[x, y];
                     if (t.unitsOn.Count == 0)
                     {
-                        moves.Add(new BuildMove(x, y, type));
+                        moves.Add(new BuildMove(unit, x, y, type));
                     }
                 }
             }
@@ -56,7 +56,7 @@ namespace Civilization0.units
                     if (t.unitsOn.Count == 0)
                     {
                         foreach(UnitType type in unit.GetBuildable())
-                            moves.Add(new BuildMove(x, y, type));
+                            moves.Add(new BuildMove(unit, x, y, type));
                     }
                 }
             }
@@ -85,6 +85,11 @@ namespace Civilization0.units
                 }
             }
             return moves;
+        }
+
+        public static List<Move> DefaultMoveAroundMove(this Unit unit)
+        {
+            return MoveAroundMove(unit, unit.type.GetMaxMoves());
         }
 
     }
