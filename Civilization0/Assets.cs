@@ -126,6 +126,8 @@ namespace Civilization0
             greenHighlight.Tag = "greenHighlight Texture";
             blueHighlight = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/blueHighlight.png", FileMode.Open));
             blueHighlight.Tag = "blueHighlight Texture";
+            yellowHighlight = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/yellowHighlight.png", FileMode.Open));
+            yellowHighlight.Tag = "yellowHighlight Texture";
             myTurn = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/myTurn.png", FileMode.Open));
             myTurn.Tag = "myTurn Texture";
             enemyTurn = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/enemyTurn.png", FileMode.Open));

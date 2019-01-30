@@ -50,6 +50,45 @@ namespace Civilization0.units
             }
         }
 
+        public static int GetDamage(this UnitType t)
+        {
+            switch (t)
+            {
+                case UnitType.swordman:
+                    return 2;
+                case UnitType.spearman:
+                    return 1;
+                default:
+                    return 0;
+            }
+        }
+
+        public static int GetArmor(this UnitType t)
+        {
+            switch (t)
+            {
+                case UnitType.swordman:
+                    return 2;
+                case UnitType.spearman:
+                    return 1;
+                default:
+                    return 0;
+            }
+        }
+
+        public static double GetReflect(this UnitType t)
+        {
+            switch (t)
+            {
+                case UnitType.swordman:
+                    return 0.2;
+                case UnitType.spearman:
+                    return 0.6;
+                default:
+                    return 0;
+            }
+        }
+
         public static Texture2D GetSprite(this UnitType t)
         {
             switch (t)

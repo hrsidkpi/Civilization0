@@ -92,5 +92,34 @@ namespace Civilization0.units
             return MoveAroundMove(unit, unit.type.GetMaxMoves());
         }
 
+        public static List<Move> AttackAroundMove(this Unit unit, int distance)
+        {
+            List<Move> moves = new List<Move>();
+
+            int xStart = Math.Max(0, unit.x / Tile.TILE_WIDTH - distance);
+            int xEnd = Math.Min(Game.TILES_WIDTH - 1, unit.x / Tile.TILE_WIDTH + distance);
+            int yStart = Math.Max(0, unit.y / Tile.TILE_HEIGHT - distance);
+            int yEnd = Math.Min(Game.TILES_HEIGHT - 1, unit.y / Tile.TILE_HEIGHT + distance);
+
+            for (int x = xStart; x <= xEnd; x++)
+            {
+                for (int y = yStart; y <= yEnd; y++)
+                {
+                    if (x == unit.x / Tile.TILE_WIDTH && y == unit.y / Tile.TILE_HEIGHT) continue;
+                    Tile t = Game.instance.tiles[x, y];
+                    if (t.unitsOn.Count == 0) continue;
+                    Unit target = t.unitsOn[0];
+                    if (target.player == unit.player) continue;
+                    moves.Add(new AttackMove(unit, target));
+                }
+            }
+            return moves;
+        }
+
+        public static List<Move> DefaultAttackAroundMove(this Unit unit)
+        {
+            return AttackAroundMove(unit, unit.movesLeft);
+        }
+
     }
 }

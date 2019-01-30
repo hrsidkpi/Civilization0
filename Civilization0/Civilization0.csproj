@@ -79,6 +79,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="gui\Button.cs" />
     <Compile Include="gui\Panel.cs" />
+    <Compile Include="moves\AttackMove.cs" />
     <Compile Include="moves\BuildMove.cs" />
     <Compile Include="moves\Move.cs" />
     <Compile Include="moves\MovementMove.cs" />
@@ -240,6 +241,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="res\water.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\yellowHighlight.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

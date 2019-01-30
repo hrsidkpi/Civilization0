@@ -23,7 +23,7 @@ namespace Civilization0.units.human
 
 		public override List<Move> GetMoves()
 		{
-            return this.DefaultMoveAroundMove();
+            return this.DefaultMoveAroundMove().Union(this.DefaultAttackAroundMove()).ToList();
         }
 
         public override void Initialize()

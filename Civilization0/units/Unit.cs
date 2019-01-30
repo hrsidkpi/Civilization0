@@ -50,40 +50,83 @@ namespace Civilization0.units
             Game.instance.selectionButtons.Clear();
 
             if (movesLeft == 0) return;
+            if (!player) return;
 
-            GenerateMovementMoves();
+            GenerateMoves();
             GenerateContextMenu();
         }
 
         private List<Button> movementButtons = new List<Button>();
         private List<Button> buildButtons = new List<Button>();
 
-        public virtual void GenerateMovementMoves()
+
+        public virtual void GenerateMoves()
         {
             foreach (Move m in GetMoves())
             {
-                if (!(m is MovementMove)) continue;
-                MovementMove move = m as MovementMove;
-                int xPixels = move.x * Tile.TILE_WIDTH + Game.instance.xScroll;
-                int yPixels = move.y * Tile.TILE_HEIGHT + Game.instance.yScroll;
+                if (m is MovementMove) GenerateMovementButton(m as MovementMove);
+                if (m is AttackMove) GenerateAttackButton(m as AttackMove);
+            }
+        }
+
+        private void GenerateMovementButton(MovementMove move)
+        {
+            int xPixels = move.x * Tile.TILE_WIDTH + Game.instance.xScroll;
+            int yPixels = move.y * Tile.TILE_HEIGHT + Game.instance.yScroll;
 
 
-                if (CanMove(m.cost))
+            if (CanMove(move.cost))
+            {
+                Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.greenHighlight, true);
+                select.Click += () =>
                 {
-                    Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.greenHighlight, true);
-                    select.Click += () =>
-                    {
-                        Game.instance.tiles[move.x, move.y].unitsOn.Add(this);
-                        Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].unitsOn.Remove(this);
-                        x = move.x * Tile.TILE_WIDTH;
-                        y = move.y * Tile.TILE_WIDTH;
+                    Game.instance.tiles[move.x, move.y].unitsOn.Add(this);
+                    Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].unitsOn.Remove(this);
+                    x = move.x * Tile.TILE_WIDTH;
+                    y = move.y * Tile.TILE_WIDTH;
 
-                        SubtractMove(m.cost);
-                        foreach (Button b in movementButtons) b.Delete();
-                    };
-                    Game.instance.selectionButtons.Add(select);
-                    movementButtons.Add(select);
-                }
+                    SubtractMove(move.cost);
+                    foreach (Button b in movementButtons) b.Delete();
+                };
+                Game.instance.selectionButtons.Add(select);
+                movementButtons.Add(select);
+            }
+        }
+        private void GenerateAttackButton(AttackMove move)
+        {
+            int xPixels = move.def.x + Game.instance.xScroll;
+            int yPixels = move.def.y + Game.instance.yScroll;
+
+            if(CanMove(move.cost))
+            {
+                Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.yellowHighlight, true);
+                select.Click += () =>
+                {
+                    Game.instance.tiles[move.def.x / Tile.TILE_WIDTH, move.def.y / Tile.TILE_HEIGHT].unitsOn[0].Charge(this);
+
+                    SubtractMove(move.cost);
+                    foreach (Button b in movementButtons) b.Delete();
+                };
+                Game.instance.selectionButtons.Add(select);
+                movementButtons.Add(select);
+            }
+        }
+
+        public void Charge(Unit unit)
+        {
+            int RealDamage = unit.type.GetDamage() - type.GetArmor();
+            Damage(RealDamage);
+
+            int reflect = (int)(RealDamage * type.GetReflect());
+            unit.Damage(reflect);
+        }
+
+        public void Damage(int amount)
+        {
+            hp -= amount;
+            if (hp <= 0)
+            {
+                
             }
         }
 
@@ -130,7 +173,7 @@ namespace Civilization0.units
         {
             Rectangle drawLocation = new Rectangle(x + Game.instance.xScroll, y + Game.instance.yScroll, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
             canvas.Draw(sprite, drawLocation, Color.White);
-            canvas.DrawString(Assets.font, ""+hp, new Vector2(x + Game.instance.xScroll, y + Game.instance.yScroll), Color.White);
+            canvas.DrawString(Assets.font, ""+hp, new Vector2(x + Game.instance.xScroll, y + Game.instance.yScroll), player?Color.Blue:Color.Red);
             if (movesLeft == 0) canvas.Draw(Assets.done, drawLocation, Color.White);
         }
 

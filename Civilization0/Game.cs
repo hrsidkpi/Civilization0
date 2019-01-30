@@ -2,6 +2,7 @@
 using Civilization0.tiles;
 using Civilization0.units;
 using Civilization0.units.buildings;
+using Civilization0.units.human;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -87,7 +88,8 @@ namespace Civilization0
 				}
 			}
 
-			tiles[0, 0].unitsOn.Add(new Town(0, 0, true));
+			tiles[0, 0].unitsOn.Add(new Swordman(0, 0, true));
+            tiles[1, 1].unitsOn.Add(new Town(1 * Tile.TILE_WIDTH, 1 * Tile.TILE_HEIGHT, false));
 			turnButton = new Button(new Rectangle(GAME_WIDTH - 300 - 80, GAME_HEIGHT - 80, 80, 80),PLAYER_START?Assets.myTurn:Assets.enemyTurn);
             turnButton.Click += SwitchTurn;
 		}
@@ -140,7 +142,7 @@ namespace Civilization0
 				{
 					foreach (Unit u in t.unitsOn)
 					{
-						u.Click();
+						if(u.player) u.Click();
 					}
 				}
 			}
