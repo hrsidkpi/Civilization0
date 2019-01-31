@@ -43,6 +43,8 @@ namespace Civilization0
 		public Button turnButton;
 		public bool playerTurn = PLAYER_START;
 
+        public int food = 0, wood = 0, iron = 0;
+
 		public Game()
 		{
 			instance = this;

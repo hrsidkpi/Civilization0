@@ -135,7 +135,7 @@ namespace Civilization0
             done = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/done.png", FileMode.Open));
             done.Tag = "done Texture";
 
-            font = Game.instance.Content.Load<SpriteFont>("Font");
+            font = Game.instance.Content.Load<SpriteFont>("../res/HpFont");
 
         }
 

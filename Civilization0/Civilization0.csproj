@@ -135,6 +135,9 @@
     <None Include="res\heavyCavalry.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="res\HpFont.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="res\levy.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
