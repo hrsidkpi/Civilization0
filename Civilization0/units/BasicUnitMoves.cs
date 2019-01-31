@@ -78,7 +78,7 @@ namespace Civilization0.units
                 {
                     if (x == unit.x / Tile.TILE_WIDTH && y == unit.y / Tile.TILE_HEIGHT) continue;
                     Tile t = Game.instance.tiles[x, y];
-                    if (t.unitsOn.Count == 0)
+                    if (t.unitsOn.Count == 0 && t.CanStandOn(unit))
                     {
                         moves.Add(new MovementMove(unit, x, y));
                     }

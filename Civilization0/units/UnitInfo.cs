@@ -24,6 +24,16 @@ namespace Civilization0.units
     public static class UnitTypeInfo
     {
 
+        public static bool IsLand(this UnitType t)
+        {
+            return true;
+        }
+
+        public static bool IsFlying(this UnitType t)
+        {
+            return t == UnitType.airship;
+        }
+
         public static int GetMaxMoves(this UnitType t)
         {
             switch(t)

@@ -20,6 +20,7 @@ namespace Civilization0.tiles
 		public const int TILE_WIDTH = 50;
 		public const int TILE_HEIGHT = 50;
 
+        public TileType type;
 		public Texture2D texture;
 
 		public int x, y;
@@ -43,6 +44,7 @@ namespace Civilization0.tiles
 					texture = Assets.grass;
 					break;
 			}
+            this.type = type;
 			this.x = x;
 			this.y = y;
 
@@ -70,6 +72,18 @@ namespace Civilization0.tiles
 			return new Rectangle(x + Game.instance.xScroll, y + Game.instance.yScroll, TILE_WIDTH, TILE_HEIGHT);
 		}
 
+        public bool CanStandOn(Unit u)
+        {
+            switch(type)
+            {
+                case TileType.grass:
+                    return u.type.IsLand();
+                case TileType.mountain:
+                    return u.type.IsFlying();
+                default:
+                    return false;
+            }
+        }
 
 	}
 }

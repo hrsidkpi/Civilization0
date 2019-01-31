@@ -126,7 +126,7 @@ namespace Civilization0.units
             hp -= amount;
             if (hp <= 0)
             {
-                
+                Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].unitsOn.Remove(this);
             }
         }
 

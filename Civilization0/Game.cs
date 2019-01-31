@@ -78,12 +78,14 @@ namespace Civilization0
 		private void SetupGame()
 		{
 			tiles = new Tile[TILES_WIDTH, TILES_HEIGHT];
+            Random r = new Random();
 			for (int x = 0; x < TILES_WIDTH; x++)
 			{
 				for (int y = 0; y < TILES_HEIGHT; y++)
 				{
-
-					TileType type = Util.Random<TileType>(Enum.GetValues(typeof(TileType)).Cast<TileType>().ToArray());
+                    int uniformRandom = r.Next(20);
+                    int grassBias = (uniformRandom * uniformRandom) / 133;
+                    TileType type = (TileType)grassBias;
 					tiles[x, y] = new Tile(type, x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT);
 				}
 			}
