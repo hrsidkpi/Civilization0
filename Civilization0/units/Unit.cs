@@ -135,6 +135,7 @@ namespace Civilization0.units
             int x = 0;
             foreach (UnitType t in GetBuildable())
             {
+                if (!(t.Cost() <= Game.instance.resources)) continue;
                 Button b = new Button(new Rectangle(Game.GAME_WIDTH - 300 + x * 50, 0, 50, 50), t.GetSprite());
                 b.Click += () =>
                 {
@@ -156,6 +157,7 @@ namespace Civilization0.units
                             {
                                 Game.instance.tiles[move.x, move.y].unitsOn.Add(t.BuildOnTile(move.x, move.y));
                                 SubtractMove(m.cost);
+                                Game.instance.resources -= t.Cost();
                                 foreach (Button del in buildButtons) del.Delete();
                             };
                             buildButtons.Add(place);

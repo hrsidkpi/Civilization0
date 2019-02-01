@@ -18,7 +18,7 @@ namespace Civilization0
 		public static Texture2D desert;
 		public static Texture2D sheep;
 		public static Texture2D horses;
-		public static Texture2D iron;
+		public static Texture2D ironMine;
 
 		public static Texture2D town;
 		public static Texture2D road;
@@ -72,6 +72,11 @@ namespace Civilization0
 		public static Texture2D myTurn;
 		public static Texture2D enemyTurn;
         public static Texture2D done;
+
+        public static Texture2D food;
+        public static Texture2D wood;
+        public static Texture2D iron;
+
 
         public static SpriteFont font;
 
@@ -134,6 +139,13 @@ namespace Civilization0
             enemyTurn.Tag = "enemyTurn Texture";
             done = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/done.png", FileMode.Open));
             done.Tag = "done Texture";
+
+            food = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/food.png", FileMode.Open));
+            food.Tag = "food Texture";
+            wood = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/wood.png", FileMode.Open));
+            wood.Tag = "wood Texture";
+            iron = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/iron.png", FileMode.Open));
+            iron.Tag = "iron Texture";
 
             font = Game.instance.Content.Load<SpriteFont>("../res/HpFont");
 

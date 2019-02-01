@@ -85,6 +85,7 @@
     <Compile Include="moves\MovementMove.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources.cs" />
     <Compile Include="tiles\Tile.cs" />
     <Compile Include="units\BasicUnitMoves.cs" />
     <Compile Include="units\buildings\Barracks.cs" />
@@ -102,69 +103,72 @@
     <None Include="bin\Debug\Content.mgcb" />
     <None Include="bin\Debug\Font.spritefont" />
     <None Include="packages.config" />
-    <None Include="res\airship.psd">
+    <Content Include="res\airship.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\archer.psd">
+    </Content>
+    <Content Include="res\archer.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\axeman.psd">
+    </Content>
+    <Content Include="res\axeman.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\barracks.psd">
+    </Content>
+    <Content Include="res\barracks.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\blueHighlight.psd">
+    </Content>
+    <Content Include="res\blueHighlight.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\builder.psd">
+    </Content>
+    <Content Include="res\builder.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\catapult.psd">
+    </Content>
+    <Content Include="res\catapult.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\crossbowman.psd">
+    </Content>
+    <Content Include="res\crossbowman.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\enemyTurn.psd">
+    </Content>
+    <Content Include="res\enemyTurn.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\greenHighlight.psd">
+    </Content>
+    <Content Include="res\greenHighlight.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\heavyCavalry.psd">
+    </Content>
+    <Content Include="res\heavyCavalry.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
+    <Content Include="res\food.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="res\HpFont.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="res\levy.psd">
+    <Content Include="res\levy.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\lightCavalry.psd">
+    </Content>
+    <Content Include="res\lightCavalry.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\menu.psd">
+    </Content>
+    <Content Include="res\menu.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\mountedArcher.psd">
+    </Content>
+    <Content Include="res\mountedArcher.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\myTurn.psd">
+    </Content>
+    <Content Include="res\myTurn.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\ram.psd">
+    </Content>
+    <Content Include="res\ram.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\spearman.psd">
+    </Content>
+    <Content Include="res\spearman.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\swordman.psd">
+    </Content>
+    <Content Include="res\swordman.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="res\template.psd">
+    </Content>
+    <Content Include="res\template.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
     <None Include="תכנון המשחק Civilization.docx" />
   </ItemGroup>
   <ItemGroup>
@@ -210,6 +214,9 @@
     <Content Include="res\heavyCavalry.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="res\iron.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="res\jungle.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -244,6 +251,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="res\water.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\wood.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="res\yellowHighlight.png">

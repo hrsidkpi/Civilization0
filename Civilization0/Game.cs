@@ -28,6 +28,8 @@ namespace Civilization0
 
 		public const bool PLAYER_START = true;
 
+        public const int STARTING_FOOD = 150, STARTING_WOOD = 100, STARTING_IRON = 0;
+
 		public static Game instance;
 
 		GraphicsDeviceManager graphics;
@@ -43,7 +45,7 @@ namespace Civilization0
 		public Button turnButton;
 		public bool playerTurn = PLAYER_START;
 
-        public int food = 0, wood = 0, iron = 0;
+        public Resources resources = new Resources() { food=STARTING_FOOD, wood=STARTING_WOOD, iron=STARTING_IRON };
 
 		public Game()
 		{
@@ -92,8 +94,8 @@ namespace Civilization0
 				}
 			}
 
-			tiles[0, 0].unitsOn.Add(new Swordman(0, 0, true));
-            tiles[1, 1].unitsOn.Add(new Town(1 * Tile.TILE_WIDTH, 1 * Tile.TILE_HEIGHT, false));
+			tiles[0, 0].unitsOn.Add(new Town(0, 0, true));
+            tiles[9, 9].unitsOn.Add(new Town(9 * Tile.TILE_WIDTH, 9 * Tile.TILE_HEIGHT, false));
 			turnButton = new Button(new Rectangle(GAME_WIDTH - 300 - 80, GAME_HEIGHT - 80, 80, 80),PLAYER_START?Assets.myTurn:Assets.enemyTurn);
             turnButton.Click += SwitchTurn;
 		}
@@ -190,7 +192,14 @@ namespace Civilization0
 				b.Draw(spriteBatch);
 			}
 
-			spriteBatch.End();
+            spriteBatch.DrawString(Assets.font, ""+resources.food, new Vector2(70, GAME_HEIGHT - 80 + 60), Color.Black);
+            spriteBatch.Draw(Assets.food, new Rectangle(60, GAME_HEIGHT - 80 + 10, 50, 50), Color.White);
+            spriteBatch.DrawString(Assets.font, "" + resources.wood, new Vector2(140, GAME_HEIGHT - 80 + 60), Color.Black);
+            spriteBatch.Draw(Assets.wood, new Rectangle(130, GAME_HEIGHT - 80 + 10, 50, 50), Color.White);
+            spriteBatch.DrawString(Assets.font, "" + resources.iron, new Vector2(210, GAME_HEIGHT - 80 + 60), Color.Black);
+            spriteBatch.Draw(Assets.iron, new Rectangle(200, GAME_HEIGHT - 80 + 10, 50, 50), Color.White);
+
+            spriteBatch.End();
 
 			base.Draw(gameTime);
 		}

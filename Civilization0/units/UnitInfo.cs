@@ -24,6 +24,27 @@ namespace Civilization0.units
     public static class UnitTypeInfo
     {
 
+        public static Resources Cost(this UnitType t)
+        {
+            int food = 0, wood = 0, iron = 0;
+            switch (t)
+            {
+                case UnitType.builder:
+                    food = 50;
+                    break;
+                default:
+                    food = wood = iron = 0;
+                    break;
+            }
+
+            return new Resources()
+            {
+                wood = wood,
+                food = food,
+                iron = iron
+            };
+        }
+
         public static bool IsLand(this UnitType t)
         {
             return true;
@@ -36,7 +57,7 @@ namespace Civilization0.units
 
         public static int GetMaxMoves(this UnitType t)
         {
-            switch(t)
+            switch (t)
             {
                 case UnitType.cavelry:
                     return 3;
