@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ai\ComputerPlayer.cs" />
     <Compile Include="Assets.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="gui\Button.cs" />

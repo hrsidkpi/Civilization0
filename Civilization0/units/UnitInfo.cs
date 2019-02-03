@@ -32,9 +32,63 @@ namespace Civilization0.units
                 case UnitType.builder:
                     food = 50;
                     break;
-                default:
-                    food = wood = iron = 0;
+                case UnitType.cavelry:
+                    food = 120; iron = 30;
                     break;
+
+                case UnitType.chariot:
+                    food = 120; wood = 50;
+                    break;
+
+                case UnitType.catapracht:
+                    food = 120; iron = 150;
+                    break;
+
+                case UnitType.swordman:
+                    food = 80; iron = 30;
+                    break;
+
+                case UnitType.levy:
+                    food = 80; wood = 40;
+                    break;
+
+                case UnitType.archer:
+                    food = 80; wood = 50;
+                    break;
+
+                case UnitType.spearman:
+                    food = 80; iron = 20;
+                    break;
+
+                case UnitType.axeman:
+                    food = 80; iron = 60;
+                    break;
+
+                case UnitType.crossbowman:
+                    food = 80; wood = 90;
+                    break;
+
+                case UnitType.catapult:
+                    food = 60; wood = 200;
+                    break;
+
+                case UnitType.ram:
+                    food = 60; wood = 200; iron = 100;
+                    break;
+
+                case UnitType.airship:
+                    food = 200; wood = 400; iron = 300;
+                    break;
+
+                case UnitType.town:
+                    wood = 400;
+                    break;
+                case UnitType.barracks:
+                    wood = 200;
+                    break;
+                default:
+                    break;
+
             }
 
             return new Resources()
@@ -60,9 +114,20 @@ namespace Civilization0.units
             switch (t)
             {
                 case UnitType.cavelry:
-                    return 3;
+                case UnitType.chariot:
+                    return 4;
+                case UnitType.catapracht:
                 case UnitType.swordman:
+                case UnitType.levy:
+                case UnitType.archer:
+                    return 3;
+                case UnitType.spearman:
+                case UnitType.axeman:
+                case UnitType.crossbowman:
                     return 2;
+                case UnitType.catapult:
+                case UnitType.ram:
+                case UnitType.airship:
                 default:
                     return 1;
             }
@@ -85,10 +150,24 @@ namespace Civilization0.units
         {
             switch (t)
             {
+                case UnitType.airship:
+                    return 20;
+                case UnitType.axeman:
+                    return 6;
                 case UnitType.swordman:
-                    return 2;
+                case UnitType.crossbowman:
+                    return 5;
+                case UnitType.catapracht:
+                case UnitType.archer:
+                case UnitType.catapult:
+                    return 4;
                 case UnitType.spearman:
-                    return 1;
+                case UnitType.chariot:
+                case UnitType.levy:
+                    return 3;
+                case UnitType.cavelry:
+                case UnitType.ram:
+                    return 2;
                 default:
                     return 0;
             }
@@ -117,6 +196,24 @@ namespace Civilization0.units
                     return 0.6;
                 default:
                     return 0;
+            }
+        }
+
+        public static double GetRange(this UnitType t)
+        {
+            switch(t)
+            {
+                case UnitType.chariot:
+                case UnitType.levy:
+                    return 4;
+                case UnitType.archer:
+                    return 5;
+                case UnitType.crossbowman:
+                    return 6;
+                case UnitType.catapult:
+                    return 8;
+                default:
+                    return 1;
             }
         }
 
