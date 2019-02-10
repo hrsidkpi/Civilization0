@@ -125,6 +125,8 @@ namespace Civilization0
 				yScroll -= SCROLL_SPEED;
 			}
 
+			foreach (Tile t in tiles) foreach (Unit u in t.unitsOn) u.Update();
+
 			MouseState mouse = Mouse.GetState();
 			Point mousePos = mouse.Position;
 			if (mouse.LeftButton == ButtonState.Pressed)

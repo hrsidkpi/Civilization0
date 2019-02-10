@@ -90,6 +90,7 @@
     <Compile Include="tiles\Tile.cs" />
     <Compile Include="units\BasicUnitMoves.cs" />
     <Compile Include="units\buildings\Barracks.cs" />
+    <Compile Include="units\buildings\Farm.cs" />
     <Compile Include="units\buildings\Town.cs" />
     <Compile Include="units\human\Spearman.cs" />
     <Compile Include="units\human\Builder.cs" />
@@ -131,6 +132,9 @@
     <Content Include="res\enemyTurn.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="res\granery.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="res\greenHighlight.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -149,7 +153,13 @@
     <Content Include="res\lightCavalry.psd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="res\lumberhouse.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="res\menu.psd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\mine.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="res\mountedArcher.psd">

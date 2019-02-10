@@ -13,6 +13,7 @@ namespace Civilization0.units
     public enum UnitType
     {
         town, barracks,
+		farm, lumberhouse, mine,
         builder,
         swordman, spearman, axeman,
         archer, levy, crossbowman,
@@ -233,6 +234,13 @@ namespace Civilization0.units
                     return Assets.axeman;
                 case UnitType.spearman:
                     return Assets.spearman;
+				case UnitType.farm:
+					return Assets.farm;
+				case UnitType.mine:
+					return Assets.mine;
+				case UnitType.lumberhouse:
+					return Assets.forestry;
+
             }
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.GetSprite(this UnitType)");
         }
@@ -271,6 +279,8 @@ namespace Civilization0.units
                     return new Spearman(x, y, true);
                 case UnitType.axeman:
                     return new Axeman(x, y, true);
+				case UnitType.farm:
+					return new Farm(x, y, true);
             }
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.Build(this UnitType)");
         }

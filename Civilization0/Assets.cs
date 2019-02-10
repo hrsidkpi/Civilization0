@@ -147,7 +147,15 @@ namespace Civilization0
             iron = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/iron.png", FileMode.Open));
             iron.Tag = "iron Texture";
 
+			mine = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/mine.png", FileMode.Open));
+			mine.Tag = "mine Texture";
+			forestry = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/lumberhouse.png", FileMode.Open));
+			forestry.Tag = "forestry Texture";
+			farm = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/granery.png", FileMode.Open));
+			farm.Tag = "farm Texture";
+
             font = Game.instance.Content.Load<SpriteFont>("../res/HpFont");
+
 
         }
 

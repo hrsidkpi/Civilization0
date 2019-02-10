@@ -36,6 +36,8 @@ namespace Civilization0.units
 
             movesLeft = type.GetMaxMoves();
             hp = type.GetMaxHp();
+
+			Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].unitsOn.Add(this);
         }
 
         public abstract void Initialize();
