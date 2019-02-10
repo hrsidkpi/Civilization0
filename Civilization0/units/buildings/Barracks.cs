@@ -33,7 +33,6 @@ namespace Civilization0.units.buildings
 
 		public override void Update()
 		{
-			throw new NotImplementedException();
 		}
 	}
 }

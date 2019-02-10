@@ -142,6 +142,8 @@ namespace Civilization0.units
                 b.Click += () =>
                 {
                     foreach (Button del in movementButtons) del.Delete();
+                    foreach (Button del in buildButtons) del.Delete();
+
                     foreach (Move m in GetMoves())
                     {
                         if (!(m is BuildMove)) continue;
@@ -152,7 +154,7 @@ namespace Civilization0.units
 
                         if (move.unit != t) continue;
 
-                        if (CanMove(move.cost))
+                        if (CanMove(move.cost) && move.unit.CanBuildOn(Game.instance.tiles[move.x, move.y].type))
                         {
                             Button place = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.blueHighlight, true);
                             place.Click += () =>
@@ -201,7 +203,7 @@ namespace Civilization0.units
                 Game.instance.selectionButtons.Clear();
             }
         }
-        public void NewTurn()
+        public virtual void NewTurn()
         {
             movesLeft = type.GetMaxMoves();
         }

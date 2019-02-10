@@ -28,15 +28,14 @@ namespace Civilization0.units.buildings
 			throw new NotImplementedException();
 		}
 
-		private int counter = 0;
 		public override void Update()
 		{
-			counter++;
-			if(counter >= 60)
-			{
-				Game.instance.resources.food += 10;
-				counter = 0;
-			}
 		}
+
+        public override void NewTurn()
+        {
+            base.NewTurn();
+            Game.instance.resources.food += 20;
+        }
 	}
 }

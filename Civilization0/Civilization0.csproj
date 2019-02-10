@@ -91,6 +91,8 @@
     <Compile Include="units\BasicUnitMoves.cs" />
     <Compile Include="units\buildings\Barracks.cs" />
     <Compile Include="units\buildings\Farm.cs" />
+    <Compile Include="units\buildings\Lumberhouse.cs" />
+    <Compile Include="units\buildings\Mine.cs" />
     <Compile Include="units\buildings\Town.cs" />
     <Compile Include="units\human\Spearman.cs" />
     <Compile Include="units\human\Builder.cs" />

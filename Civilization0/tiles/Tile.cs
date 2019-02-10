@@ -12,7 +12,7 @@ namespace Civilization0.tiles
 
 	public enum TileType
 	{
-		 grass, mountain, water, 
+		 grass, mountain, water, forest
 	}
 
 	public class Tile
@@ -40,6 +40,9 @@ namespace Civilization0.tiles
 				case TileType.water:
 					texture = Assets.water;
 					break;
+                case TileType.forest:
+                    texture = Assets.forest;
+                    break;
 				default:
 					texture = Assets.grass;
 					break;

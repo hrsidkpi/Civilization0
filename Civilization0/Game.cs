@@ -1,4 +1,6 @@
-﻿using Civilization0.gui;
+﻿using Civilization0.ai;
+using Civilization0.gui;
+using Civilization0.moves;
 using Civilization0.tiles;
 using Civilization0.units;
 using Civilization0.units.buildings;
@@ -88,7 +90,7 @@ namespace Civilization0
 				for (int y = 0; y < TILES_HEIGHT; y++)
 				{
                     int uniformRandom = r.Next(20);
-                    int grassBias = (uniformRandom * uniformRandom) / 133;
+                    int grassBias = (uniformRandom * uniformRandom) / 100;
                     TileType type = (TileType)grassBias;
 					tiles[x, y] = new Tile(type, x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT);
 				}
@@ -224,7 +226,15 @@ namespace Civilization0
 
 		public void DoComputerTurn()
 		{
-
+            List<Move> moves = ComputerPlayer.BestMoves();
+            foreach(Move m in moves)
+            {
+                if(m is BuildMove)
+                {
+                    BuildMove move = m as BuildMove;
+                    
+                }
+            }
 
 			playerTurn = true;
 			turnButton.texture = Assets.myTurn;

@@ -110,6 +110,17 @@ namespace Civilization0.units
             return t == UnitType.airship;
         }
 
+        public static bool CanBuildOn(this UnitType t, TileType tile)
+        {
+
+            if (t == UnitType.farm) return tile == TileType.grass;
+            if (t == UnitType.mine) return tile == TileType.mountain;
+            if (t == UnitType.lumberhouse) return tile == TileType.forest;
+
+
+            return true;
+        }
+
         public static int GetMaxMoves(this UnitType t)
         {
             switch (t)
@@ -281,6 +292,10 @@ namespace Civilization0.units
                     return new Axeman(x, y, true);
 				case UnitType.farm:
 					return new Farm(x, y, true);
+                case UnitType.mine:
+                    return new Mine(x, y, true);
+                case UnitType.lumberhouse:
+                    return new Lumberhouse(x, y, true);
             }
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.Build(this UnitType)");
         }

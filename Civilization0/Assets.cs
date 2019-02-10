@@ -88,6 +88,8 @@ namespace Civilization0
             mountain.Tag = "mountain Texture";
             water = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/water.jpg", FileMode.Open));
             water.Tag = "water Texture";
+            forest = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/forest.jpg", FileMode.Open));
+            forest.Tag = "forest Texture";
 
             town = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/town.png", FileMode.Open));
             town.Tag = "town Texture";
