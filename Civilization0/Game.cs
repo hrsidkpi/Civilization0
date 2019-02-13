@@ -90,7 +90,7 @@ namespace Civilization0
 				for (int y = 0; y < TILES_HEIGHT; y++)
 				{
                     int uniformRandom = r.Next(20);
-                    int grassBias = (uniformRandom * uniformRandom) / 100;
+                    int grassBias =(int)( ((long)uniformRandom * (long)uniformRandom * (long)uniformRandom * (long)uniformRandom * (long)uniformRandom * (long)uniformRandom) / 10000000);
                     TileType type = (TileType)grassBias;
 					tiles[x, y] = new Tile(type, x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT);
 				}
@@ -232,7 +232,7 @@ namespace Civilization0
                 if(m is BuildMove)
                 {
                     BuildMove move = m as BuildMove;
-                    
+                    tiles[move.x, move.y].unitsOn.Add(move.unit.BuildOnTile(move.x, move.y, false));
                 }
             }
 

@@ -13,6 +13,15 @@ namespace Civilization0.ai
     public static class ComputerPlayer
     {
 
+        public static readonly List<UnitType> BUILD_ORDER = new List<UnitType>()
+        {
+            UnitType.builder, UnitType.farm, UnitType.builder, UnitType.farm, UnitType.farm,
+            UnitType.lumberhouse, UnitType.mine, UnitType.lumberhouse, UnitType.lumberhouse,
+            UnitType.farm, UnitType.mine, UnitType.farm, UnitType.mine, UnitType.barracks
+        };
+
+        public static int buildOrderPosition = 0;
+
         public static List<Move> BestMoves()
         {
             List<Move> moves = new List<Move>();
@@ -36,9 +45,25 @@ namespace Civilization0.ai
 
         public static Move BestMove(Unit u)
         {
-            if (u is Town)
+            if (u.GetBuildable().Contains(BUILD_ORDER[buildOrderPosition]))
             {
-                return u.GetMoves()[0];
+                List<Move> options = u.BuildAroundMove(BUILD_ORDER[buildOrderPosition], 1);
+                if (options.Count > 0)
+                {
+                    Move res = options[0];
+                    if (res != null)
+                    {
+                        buildOrderPosition++;
+                        return res;
+                    }
+                }
+                else
+                {
+                    if(u.type == UnitType.builder)
+                    {
+                        
+                    }
+                }
             }
 
             return null;

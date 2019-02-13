@@ -272,30 +272,30 @@ namespace Civilization0.units
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.Build(this UnitType)");
         }
 
-        public static Unit BuildOnTile(this UnitType t, int xTile, int yTile)
+        public static Unit BuildOnTile(this UnitType t, int xTile, int yTile, bool player = true)
         {
             int x = xTile * Tile.TILE_WIDTH;
             int y = yTile * Tile.TILE_HEIGHT;
             switch (t)
             {
                 case UnitType.town:
-                    return new Town(x, y, true);
+                    return new Town(x, y, player);
                 case UnitType.builder:
-                    return new Builder(x, y, true);
+                    return new Builder(x, y, player);
                 case UnitType.barracks:
-                    return new Barracks(x, y, true);
+                    return new Barracks(x, y, player);
                 case UnitType.swordman:
-                    return new Swordman(x, y, true);
+                    return new Swordman(x, y, player);
                 case UnitType.spearman:
-                    return new Spearman(x, y, true);
+                    return new Spearman(x, y, player);
                 case UnitType.axeman:
-                    return new Axeman(x, y, true);
+                    return new Axeman(x, y, player);
 				case UnitType.farm:
-					return new Farm(x, y, true);
+					return new Farm(x, y, player);
                 case UnitType.mine:
-                    return new Mine(x, y, true);
+                    return new Mine(x, y, player);
                 case UnitType.lumberhouse:
-                    return new Lumberhouse(x, y, true);
+                    return new Lumberhouse(x, y, player);
             }
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.Build(this UnitType)");
         }
