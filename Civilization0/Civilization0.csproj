@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ai\AIUtil.cs" />
     <Compile Include="ai\ComputerPlayer.cs" />
     <Compile Include="ai\PathFinder.cs" />
     <Compile Include="Assets.cs" />

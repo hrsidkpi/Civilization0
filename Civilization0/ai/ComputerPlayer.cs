@@ -15,7 +15,7 @@ namespace Civilization0.ai
 
         public static readonly List<UnitType> BUILD_ORDER = new List<UnitType>()
         {
-            UnitType.builder, UnitType.farm, UnitType.builder, UnitType.farm, UnitType.farm,
+            UnitType.builder, UnitType.lumberhouse, UnitType.builder, UnitType.farm, UnitType.farm,
             UnitType.lumberhouse, UnitType.mine, UnitType.lumberhouse, UnitType.lumberhouse,
             UnitType.farm, UnitType.mine, UnitType.farm, UnitType.mine, UnitType.barracks
         };
@@ -61,7 +61,9 @@ namespace Civilization0.ai
                 {
                     if(u.type == UnitType.builder)
                     {
-                        
+                        Tuple<int, int> target = AIUtil.NearestTileOfType(u.x / Tile.TILE_WIDTH, u.y / Tile.TILE_HEIGHT, TileType.forest);
+                        List<ALocation> path = PathFinder.FindPath(u.x / Tile.TILE_WIDTH, u.y / Tile.TILE_HEIGHT, target.Item1, target.Item2);
+                        return new MovementMove(u, path[0].x, path[0].y);
                     }
                 }
             }

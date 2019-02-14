@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Civilization0.tiles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,11 @@ namespace Civilization0.ai
             return Math.Abs(xTarget - x) + Math.Abs(yTarget - y);
         }
 
+        public static List<ALocation> PathToNearestTile(int xStart, int yStart, TileType tile)
+        {
+            
+        }
+
         public static List<ALocation> FindPath(int xStart, int yStart, int xTarget, int yTarget)
         {
             ALocation current = null;
@@ -62,7 +68,7 @@ namespace Civilization0.ai
                     if (closed.FirstOrDefault(l => l.x == square.x && l.y == square.y) != null)
                         continue;
 
-                    if (open.FirstOrDefault(l => l.x == square.x && l.y == square.y) != null)
+                    if (open.FirstOrDefault(l => l.x == square.x && l.y == square.y) == null)
                     {
                         square.g = g;
                         square.h = FindHScore(square.x, square.y, target.x, target.y);
