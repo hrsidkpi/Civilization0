@@ -33,7 +33,6 @@ namespace Civilization0.units.human
 
 		public override void Update()
 		{
-			throw new NotImplementedException();
 		}
 	}
 }

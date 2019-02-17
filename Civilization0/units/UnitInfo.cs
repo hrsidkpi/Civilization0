@@ -25,6 +25,20 @@ namespace Civilization0.units
     public static class UnitTypeInfo
     {
 
+		public static List<TileType> BuildableTiles (this UnitType t)
+		{
+			switch(t)
+			{
+				case UnitType.farm:
+					return new List<TileType>() { TileType.grass };
+				case UnitType.lumberhouse:
+					return new List<TileType>() { TileType.forest };
+				case UnitType.mine:
+					return new List<TileType>() { TileType.mountain };
+			}
+			return new List<TileType>() { TileType.grass };
+		}
+
         public static Resources Cost(this UnitType t)
         {
             int food = 0, wood = 0, iron = 0;

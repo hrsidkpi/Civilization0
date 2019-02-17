@@ -234,6 +234,14 @@ namespace Civilization0
                     BuildMove move = m as BuildMove;
                     tiles[move.x, move.y].unitsOn.Add(move.unit.BuildOnTile(move.x, move.y, false));
                 }
+				if(m is MovementMove)
+				{
+					MovementMove move = m as MovementMove;
+					tiles[move.x, move.y].unitsOn.Add(move.unit);
+					tiles[move.unit.x / Tile.TILE_WIDTH, move.unit.y / Tile.TILE_HEIGHT].unitsOn.Remove(move.unit);
+					move.unit.x = move.x * Tile.TILE_WIDTH;
+					move.unit.y = move.y * Tile.TILE_HEIGHT;
+				}
             }
 
 			playerTurn = true;

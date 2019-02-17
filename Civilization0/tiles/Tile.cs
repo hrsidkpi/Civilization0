@@ -27,6 +27,9 @@ namespace Civilization0.tiles
 
 		public List<Unit> unitsOn;
 
+		//Used for pathfinding
+		public bool flag = false;
+
 		public Tile(TileType type, int x, int y)
 		{
 			switch(type)

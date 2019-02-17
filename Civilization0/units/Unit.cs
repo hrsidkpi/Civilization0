@@ -159,7 +159,7 @@ namespace Civilization0.units
                             Button place = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.blueHighlight, true);
                             place.Click += () =>
                             {
-                                Game.instance.tiles[move.x, move.y].unitsOn.Add(t.BuildOnTile(move.x, move.y));
+                                t.BuildOnTile(move.x, move.y);
                                 SubtractMove(m.cost);
                                 Game.instance.resources -= t.Cost();
                                 foreach (Button del in buildButtons) del.Delete();
