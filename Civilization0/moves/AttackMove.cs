@@ -18,5 +18,11 @@ namespace Civilization0.moves
             this.att = att;
             this.def = def;
         }
-    }
+
+		public override void Execute(bool playerCall)
+		{
+			att.Charge(def);
+		}
+
+	}
 }

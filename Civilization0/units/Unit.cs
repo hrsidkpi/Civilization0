@@ -18,6 +18,9 @@ namespace Civilization0.units
     {
 
         public int x, y;
+		public int TileX { get { return x / Tile.TILE_WIDTH; } set { x = value * Tile.TILE_WIDTH; } }
+		public int TileY { get { return y / Tile.TILE_HEIGHT; } set { y = value * Tile.TILE_HEIGHT; } }
+
         public UnitType type;
         private Texture2D sprite;
         public bool player;
@@ -154,7 +157,7 @@ namespace Civilization0.units
 
                         if (move.unit != t) continue;
 
-                        if (CanMove(move.cost) && move.unit.CanBuildOn(Game.instance.tiles[move.x, move.y].type))
+                        if (CanMove(move.cost) && move.unit.CanBeOn(Game.instance.tiles[move.x, move.y].type))
                         {
                             Button place = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.blueHighlight, true);
                             place.Click += () =>

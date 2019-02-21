@@ -15,7 +15,7 @@ namespace Civilization0.ai
 
 		public static readonly List<UnitType> BUILD_ORDER = new List<UnitType>()
 		{
-			UnitType.builder, UnitType.farm, UnitType.builder, UnitType.farm, UnitType.farm,
+			UnitType.builder, UnitType.farm, UnitType.farm, UnitType.farm,
 			UnitType.lumberhouse, UnitType.mine, UnitType.lumberhouse, UnitType.lumberhouse,
 			UnitType.farm, UnitType.mine, UnitType.farm, UnitType.mine, UnitType.barracks,
 			UnitType.swordman, UnitType.spearman, UnitType.axeman
@@ -46,6 +46,8 @@ namespace Civilization0.ai
 
 		public static Move BestMove(Unit u)
 		{
+
+			//Try to build the next thing in the build order
 			if (!buildOrderDone)
 			{
 				UnitType build = BUILD_ORDER[buildOrderPosition];
@@ -66,12 +68,18 @@ namespace Civilization0.ai
 					{
 						if (u.type == UnitType.builder)
 						{
-							List<ALocation> path = PathFinder.PathToNearestTile(u.x / Tile.TILE_WIDTH, u.y / Tile.TILE_HEIGHT, build.BuildableTiles()[0]);
+							List<ALocation> path = PathFinder.PathToNearestTile(u.type, u.x / Tile.TILE_WIDTH, u.y / Tile.TILE_HEIGHT, build.BuildableTiles()[0]);
 							if(path != null && path.Count != 0)
-							return new MovementMove(u, path[0].x, path[0].y);
+								return new MovementMove(u, path[0].x, path[0].y);
 						}
 					}
 				}
+			}
+
+			//Fighting unit AI
+			if(u.type.GetDamage() > 0)
+			{
+				
 			}
 
 			return null;

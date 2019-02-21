@@ -15,5 +15,7 @@ namespace Civilization0.moves
             this.cost = cost;
         }
 
+		public abstract void Execute(bool playerCall);
+
     }
 }

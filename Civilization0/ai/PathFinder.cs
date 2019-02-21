@@ -1,4 +1,5 @@
 ﻿using Civilization0.tiles;
+using Civilization0.units;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,17 +41,19 @@ namespace Civilization0.ai
 			return Math.Abs(xTarget - x) + Math.Abs(yTarget - y);
 		}
 
-		public static List<ALocation> PathToNearestTile(int xStart, int yStart, TileType tile)
+		public static List<ALocation> PathToNearestTile(UnitType traveler, int xStart, int yStart, TileType tile)
 		{
+			ALocation start = new ALocation(xStart, yStart);
+
 			Stack<ALocation> current = new Stack<ALocation>();
 			Stack<ALocation> next = new Stack<ALocation>();
 
-			current.Push(new ALocation(xStart, yStart));
+			current.Push(start);
 			for(int i = 0; i < MAX_PATH_LENGTH; i++)
 			{
 				foreach (ALocation test in current)
 				{
-					if (Game.instance.tiles[test.x, test.y].type == tile)
+					if (Game.instance.tiles[test.x, test.y].type == tile && Game.instance.tiles[test.x, test.y].unitsOn.Count == 0)
 					{
 						List<ALocation> res = new List<ALocation>();
 						ALocation curr = test;
@@ -64,7 +67,8 @@ namespace Civilization0.ai
 						res.RemoveAt(0);
 						return res;
 					}
-					if (Game.instance.tiles[test.x, test.y].type != TileType.grass) continue;
+					if (!traveler.CanPlaceOn(test.x, test.y) && test != start)
+						continue;
 
 					foreach (ALocation l in GetAdjacentSquares(test.x, test.y))
 						if (!Game.instance.tiles[l.x, l.y].flag)
@@ -78,68 +82,6 @@ namespace Civilization0.ai
 				next = new Stack<ALocation>();
 			}
 			return null;
-		}
-
-		public static List<ALocation> FindPath(int xStart, int yStart, int xTarget, int yTarget)
-		{
-			ALocation current = null;
-			ALocation start = new ALocation(xStart, yStart);
-			ALocation target = new ALocation(xTarget, yTarget);
-			List<ALocation> open = new List<ALocation>();
-			List<ALocation> closed = new List<ALocation>();
-			int g = 0;
-
-			open.Add(start);
-
-			while (open.Count > 0)
-			{
-				int lowest = open.Min(l => l.f);
-				current = open.First(l => l.f == lowest);
-
-				closed.Add(current);
-				open.Remove(current);
-
-				if (closed.FirstOrDefault(l => l.x == target.x && l.y == target.y) != null)
-					break;
-
-				List<ALocation> adjacent = GetWalkableAdjacentSquares(current.x, current.y);
-				g++;
-
-				foreach (ALocation square in adjacent)
-				{
-					if (closed.FirstOrDefault(l => l.x == square.x && l.y == square.y) != null)
-						continue;
-
-					if (open.FirstOrDefault(l => l.x == square.x && l.y == square.y) == null)
-					{
-						square.g = g;
-						square.h = FindHScore(square.x, square.y, target.x, target.y);
-						square.f = square.g + square.h;
-						square.parent = current;
-
-						open.Insert(0, square);
-					}
-					else
-					{
-						if (g + square.h < square.f)
-						{
-							square.g = g;
-							square.f = square.g + square.h;
-							square.parent = current;
-						}
-					}
-				}
-
-			}
-
-			List<ALocation> result = new List<ALocation>();
-			while (current != null)
-			{
-				result.Add(current);
-				current = current.parent;
-			}
-			return result;
-
 		}
 
 

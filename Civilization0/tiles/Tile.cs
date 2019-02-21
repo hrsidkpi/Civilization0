@@ -91,5 +91,21 @@ namespace Civilization0.tiles
             }
         }
 
+		public int TileX
+		{
+			get
+			{
+				return x / Tile.TILE_WIDTH;
+			}
+		}
+
+		public int TileY
+		{
+			get
+			{
+				return y / Tile.TILE_HEIGHT;
+			}
+		}
+
 	}
 }

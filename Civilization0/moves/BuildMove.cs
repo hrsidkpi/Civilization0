@@ -21,5 +21,9 @@ namespace Civilization0.moves
 			this.unit = type;
 		}
 
+		public override void Execute(bool playerCall)
+		{
+			unit.BuildOnTile(x, y, playerCall);
+		}
 	}
 }

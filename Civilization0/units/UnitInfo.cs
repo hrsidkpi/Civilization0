@@ -124,13 +124,21 @@ namespace Civilization0.units
             return t == UnitType.airship;
         }
 
-        public static bool CanBuildOn(this UnitType t, TileType tile)
+		public static bool IsWater(this UnitType t)
+		{
+			return false;
+		}
+
+        public static bool CanBeOn(this UnitType t, TileType tile)
         {
 
             if (t == UnitType.farm) return tile == TileType.grass;
             if (t == UnitType.mine) return tile == TileType.mountain;
             if (t == UnitType.lumberhouse) return tile == TileType.forest;
 
+			if (t.IsLand() && !t.IsFlying()) return tile == TileType.grass;
+			if (t.IsFlying()) return true;
+			if (t.IsWater()) return tile == TileType.water;
 
             return true;
         }

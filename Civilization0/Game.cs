@@ -2,6 +2,7 @@
 using Civilization0.gui;
 using Civilization0.moves;
 using Civilization0.tiles;
+using Civilization0.tiles.world_gen;
 using Civilization0.units;
 using Civilization0.units.buildings;
 using Civilization0.units.human;
@@ -83,18 +84,8 @@ namespace Civilization0
 
 		private void SetupGame()
 		{
-			tiles = new Tile[TILES_WIDTH, TILES_HEIGHT];
-            Random r = new Random();
-			for (int x = 0; x < TILES_WIDTH; x++)
-			{
-				for (int y = 0; y < TILES_HEIGHT; y++)
-				{
-                    int uniformRandom = r.Next(20);
-                    int grassBias =(int)( ((long)uniformRandom * (long)uniformRandom * (long)uniformRandom * (long)uniformRandom * (long)uniformRandom * (long)uniformRandom) / 10000000);
-                    TileType type = (TileType)grassBias;
-					tiles[x, y] = new Tile(type, x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT);
-				}
-			}
+			IWorldGenerator generator = new DefaultWorldGenerator();
+			tiles = generator.Generate(TILES_WIDTH, TILES_HEIGHT);
 
 			tiles[0, 0].unitsOn.Add(new Town(0, 0, true));
             tiles[9, 9].unitsOn.Add(new Town(9 * Tile.TILE_WIDTH, 9 * Tile.TILE_HEIGHT, false));
@@ -229,19 +220,7 @@ namespace Civilization0
             List<Move> moves = ComputerPlayer.BestMoves();
             foreach(Move m in moves)
             {
-                if(m is BuildMove)
-                {
-                    BuildMove move = m as BuildMove;
-                    tiles[move.x, move.y].unitsOn.Add(move.unit.BuildOnTile(move.x, move.y, false));
-                }
-				if(m is MovementMove)
-				{
-					MovementMove move = m as MovementMove;
-					tiles[move.x, move.y].unitsOn.Add(move.unit);
-					tiles[move.unit.x / Tile.TILE_WIDTH, move.unit.y / Tile.TILE_HEIGHT].unitsOn.Remove(move.unit);
-					move.unit.x = move.x * Tile.TILE_WIDTH;
-					move.unit.y = move.y * Tile.TILE_HEIGHT;
-				}
+				m.Execute(false);
             }
 
 			playerTurn = true;

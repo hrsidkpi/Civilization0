@@ -21,5 +21,13 @@ namespace Civilization0.moves
 			this.y = y;
 		}
 
+		public override void Execute(bool playerCall)
+		{
+			Game.instance.tiles[unit.TileX, unit.TileY].unitsOn.Remove(unit);
+			Game.instance.tiles[x, y].unitsOn.Add(unit);
+			unit.TileX = x;
+			unit.TileY = y;
+		}
+
 	}
 }

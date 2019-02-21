@@ -11,6 +11,20 @@ namespace Civilization0.units
     public static class BasicUnitMoves
     {
 
+		public static bool CanPlaceOn(this UnitType unit, int x, int y)
+		{
+			if (!unit.CanBeOn(Game.instance.tiles[x, y].type)) return false;
+			if (Game.instance.tiles[x, y].unitsOn.Count != 0) return false;
+			return true;
+		}
+
+		public static bool CanPlaceOn(this Unit unit, int x, int y)
+		{
+			return CanPlaceOn(unit.type, x, y);
+		}
+		
+
+
         public static List<Move> BuildAroundMove(this Unit unit, UnitType type, int distance)
         {
             List<Move> moves = new List<Move>();
@@ -29,7 +43,7 @@ namespace Civilization0.units
                     Tile t = Game.instance.tiles[x, y];
                     if (t.unitsOn.Count == 0)
                     {
-                        if (type.CanBuildOn(t.type))
+                        if (type.CanPlaceOn(x, y))
                             moves.Add(new BuildMove(unit, x, y, type));
                     }
                 }
@@ -57,7 +71,7 @@ namespace Civilization0.units
                     if (t.unitsOn.Count == 0)
                     {
                         foreach (UnitType type in unit.GetBuildable())
-                            if (type.CanBuildOn(t.type))
+                            if (type.CanPlaceOn(x, y))
                                 moves.Add(new BuildMove(unit, x, y, type));
                     }
                 }
@@ -80,7 +94,7 @@ namespace Civilization0.units
                 {
                     if (x == unit.x / Tile.TILE_WIDTH && y == unit.y / Tile.TILE_HEIGHT) continue;
                     Tile t = Game.instance.tiles[x, y];
-                    if (t.unitsOn.Count == 0 && t.CanStandOn(unit))
+                    if (t.unitsOn.Count == 0 && unit.CanPlaceOn(x, y))
                     {
                         moves.Add(new MovementMove(unit, x, y));
                     }

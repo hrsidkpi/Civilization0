@@ -90,6 +90,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.cs" />
     <Compile Include="tiles\Tile.cs" />
+    <Compile Include="tiles\world gen\DefaultWorldGenerator.cs" />
+    <Compile Include="tiles\world gen\RandomWorldGenerator.cs" />
+    <Compile Include="tiles\world gen\WorldGenerator.cs" />
     <Compile Include="units\BasicUnitMoves.cs" />
     <Compile Include="units\buildings\Barracks.cs" />
     <Compile Include="units\buildings\Farm.cs" />
