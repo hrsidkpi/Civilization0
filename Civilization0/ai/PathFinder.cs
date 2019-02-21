@@ -25,6 +25,14 @@ namespace Civilization0.ai
 
 		public ALocation parent;
 
+        public Tile Tile
+        {
+            get
+            {
+                return Game.instance.tiles[x, y];
+            }
+        }
+
 		public override string ToString()
 		{
 			return "ALocation (x: " + x + ", y: " + y + ")";
@@ -40,6 +48,38 @@ namespace Civilization0.ai
 		{
 			return Math.Abs(xTarget - x) + Math.Abs(yTarget - y);
 		}
+
+        public static Dictionary<UnitType, int> CountAround(Unit counter, int range)
+        {
+
+            Dictionary<UnitType, int> res = new Dictionary<UnitType, int>();
+
+            ALocation start = new ALocation(counter.TileX, counter.TileY);
+
+            Stack<ALocation> current = new Stack<ALocation>();
+            Stack<ALocation> next = new Stack<ALocation>();
+
+            current.Push(start);
+            for(int i = 0; i < range; i++)
+            {
+                foreach (ALocation test in current)
+                {
+                    foreach (Unit u in test.Tile.unitsOn) res[u.type]++;
+
+                    foreach(ALocation l in GetAdjacentSquares(test.x, test.y))
+                    {
+                        if (!l.Tile.flag)
+                        {
+                            l.parent = test;
+                            next.Push(l);
+                            l.Tile.flag = true;
+                        }
+                    }
+                }
+            }
+
+            return res;
+        }
 
 		public static List<ALocation> PathToNearestTile(UnitType traveler, int xStart, int yStart, TileType tile)
 		{
@@ -94,7 +134,7 @@ namespace Civilization0.ai
 					new ALocation { x = x - 1, y = y },
 					new ALocation { x = x + 1, y = y },
 				};
-
+            
 			return proposedLocations.Where(
 				l => l.x < Game.TILES_WIDTH && l.y < Game.TILES_HEIGHT && l.x >= 0 && l.y >= 0 && Game.instance.tiles[l.x, l.y].type == tiles.TileType.grass).ToList();
 		}
