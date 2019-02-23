@@ -79,7 +79,27 @@ namespace Civilization0.ai
 			//Fighting unit AI
 			if(u.type.GetDamage() > 0)
 			{
-				
+                Dictionary<UnitType, int> enemiesAround = PathFinder.CountAround(u, 4, true);
+                Dictionary<UnitType, int> friendliesAround = PathFinder.CountAround(u, 4, true);
+                int diff = 0;
+                foreach (KeyValuePair<UnitType, int> t in enemiesAround)
+                {
+                    diff -= t.Value * t.Key.GetDamage();
+                }
+                //No enemies around, move towards closest enemy
+                if(diff == 0)
+                {
+                    List<ALocation> path = PathFinder.PathToNearestUnit(u.type, u.TileX, u.TileY, true);
+                    if (path != null && path.Count != 0)
+                        return new MovementMove(u, path[0].x, path[0].y);
+                }
+
+
+                foreach (KeyValuePair<UnitType, int> t in friendliesAround)
+                {
+                    diff += t.Value * t.Key.GetDamage();
+                }
+                
 			}
 
 			return null;
