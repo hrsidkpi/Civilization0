@@ -80,6 +80,8 @@ namespace Civilization0.ai
                         }
                     }
                 }
+                current = next;
+                next = new Stack<ALocation>();
             }
 
             foreach (Tile t in Game.instance.tiles) t.flag = false;
@@ -147,6 +149,54 @@ namespace Civilization0.ai
                     Console.WriteLine(test);
                     foreach (Unit u in test.Tile.unitsOn)
                         if (u.player == player)
+                        {
+                            List<ALocation> res = new List<ALocation>();
+                            ALocation curr = test;
+                            while (curr != null)
+                            {
+                                res.Add(curr);
+                                curr = curr.parent;
+                            }
+                            foreach (Tile t in Game.instance.tiles) t.flag = false;
+                            res.Reverse();
+                            res.RemoveAt(0);
+                            return res;
+                        }
+
+                    if (!traveler.CanPlaceOn(test.x, test.y) && test != start)
+                        continue;
+
+                    foreach (ALocation l in GetAdjacentSquares(test.x, test.y))
+                        if (!Game.instance.tiles[l.x, l.y].flag)
+                        {
+                            l.parent = test;
+                            next.Push(l);
+                            Game.instance.tiles[l.x, l.y].flag = true;
+                        }
+                }
+                current = next;
+                next = new Stack<ALocation>();
+            }
+            foreach (Tile t in Game.instance.tiles) t.flag = false;
+
+            return null;
+        }
+
+        public static List<ALocation> PathToNearestUnit(UnitType traveler, int xStart, int yStart, UnitType unit, bool player)
+        {
+            ALocation start = new ALocation(xStart, yStart);
+
+            Stack<ALocation> current = new Stack<ALocation>();
+            Stack<ALocation> next = new Stack<ALocation>();
+
+            current.Push(start);
+            for (int i = 0; i < MAX_PATH_LENGTH; i++)
+            {
+                foreach (ALocation test in current)
+                {
+                    Console.WriteLine(test);
+                    foreach (Unit u in test.Tile.unitsOn)
+                        if (u.player == player && u.type == unit)
                         {
                             List<ALocation> res = new List<ALocation>();
                             ALocation curr = test;

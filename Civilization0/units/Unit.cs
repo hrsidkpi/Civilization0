@@ -119,11 +119,11 @@ namespace Civilization0.units
 
         public void Charge(Unit unit)
         {
-            int RealDamage = unit.type.GetDamage() - type.GetArmor();
-            Damage(RealDamage);
+            int RealDamage = type.GetDamage() - unit.type.GetArmor();
+            unit.Damage(RealDamage);
 
-            int reflect = (int)(RealDamage * type.GetReflect());
-            unit.Damage(reflect);
+            int reflect = (int)(RealDamage * unit.type.GetReflect());
+            Damage(reflect);
         }
 
         public void Damage(int amount)

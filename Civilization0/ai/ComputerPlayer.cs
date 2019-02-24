@@ -13,13 +13,22 @@ namespace Civilization0.ai
 	public static class ComputerPlayer
 	{
 
-		public static readonly List<UnitType> BUILD_ORDER = new List<UnitType>()
+
+		public static readonly List<UnitType> BUILD_ORDER_GAME = new List<UnitType>()
 		{
 			UnitType.builder, UnitType.farm, UnitType.farm, UnitType.farm,
 			UnitType.lumberhouse, UnitType.mine, UnitType.lumberhouse, UnitType.lumberhouse,
 			UnitType.farm, UnitType.mine, UnitType.farm, UnitType.mine, UnitType.barracks,
 			UnitType.swordman, UnitType.spearman, UnitType.axeman
 		};
+
+        public static readonly List<UnitType> BUILD_ORDER_DEBUG = new List<UnitType>()
+        {
+            UnitType.builder, UnitType.barracks, UnitType.axeman
+        };
+
+        public static readonly List<UnitType> BUILD_ORDER = BUILD_ORDER_DEBUG;
+
 		public static bool buildOrderDone = false;
 		public static int buildOrderPosition = 0;
 
@@ -80,14 +89,14 @@ namespace Civilization0.ai
 			if(u.type.GetDamage() > 0)
 			{
                 Dictionary<UnitType, int> enemiesAround = PathFinder.CountAround(u, 4, true);
-                Dictionary<UnitType, int> friendliesAround = PathFinder.CountAround(u, 4, true);
+                Dictionary<UnitType, int> friendliesAround = PathFinder.CountAround(u, 4, false);
                 int diff = 0;
                 foreach (KeyValuePair<UnitType, int> t in enemiesAround)
                 {
                     diff -= t.Value * t.Key.GetDamage();
                 }
                 //No enemies around, move towards closest enemy
-                if(diff == 0)
+                if(enemiesAround.Count  == 0)
                 {
                     List<ALocation> path = PathFinder.PathToNearestUnit(u.type, u.TileX, u.TileY, true);
                     if (path != null && path.Count != 0)
@@ -99,7 +108,25 @@ namespace Civilization0.ai
                 {
                     diff += t.Value * t.Key.GetDamage();
                 }
-                
+
+                //More friendlies around than enemies, attack
+                if(diff > 0)
+                {
+                    List<ALocation> path = PathFinder.PathToNearestUnit(u.type, u.TileX, u.TileY, true);
+                    if(path != null && path.Count <= u.movesLeft)
+                    {
+                        AttackMove move = new AttackMove(u, path.Last().Tile.unitsOn[0]);
+                        return move;
+                    }
+                    return new MovementMove(u, path[0].x, path[0].y);
+                }
+
+                //More enemies around than friendlies, run to closest friendly
+                else
+                {
+                    List<ALocation> path = PathFinder.PathToNearestUnit(u.type, u.TileX, u.TileY, UnitType.town, false);
+                    return new MovementMove(u, path[0].x, path[0].y);
+                }
 			}
 
 			return null;

@@ -87,8 +87,8 @@ namespace Civilization0
 			IWorldGenerator generator = new DefaultWorldGenerator();
 			tiles = generator.Generate(TILES_WIDTH, TILES_HEIGHT);
 
-			tiles[0, 0].unitsOn.Add(new Town(0, 0, true));
-            tiles[9, 9].unitsOn.Add(new Town(9 * Tile.TILE_WIDTH, 9 * Tile.TILE_HEIGHT, false));
+			new Town(0, 0, true);
+            new Town(9 * Tile.TILE_WIDTH, 9 * Tile.TILE_HEIGHT, false);
 			turnButton = new Button(new Rectangle(GAME_WIDTH - 300 - 80, GAME_HEIGHT - 80, 80, 80),PLAYER_START?Assets.myTurn:Assets.enemyTurn);
             turnButton.Click += SwitchTurn;
 		}
