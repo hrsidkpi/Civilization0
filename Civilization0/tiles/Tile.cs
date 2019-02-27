@@ -25,7 +25,18 @@ namespace Civilization0.tiles
 
 		public int x, y;
 
-		public List<Unit> unitsOn;
+        public Unit unitOn;
+        public Unit buildingOn;
+
+        public List<Unit> UnitsOn
+        {
+            get {
+                var res =  new List<Unit>();
+                if (unitOn != null) res.Add(unitOn);
+                if (buildingOn != null) res.Add(buildingOn);
+                return res;
+            }
+        }
 
 		//Used for pathfinding
 		public bool flag = false;
@@ -53,8 +64,6 @@ namespace Civilization0.tiles
             this.type = type;
 			this.x = x;
 			this.y = y;
-
-			unitsOn = new List<Unit>();
 		}
 
 		public void Initialize()
@@ -64,13 +73,15 @@ namespace Civilization0.tiles
 
 		public void Update()
 		{
-			foreach (Unit u in unitsOn) u.Update();
+            if(unitOn != null) unitOn.Update();
+            if(buildingOn != null) buildingOn.Update();
 		}
 
 		public void Draw(SpriteBatch canvas)
 		{
 			canvas.Draw(texture, new Rectangle(x + Game.instance.xScroll, y + Game.instance.yScroll, TILE_WIDTH, TILE_HEIGHT), Color.White);
-			foreach (Unit u in unitsOn) u.Draw(canvas);
+            if (unitOn != null) unitOn.Draw(canvas);
+            if (buildingOn != null) buildingOn.Draw(canvas);
 		}
 
 		public Rectangle GetHitbox()

@@ -42,7 +42,7 @@ namespace Civilization0.ai
     public static class PathFinder
     {
 
-        public const int MAX_PATH_LENGTH = 15;
+        public const int MAX_PATH_LENGTH = 25;
 
         public static int FindHScore(int x, int y, int xTarget, int yTarget)
         {
@@ -64,12 +64,19 @@ namespace Civilization0.ai
             {
                 foreach (ALocation test in current)
                 {
-                    foreach (Unit u in test.Tile.unitsOn)
+
+                    if (test.Tile.unitOn != null && test.Tile.unitOn.player == player)
                     {
-                        if (u.player != player) continue;
-                        if (!res.ContainsKey(u.type)) res[u.type] = 0;
-                        res[u.type]++;
+                        if (!res.ContainsKey(test.Tile.unitOn.type)) res[test.Tile.unitOn.type] = 0;
+                        res[test.Tile.unitOn.type]++;
                     }
+
+                    if (test.Tile.buildingOn != null && test.Tile.buildingOn.player == player)
+                    {
+                        if (!res.ContainsKey(test.Tile.buildingOn.type)) res[test.Tile.buildingOn.type] = 0;
+                        res[test.Tile.buildingOn.type]++;
+                    }
+
                     foreach (ALocation l in GetAdjacentSquares(test.x, test.y))
                     {
                         if (!l.Tile.flag)
@@ -101,7 +108,7 @@ namespace Civilization0.ai
             {
                 foreach (ALocation test in current)
                 {
-                    if (Game.instance.tiles[test.x, test.y].type == tile && Game.instance.tiles[test.x, test.y].unitsOn.Count == 0)
+                    if (Game.instance.tiles[test.x, test.y].type == tile && test.Tile.buildingOn == null)
                     {
                         List<ALocation> res = new List<ALocation>();
                         ALocation curr = test;
@@ -115,6 +122,7 @@ namespace Civilization0.ai
                         res.RemoveAt(0);
                         return res;
                     }
+
                     if (!traveler.CanPlaceOn(test.x, test.y) && test != start)
                         continue;
 
@@ -147,7 +155,7 @@ namespace Civilization0.ai
                 foreach (ALocation test in current)
                 {
                     Console.WriteLine(test);
-                    foreach (Unit u in test.Tile.unitsOn)
+                    foreach (Unit u in test.Tile.UnitsOn)
                         if (u.player == player)
                         {
                             List<ALocation> res = new List<ALocation>();
@@ -195,7 +203,7 @@ namespace Civilization0.ai
                 foreach (ALocation test in current)
                 {
                     Console.WriteLine(test);
-                    foreach (Unit u in test.Tile.unitsOn)
+                    foreach (Unit u in test.Tile.UnitsOn)
                         if (u.player == player && u.type == unit)
                         {
                             List<ALocation> res = new List<ALocation>();
@@ -242,7 +250,7 @@ namespace Civilization0.ai
             {
                 foreach (ALocation test in current)
                 {
-                    foreach (Unit u in test.Tile.unitsOn)
+                    foreach (Unit u in test.Tile.UnitsOn)
                         if (u.type == search)
                         {
                             List<ALocation> res = new List<ALocation>();

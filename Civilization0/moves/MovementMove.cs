@@ -23,8 +23,8 @@ namespace Civilization0.moves
 
 		public override void Execute(bool playerCall)
 		{
-			Game.instance.tiles[unit.TileX, unit.TileY].unitsOn.Remove(unit);
-			Game.instance.tiles[x, y].unitsOn.Add(unit);
+			Game.instance.tiles[unit.TileX, unit.TileY].unitOn = null;
+            Game.instance.tiles[x, y].unitOn = unit;
 			unit.TileX = x;
 			unit.TileY = y;
 		}

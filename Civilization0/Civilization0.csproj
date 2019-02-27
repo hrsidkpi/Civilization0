@@ -86,6 +86,7 @@
     <Compile Include="moves\BuildMove.cs" />
     <Compile Include="moves\Move.cs" />
     <Compile Include="moves\MovementMove.cs" />
+    <Compile Include="moves\ShootMove.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="units\buildings\Lumberhouse.cs" />
     <Compile Include="units\buildings\Mine.cs" />
     <Compile Include="units\buildings\Town.cs" />
+    <Compile Include="units\human\Archer.cs" />
     <Compile Include="units\human\Spearman.cs" />
     <Compile Include="units\human\Builder.cs" />
     <Compile Include="units\human\Axeman.cs" />

@@ -129,6 +129,21 @@ namespace Civilization0.units
 			return false;
 		}
 
+        public static bool IsBuilding(this UnitType t)
+        {
+            return
+                t == UnitType.town ||
+                t == UnitType.barracks ||
+                t == UnitType.farm ||
+                t == UnitType.lumberhouse ||
+                t == UnitType.mine;
+        }
+
+        public static bool IsHuman(this UnitType t)
+        {
+            return !t.IsBuilding();
+        }
+
         public static bool CanBeOn(this UnitType t, TileType tile)
         {
 
@@ -233,7 +248,7 @@ namespace Civilization0.units
             }
         }
 
-        public static double GetRange(this UnitType t)
+        public static int GetRange(this UnitType t)
         {
             switch(t)
             {
@@ -273,6 +288,8 @@ namespace Civilization0.units
 					return Assets.mine;
 				case UnitType.lumberhouse:
 					return Assets.forestry;
+                case UnitType.archer:
+                    return Assets.archer;
 
             }
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.GetSprite(this UnitType)");
@@ -290,6 +307,8 @@ namespace Civilization0.units
                     return new Barracks(x, y, true);
                 case UnitType.swordman:
                     return new Axeman(x, y, true);
+                case UnitType.archer:
+                    return new Archer(x, y, true);
             }
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.Build(this UnitType)");
         }
@@ -318,6 +337,8 @@ namespace Civilization0.units
                     return new Mine(x, y, player);
                 case UnitType.lumberhouse:
                     return new Lumberhouse(x, y, player);
+                case UnitType.archer:
+                    return new Archer(x, y, player);
             }
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.Build(this UnitType)");
         }

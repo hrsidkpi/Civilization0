@@ -21,8 +21,8 @@ namespace Civilization0
 	{
 
 		public const int GAME_SCALE = 100;
-		public const int GAME_WIDTH = 16 * GAME_SCALE;
-		public const int GAME_HEIGHT = 9 * GAME_SCALE;
+		public const int GAME_WIDTH = (int) (8.5 * GAME_SCALE);
+		public const int GAME_HEIGHT = (int) (6.3 * GAME_SCALE);
 
 		public const int TILES_WIDTH = 11;
 		public const int TILES_HEIGHT = 11;
@@ -121,7 +121,7 @@ namespace Civilization0
 				yScroll -= SCROLL_SPEED;
 			}
 
-			foreach (Tile t in tiles) foreach (Unit u in t.unitsOn) u.Update();
+            foreach (Tile t in tiles) t.Update();
 
 			MouseState mouse = Mouse.GetState();
 			Point mousePos = mouse.Position;
@@ -144,10 +144,8 @@ namespace Civilization0
 			{
 				if (t.GetHitbox().Contains(mousePos))
 				{
-					foreach (Unit u in t.unitsOn)
-					{
-						if(u.player) u.Click();
-					}
+                    if (t.unitOn != null && t.unitOn.player) t.unitOn.Click();
+                    else if (t.buildingOn != null && t.buildingOn.player) t.buildingOn.Click();
 				}
 			}
 
@@ -209,10 +207,8 @@ namespace Civilization0
 
             foreach(Tile t in tiles)
             {
-                foreach(Unit u in t.unitsOn)
-                {
-                    u.NewTurn();
-                }
+                if (t.unitOn != null) t.unitOn.NewTurn();
+                if (t.buildingOn != null) t.buildingOn.NewTurn();
             }
 
 			DoComputerTurn();

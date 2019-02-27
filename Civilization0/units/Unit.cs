@@ -40,7 +40,8 @@ namespace Civilization0.units
             movesLeft = type.GetMaxMoves();
             hp = type.GetMaxHp();
 
-			Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].unitsOn.Add(this);
+            if (type.IsBuilding()) Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].buildingOn = this;
+            else Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].unitOn = this;
         }
 
         public abstract void Initialize();
@@ -71,6 +72,7 @@ namespace Civilization0.units
             {
                 if (m is MovementMove) GenerateMovementButton(m as MovementMove);
                 if (m is AttackMove) GenerateAttackButton(m as AttackMove);
+                if (m is ShootMove) GenerateShootButton(m as ShootMove);
             }
         }
 
@@ -85,8 +87,8 @@ namespace Civilization0.units
                 Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.greenHighlight, true);
                 select.Click += () =>
                 {
-                    Game.instance.tiles[move.x, move.y].unitsOn.Add(this);
-                    Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].unitsOn.Remove(this);
+                    Game.instance.tiles[move.x, move.y].unitOn = this;
+                    Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].unitOn = null;
                     x = move.x * Tile.TILE_WIDTH;
                     y = move.y * Tile.TILE_WIDTH;
 
@@ -97,6 +99,8 @@ namespace Civilization0.units
                 movementButtons.Add(select);
             }
         }
+
+
         private void GenerateAttackButton(AttackMove move)
         {
             int xPixels = move.def.x + Game.instance.xScroll;
@@ -107,7 +111,27 @@ namespace Civilization0.units
                 Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.yellowHighlight, true);
                 select.Click += () =>
                 {
-                    Game.instance.tiles[move.def.x / Tile.TILE_WIDTH, move.def.y / Tile.TILE_HEIGHT].unitsOn[0].Charge(this);
+                    Game.instance.tiles[move.def.x / Tile.TILE_WIDTH, move.def.y / Tile.TILE_HEIGHT].unitOn.Charge(this);
+
+                    SubtractMove(move.cost);
+                    foreach (Button b in movementButtons) b.Delete();
+                };
+                Game.instance.selectionButtons.Add(select);
+                movementButtons.Add(select);
+            }
+        }
+        
+        private void GenerateShootButton(ShootMove move)
+        {
+            int xPixels = move.def.x + Game.instance.xScroll;
+            int yPixels = move.def.y + Game.instance.yScroll;
+
+            if (CanMove(move.cost))
+            {
+                Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.yellowHighlight, true);
+                select.Click += () =>
+                {
+                    move.Execute(true);
 
                     SubtractMove(move.cost);
                     foreach (Button b in movementButtons) b.Delete();
@@ -126,12 +150,19 @@ namespace Civilization0.units
             Damage(reflect);
         }
 
+        public void Shoot(Unit unit)
+        {
+            int RealDamage = type.GetDamage() - unit.type.GetArmor();
+            unit.Damage(RealDamage);
+        }
+
         public void Damage(int amount)
         {
             hp -= amount;
             if (hp <= 0)
             {
-                Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].unitsOn.Remove(this);
+                if (type.IsHuman()) Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].unitOn = null;
+                else Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].buildingOn = null;
             }
         }
 
