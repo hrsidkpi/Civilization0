@@ -38,7 +38,7 @@ namespace Civilization0.units.buildings
         public override void NewTurn()
         {
             base.NewTurn();
-            Game.instance.resources.iron += 20;
+            (player ? Game.instance.player : Game.instance.computer).resources.iron += 20;
         }
 
     }

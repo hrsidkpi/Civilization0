@@ -24,14 +24,13 @@ namespace Civilization0
 		public const int GAME_WIDTH = 16 * GAME_SCALE;
 		public const int GAME_HEIGHT = 9 * GAME_SCALE;
 
-		public const int TILES_WIDTH = 10;
-		public const int TILES_HEIGHT = 10;
+		public const int TILES_WIDTH = 11;
+		public const int TILES_HEIGHT = 11;
 
 		public const int SCROLL_SPEED = 3;
 
 		public const bool PLAYER_START = true;
 
-        public const int STARTING_FOOD = 150, STARTING_WOOD = 100, STARTING_IRON = 0;
 
 		public static Game instance;
 
@@ -48,7 +47,8 @@ namespace Civilization0
 		public Button turnButton;
 		public bool playerTurn = PLAYER_START;
 
-        public Resources resources = new Resources() { food=STARTING_FOOD, wood=STARTING_WOOD, iron=STARTING_IRON };
+        public Player player;
+        public Player computer;
 
 		public Game()
 		{
@@ -88,9 +88,12 @@ namespace Civilization0
 			tiles = generator.Generate(TILES_WIDTH, TILES_HEIGHT);
 
 			new Town(0, 0, true);
-            new Town(9 * Tile.TILE_WIDTH, 9 * Tile.TILE_HEIGHT, false);
+            new Town((TILES_WIDTH - 1) * Tile.TILE_WIDTH, (TILES_HEIGHT - 1) * Tile.TILE_HEIGHT, false);
 			turnButton = new Button(new Rectangle(GAME_WIDTH - 300 - 80, GAME_HEIGHT - 80, 80, 80),PLAYER_START?Assets.myTurn:Assets.enemyTurn);
             turnButton.Click += SwitchTurn;
+
+            player = new Player();
+            computer = new Player();
 		}
 
 		protected override void Update(GameTime gameTime)
@@ -187,11 +190,11 @@ namespace Civilization0
 				b.Draw(spriteBatch);
 			}
 
-            spriteBatch.DrawString(Assets.font, ""+resources.food, new Vector2(70, GAME_HEIGHT - 80 + 60), Color.Black);
+            spriteBatch.DrawString(Assets.font, ""+ player.resources.food, new Vector2(70, GAME_HEIGHT - 80 + 60), Color.Black);
             spriteBatch.Draw(Assets.food, new Rectangle(60, GAME_HEIGHT - 80 + 10, 50, 50), Color.White);
-            spriteBatch.DrawString(Assets.font, "" + resources.wood, new Vector2(140, GAME_HEIGHT - 80 + 60), Color.Black);
+            spriteBatch.DrawString(Assets.font, "" + player.resources.wood, new Vector2(140, GAME_HEIGHT - 80 + 60), Color.Black);
             spriteBatch.Draw(Assets.wood, new Rectangle(130, GAME_HEIGHT - 80 + 10, 50, 50), Color.White);
-            spriteBatch.DrawString(Assets.font, "" + resources.iron, new Vector2(210, GAME_HEIGHT - 80 + 60), Color.Black);
+            spriteBatch.DrawString(Assets.font, "" + player.resources.iron, new Vector2(210, GAME_HEIGHT - 80 + 60), Color.Black);
             spriteBatch.Draw(Assets.iron, new Rectangle(200, GAME_HEIGHT - 80 + 10, 50, 50), Color.White);
 
             spriteBatch.End();

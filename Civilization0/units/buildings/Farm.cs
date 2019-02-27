@@ -35,7 +35,7 @@ namespace Civilization0.units.buildings
         public override void NewTurn()
         {
             base.NewTurn();
-            Game.instance.resources.food += 20;
+            (player ? Game.instance.player : Game.instance.computer).resources.food += 20;
         }
 	}
 }

@@ -13,6 +13,7 @@ namespace Civilization0.ai
 	public static class ComputerPlayer
 	{
 
+        public const bool COMPUTER_INFINATE_RESOURCES = false;
 
 		public static readonly List<UnitType> BUILD_ORDER_GAME = new List<UnitType>()
 		{
@@ -27,7 +28,7 @@ namespace Civilization0.ai
             UnitType.builder, UnitType.barracks, UnitType.axeman
         };
 
-        public static readonly List<UnitType> BUILD_ORDER = BUILD_ORDER_DEBUG;
+        public static readonly List<UnitType> BUILD_ORDER = BUILD_ORDER_GAME;
 
 		public static bool buildOrderDone = false;
 		public static int buildOrderPosition = 0;
@@ -60,9 +61,11 @@ namespace Civilization0.ai
 			if (!buildOrderDone)
 			{
 				UnitType build = BUILD_ORDER[buildOrderPosition];
+                if (!(build.Cost() <= Game.instance.computer.resources || COMPUTER_INFINATE_RESOURCES)) return null;
 				if (u.GetBuildable().Contains(build))
 				{
 					List<Move> options = u.BuildAroundMove(BUILD_ORDER[buildOrderPosition], 1);
+                    options.RemoveAll((o) => { return o.cost > u.movesLeft; });
 					if (options.Count > 0)
 					{
 						Move res = options[0];
