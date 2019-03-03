@@ -17,7 +17,9 @@ namespace Civilization0.units.human
 
 		public override List<UnitType> GetBuildable()
 		{
-			return new List<UnitType>() { UnitType.town, UnitType.barracks, UnitType.farm, UnitType.mine, UnitType.lumberhouse };
+			return new List<UnitType>() { UnitType.town,
+                UnitType.barracks, UnitType.archeryRange, UnitType.stable,
+                UnitType.farm, UnitType.mine, UnitType.lumberhouse };
 		}
 
 		public override List<Move> GetMoves()

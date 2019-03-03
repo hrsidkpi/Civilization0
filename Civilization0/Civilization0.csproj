@@ -96,12 +96,19 @@
     <Compile Include="tiles\world gen\RandomWorldGenerator.cs" />
     <Compile Include="tiles\world gen\WorldGenerator.cs" />
     <Compile Include="units\BasicUnitMoves.cs" />
+    <Compile Include="units\buildings\ArcheryRange.cs" />
     <Compile Include="units\buildings\Barracks.cs" />
     <Compile Include="units\buildings\Farm.cs" />
     <Compile Include="units\buildings\Lumberhouse.cs" />
     <Compile Include="units\buildings\Mine.cs" />
+    <Compile Include="units\buildings\Stable.cs" />
     <Compile Include="units\buildings\Town.cs" />
     <Compile Include="units\human\Archer.cs" />
+    <Compile Include="units\human\Catapracht.cs" />
+    <Compile Include="units\human\Cavelry.cs" />
+    <Compile Include="units\human\Chariot.cs" />
+    <Compile Include="units\human\Crossbowman.cs" />
+    <Compile Include="units\human\Levy.cs" />
     <Compile Include="units\human\Spearman.cs" />
     <Compile Include="units\human\Builder.cs" />
     <Compile Include="units\human\Axeman.cs" />
@@ -119,6 +126,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="res\archer.psd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\archeryRange.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="res\axeman.psd">
@@ -152,6 +162,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="res\food.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\stable.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="res\HpFont.xnb">

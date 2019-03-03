@@ -18,8 +18,8 @@ namespace Civilization0.ai
         public static readonly List<UnitType> BUILD_ORDER_GAME = new List<UnitType>()
         {
             UnitType.builder, UnitType.farm, UnitType.farm, UnitType.farm,
-            UnitType.lumberhouse, UnitType.mine, UnitType.lumberhouse, UnitType.lumberhouse,
-            UnitType.farm, UnitType.mine, UnitType.farm, UnitType.mine, UnitType.barracks,
+            UnitType.lumberhouse, UnitType.mine, UnitType.lumberhouse,
+            UnitType.farm, UnitType.mine, UnitType.farm, UnitType.barracks,
             UnitType.swordman, UnitType.spearman, UnitType.axeman
         };
 
@@ -28,7 +28,7 @@ namespace Civilization0.ai
             UnitType.builder, UnitType.barracks, UnitType.axeman
         };
 
-        public static readonly List<UnitType> BUILD_ORDER = BUILD_ORDER_DEBUG;
+        public static readonly List<UnitType> BUILD_ORDER = BUILD_ORDER_GAME;
 
         public static bool buildOrderDone = false;
         public static int buildOrderPosition = 0;
@@ -106,7 +106,10 @@ namespace Civilization0.ai
                 {
                     List<ALocation> path = PathFinder.PathToNearestUnit(u.type, u.TileX, u.TileY, true);
                     if (path != null && path.Count != 0)
-                        return new MovementMove(u, path[0].x, path[0].y);
+                    {
+                        if (path.Count < u.movesLeft) return new MovementMove(u, path[path.Count - 1].x, path[path.Count - 1].y);
+                        else return new MovementMove(u, path[u.movesLeft-1].x, path[u.movesLeft-1].y);
+                    }
                 }
 
 

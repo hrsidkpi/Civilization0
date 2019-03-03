@@ -18,7 +18,7 @@ namespace Civilization0.units.buildings
 
 		public override List<UnitType> GetBuildable()
 		{
-			return new List<UnitType>() { UnitType.swordman, UnitType.spearman, UnitType.axeman, UnitType.archer };
+			return new List<UnitType>() { UnitType.swordman, UnitType.spearman, UnitType.axeman};
 		}
 
 		public override List<Move> GetMoves()

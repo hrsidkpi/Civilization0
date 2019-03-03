@@ -154,7 +154,6 @@ namespace Civilization0.ai
             {
                 foreach (ALocation test in current)
                 {
-                    Console.WriteLine(test);
                     foreach (Unit u in test.Tile.UnitsOn)
                         if (u.player == player)
                         {

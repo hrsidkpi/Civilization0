@@ -18,8 +18,8 @@ namespace Civilization0.units
     {
 
         public int x, y;
-		public int TileX { get { return x / Tile.TILE_WIDTH; } set { x = value * Tile.TILE_WIDTH; } }
-		public int TileY { get { return y / Tile.TILE_HEIGHT; } set { y = value * Tile.TILE_HEIGHT; } }
+        public int TileX { get { return x / Tile.TILE_WIDTH; } set { x = value * Tile.TILE_WIDTH; } }
+        public int TileY { get { return y / Tile.TILE_HEIGHT; } set { y = value * Tile.TILE_HEIGHT; } }
 
         public UnitType type;
         private Texture2D sprite;
@@ -37,11 +37,12 @@ namespace Civilization0.units
             this.sprite = type.GetSprite();
             this.player = player;
 
-            movesLeft = type.GetMaxMoves();
             hp = type.GetMaxHp();
 
             if (type.IsBuilding()) Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].buildingOn = this;
             else Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].unitOn = this;
+
+            movesLeft = 0;
         }
 
         public abstract void Initialize();
@@ -60,6 +61,17 @@ namespace Civilization0.units
 
             GenerateMoves();
             GenerateContextMenu();
+
+            Button deselect = new Button(new Rectangle(Game.GAME_WIDTH - 200, Game.GAME_HEIGHT - 50, 50, 50), Assets.done);
+            deselect.Click += () => {
+
+                foreach (Button del in Game.instance.selectionButtons)
+                {
+                    del.Delete();
+                }
+                Game.instance.selectionButtons.Clear();
+                deselect.Delete();
+            };
         }
 
         private List<Button> movementButtons = new List<Button>();
@@ -106,12 +118,12 @@ namespace Civilization0.units
             int xPixels = move.def.x + Game.instance.xScroll;
             int yPixels = move.def.y + Game.instance.yScroll;
 
-            if(CanMove(move.cost))
+            if (CanMove(move.cost))
             {
                 Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.yellowHighlight, true);
                 select.Click += () =>
                 {
-                    Game.instance.tiles[move.def.x / Tile.TILE_WIDTH, move.def.y / Tile.TILE_HEIGHT].unitOn.Charge(this);
+                    move.Execute(true);
 
                     SubtractMove(move.cost);
                     foreach (Button b in movementButtons) b.Delete();
@@ -120,7 +132,7 @@ namespace Civilization0.units
                 movementButtons.Add(select);
             }
         }
-        
+
         private void GenerateShootButton(ShootMove move)
         {
             int xPixels = move.def.x + Game.instance.xScroll;
@@ -213,7 +225,7 @@ namespace Civilization0.units
         {
             Rectangle drawLocation = new Rectangle(x + Game.instance.xScroll, y + Game.instance.yScroll, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
             canvas.Draw(sprite, drawLocation, Color.White);
-            canvas.DrawString(Assets.font, ""+hp, new Vector2(x + Game.instance.xScroll, y + Game.instance.yScroll), player?Color.Blue:Color.Red);
+            canvas.DrawString(Assets.font, "" + hp, new Vector2(x + Game.instance.xScroll, y + Game.instance.yScroll), player ? Color.Blue : Color.Red);
             if (movesLeft == 0) canvas.Draw(Assets.done, drawLocation, Color.White);
         }
 
@@ -240,6 +252,11 @@ namespace Civilization0.units
         public virtual void NewTurn()
         {
             movesLeft = type.GetMaxMoves();
+        }
+
+        public override string ToString()
+        {
+            return type.ToString() + " belonging to " + (player ? "human" : "computer") + " player on " + (TileX+1) + "," + (TileY+1);
         }
 
     }

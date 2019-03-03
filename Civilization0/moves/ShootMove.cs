@@ -21,6 +21,7 @@ namespace Civilization0.moves
         public override void Execute(bool playerCall)
         {
             att.Shoot(def);
+            Console.WriteLine(playerCall ? "Human" : "Computer" + " player has shot " + def + " with " + att);
         }
 
     }

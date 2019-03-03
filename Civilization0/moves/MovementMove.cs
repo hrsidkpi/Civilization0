@@ -27,7 +27,10 @@ namespace Civilization0.moves
             Game.instance.tiles[x, y].unitOn = unit;
 			unit.TileX = x;
 			unit.TileY = y;
-		}
 
-	}
+            Console.WriteLine(playerCall ? "Human" : "Computer" + " player has moved " + unit);
+
+        }
+
+    }
 }

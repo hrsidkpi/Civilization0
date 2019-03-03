@@ -12,7 +12,8 @@ namespace Civilization0.units
 {
     public enum UnitType
     {
-        town, barracks,
+        town,
+        barracks, archeryRange, stable,
 		farm, lumberhouse, mine,
         builder,
         swordman, spearman, axeman,
@@ -290,6 +291,20 @@ namespace Civilization0.units
 					return Assets.forestry;
                 case UnitType.archer:
                     return Assets.archer;
+                case UnitType.archeryRange:
+                    return Assets.archeryRange;
+                case UnitType.levy:
+                    return Assets.levy;
+                case UnitType.crossbowman:
+                    return Assets.crossbowman;
+                case UnitType.catapracht:
+                    return Assets.heavyCavalry;
+                case UnitType.cavelry:
+                    return Assets.lightCavalry;
+                case UnitType.chariot:
+                    return Assets.mountedArcher;
+                case UnitType.stable:
+                    return Assets.stable;
 
             }
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.GetSprite(this UnitType)");
@@ -309,6 +324,10 @@ namespace Civilization0.units
                     return new Axeman(x, y, true);
                 case UnitType.archer:
                     return new Archer(x, y, true);
+                case UnitType.archeryRange:
+                    return new ArcheryRange(x, y, true);
+                case UnitType.stable:
+                    return new Stable(x, y, true);
             }
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.Build(this UnitType)");
         }
@@ -339,6 +358,21 @@ namespace Civilization0.units
                     return new Lumberhouse(x, y, player);
                 case UnitType.archer:
                     return new Archer(x, y, player);
+                case UnitType.archeryRange:
+                    return new ArcheryRange(x, y, player);
+                case UnitType.stable:
+                    return new Stable(x, y, player);
+                case UnitType.catapracht:
+                    return new Catapracht(x, y, player);
+                case UnitType.levy:
+                    return new Levy(x, y, player);
+                case UnitType.crossbowman:
+                    return new Crossbowman(x, y, player);
+                case UnitType.cavelry:
+                    return new Cavelry(x, y, player);
+                case UnitType.chariot:
+                    return new Chariot(x, y, player);
+
             }
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.Build(this UnitType)");
         }

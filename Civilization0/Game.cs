@@ -140,7 +140,17 @@ namespace Civilization0
 		private void MouseDown(Point mousePos)
 		{
 			if (!released) return;
-			foreach (Tile t in tiles)
+
+            for (int i = 0; i < buttons.Count; i++)
+			{
+				Button b = buttons[i];
+				if (b.GetHitbox().Contains(mousePos))
+				{
+					b.Click();
+				}
+			}
+
+            foreach (Tile t in tiles)
 			{
 				if (t.GetHitbox().Contains(mousePos))
 				{
@@ -149,14 +159,6 @@ namespace Civilization0
 				}
 			}
 
-			for (int i = 0; i < buttons.Count; i++)
-			{
-				Button b = buttons[i];
-				if (b.GetHitbox().Contains(mousePos))
-				{
-					b.Click();
-				}
-			}
 
 			released = false;
 		}
@@ -210,6 +212,9 @@ namespace Civilization0
                 if (t.unitOn != null) t.unitOn.NewTurn();
                 if (t.buildingOn != null) t.buildingOn.NewTurn();
             }
+
+            foreach (Button b in selectionButtons) b.Delete();
+            selectionButtons.Clear();
 
 			DoComputerTurn();
 		}

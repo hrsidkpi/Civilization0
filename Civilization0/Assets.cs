@@ -32,8 +32,8 @@ namespace Civilization0
 		public static Texture2D vineyard;
 		public static Texture2D tavern;
 		public static Texture2D barracks;
-		public static Texture2D ridingField;
-		public static Texture2D targetPractice;
+		public static Texture2D stable;
+		public static Texture2D archeryRange;
 		public static Texture2D factory;
 		public static Texture2D shipyard;
 		public static Texture2D tower;
@@ -95,6 +95,10 @@ namespace Civilization0
             town.Tag = "town Texture";
             barracks = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/barracks.png", FileMode.Open));
             barracks.Tag = "barracks Texture";
+            archeryRange = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/archeryRange.png", FileMode.Open));
+            archeryRange.Tag = "archeryRange Texture";
+            stable = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/stable.png", FileMode.Open));
+            stable.Tag = "stable Texture";
 
             builder = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/builder.png", FileMode.Open));
             builder.Tag = "builder Texture";
