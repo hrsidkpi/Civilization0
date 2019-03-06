@@ -12,7 +12,7 @@ namespace Civilization0.moves
     {
         public Unit att, def;
 
-        public ShootMove(Unit att, Unit def) : base(Math.Abs(att.x - def.x) / Tile.TILE_WIDTH + Math.Abs(att.y - def.y) / Tile.TILE_HEIGHT)
+        public ShootMove(Unit att, Unit def) : base(att.type.GetMaxMoves())
         {
             this.att = att;
             this.def = def;
@@ -21,7 +21,7 @@ namespace Civilization0.moves
         public override void Execute(bool playerCall)
         {
             att.Shoot(def);
-            Console.WriteLine(playerCall ? "Human" : "Computer" + " player has shot " + def + " with " + att);
+            Console.WriteLine((playerCall ? "Human" : "Computer") + " player has shot " + def + " with " + att);
         }
 
     }

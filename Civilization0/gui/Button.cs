@@ -19,6 +19,7 @@ namespace Civilization0.gui
 		public delegate void ClickEvent();
 
 		public ClickEvent Click;
+        public ClickEvent RightClick;
 
 		public Button(Rectangle hitbox, Texture2D texture, bool add = true)
 		{

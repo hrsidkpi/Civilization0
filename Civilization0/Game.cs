@@ -87,7 +87,8 @@ namespace Civilization0
 			IWorldGenerator generator = new DefaultWorldGenerator();
 			tiles = generator.Generate(TILES_WIDTH, TILES_HEIGHT);
 
-			new Town(0, 0, true);
+			Town t = new Town(0, 0, true);
+            t.NewTurn();
             new Town((TILES_WIDTH - 1) * Tile.TILE_WIDTH, (TILES_HEIGHT - 1) * Tile.TILE_HEIGHT, false);
 			turnButton = new Button(new Rectangle(GAME_WIDTH - 300 - 80, GAME_HEIGHT - 80, 80, 80),PLAYER_START?Assets.myTurn:Assets.enemyTurn);
             turnButton.Click += SwitchTurn;
@@ -131,15 +132,22 @@ namespace Civilization0
 			}
 			if(mouse.LeftButton == ButtonState.Released)
 			{
-				released = true;
+				lReleased = true;
 			}
+            if(mouse.RightButton == ButtonState.Pressed)
+            {
+                MouseRightDown(mousePos);
+            }
+            if (mouse.RightButton == ButtonState.Released)
+                rReleased = true;
 			base.Update(gameTime);
 		}
 
-		private bool released;
+		private bool lReleased;
+        private bool rReleased;
 		private void MouseDown(Point mousePos)
 		{
-			if (!released) return;
+			if (!lReleased) return;
 
             for (int i = 0; i < buttons.Count; i++)
 			{
@@ -160,10 +168,36 @@ namespace Civilization0
 			}
 
 
-			released = false;
+			lReleased = false;
 		}
 
-		protected override void Draw(GameTime gameTime)
+        private void MouseDown(Point mousePos)
+        {
+            if (!rReleased) return;
+
+            for (int i = 0; i < buttons.Count; i++)
+            {
+                Button b = buttons[i];
+                if (b.GetHitbox().Contains(mousePos))
+                {
+                    b.RightClick();
+                }
+            }
+
+            foreach (Tile t in tiles)
+            {
+                if (t.GetHitbox().Contains(mousePos))
+                {
+                    if (t.unitOn != null && t.unitOn.player) t.unitOn.RightClick();
+                    else if (t.buildingOn != null && t.buildingOn.player) t.buildingOn.RightClick();
+                }
+            }
+
+
+            rReleased = false;
+        }
+
+        protected override void Draw(GameTime gameTime)
 		{
 
 			GraphicsDevice.Clear(Color.CornflowerBlue);

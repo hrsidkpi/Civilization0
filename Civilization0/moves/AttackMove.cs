@@ -22,7 +22,7 @@ namespace Civilization0.moves
 		public override void Execute(bool playerCall)
 		{
 			att.Charge(def);
-            Console.WriteLine(playerCall ? "Human" : "Computer" + " player has attacked " + def + " with " + att);
+            Console.WriteLine((playerCall ? "Human" : "Computer") + " player has attacked " + def + " with " + att);
 
         }
 

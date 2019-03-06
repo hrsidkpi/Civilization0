@@ -24,7 +24,7 @@ namespace Civilization0.moves
 		public override void Execute(bool playerCall)
 		{
 			Unit u = unit.BuildOnTile(x, y, playerCall);
-            Console.WriteLine(playerCall ? "Human" : "Computer" + " player built " + u);
+            Console.WriteLine((playerCall ? "Human" : "Computer") + " player built " + u);
 
         }
     }

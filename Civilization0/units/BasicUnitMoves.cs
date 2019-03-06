@@ -156,12 +156,20 @@ namespace Civilization0.units
             {
                 for (int y = yStart; y <= yEnd; y++)
                 {
-                    if (x == unit.x / Tile.TILE_WIDTH && y == unit.y / Tile.TILE_HEIGHT) continue;
+                    if (x == unit.TileX && y == unit.TileY) continue;
                     Tile t = Game.instance.tiles[x, y];
-                    if (t.unitOn == null) continue;
-                    Unit target = t.unitOn;
-                    if (target.player == unit.player) continue;
-                    moves.Add(new ShootMove(unit, target));
+                    if (t.unitOn != null)
+                    {
+                        Unit target = t.unitOn;
+                        if (target.player == unit.player) continue;
+                        moves.Add(new ShootMove(unit, target));
+                    }
+                    else if(t.buildingOn != null)
+                    {
+                        Unit target = t.buildingOn;
+                        if (target.player == unit.player) continue;
+                        moves.Add(new ShootMove(unit, target));
+                    }
                 }
             }
             return moves;

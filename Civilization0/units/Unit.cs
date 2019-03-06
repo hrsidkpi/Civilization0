@@ -48,6 +48,8 @@ namespace Civilization0.units
         public abstract void Initialize();
         public abstract void Update();
 
+        public virtual void RightClick() { }
+
         public virtual void Click()
         {
             foreach (Button del in Game.instance.selectionButtons)
@@ -99,10 +101,7 @@ namespace Civilization0.units
                 Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.greenHighlight, true);
                 select.Click += () =>
                 {
-                    Game.instance.tiles[move.x, move.y].unitOn = this;
-                    Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].unitOn = null;
-                    x = move.x * Tile.TILE_WIDTH;
-                    y = move.y * Tile.TILE_WIDTH;
+                    move.Execute(true);
 
                     SubtractMove(move.cost);
                     foreach (Button b in movementButtons) b.Delete();
@@ -205,7 +204,8 @@ namespace Civilization0.units
                             Button place = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.blueHighlight, true);
                             place.Click += () =>
                             {
-                                t.BuildOnTile(move.x, move.y);
+                                move.Execute(true);
+
                                 SubtractMove(m.cost);
                                 Game.instance.player.resources -= t.Cost();
                                 foreach (Button del in buildButtons) del.Delete();

@@ -100,6 +100,8 @@ namespace Civilization0.units
                     wood = 400;
                     break;
                 case UnitType.barracks:
+                case UnitType.stable:
+                case UnitType.archeryRange:
                     wood = 200;
                     break;
                 default:
@@ -137,7 +139,9 @@ namespace Civilization0.units
                 t == UnitType.barracks ||
                 t == UnitType.farm ||
                 t == UnitType.lumberhouse ||
-                t == UnitType.mine;
+                t == UnitType.mine ||
+                t == UnitType.archeryRange ||
+                t == UnitType.stable;
         }
 
         public static bool IsHuman(this UnitType t)
@@ -187,12 +191,32 @@ namespace Civilization0.units
         {
             switch (t)
             {
+                case UnitType.airship:
+                    return 20;
+                case UnitType.axeman:
+                    return 6;
                 case UnitType.swordman:
-                    return 3;
-                case UnitType.spearman:
+                    return 7;
+                case UnitType.crossbowman:
                     return 5;
-                default:
+                case UnitType.catapracht:
+                    return 8;
+                case UnitType.archer:
+                    return 3;
+                case UnitType.catapult:
+                    return 4;
+                case UnitType.spearman:
+                    return 9;
+                case UnitType.chariot:
+                    return 4;
+                case UnitType.levy:
                     return 2;
+                case UnitType.cavelry:
+                    return 3;
+                case UnitType.ram:
+                    return 2;
+                default:
+                    return 10;
             }
         }
 
@@ -255,13 +279,13 @@ namespace Civilization0.units
             {
                 case UnitType.chariot:
                 case UnitType.levy:
-                    return 4;
+                    return 2;
                 case UnitType.archer:
-                    return 5;
+                    return 3;
                 case UnitType.crossbowman:
-                    return 6;
+                    return 4;
                 case UnitType.catapult:
-                    return 8;
+                    return 5;
                 default:
                     return 1;
             }
