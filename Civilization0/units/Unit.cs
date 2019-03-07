@@ -99,7 +99,7 @@ namespace Civilization0.units
             if (CanMove(move.cost))
             {
                 Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.greenHighlight, true);
-                select.Click += () =>
+                select.RightClick += () =>
                 {
                     move.Execute(true);
 
@@ -120,7 +120,7 @@ namespace Civilization0.units
             if (CanMove(move.cost))
             {
                 Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.yellowHighlight, true);
-                select.Click += () =>
+                select.RightClick += () =>
                 {
                     move.Execute(true);
 
@@ -140,7 +140,7 @@ namespace Civilization0.units
             if (CanMove(move.cost))
             {
                 Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.yellowHighlight, true);
-                select.Click += () =>
+                select.RightClick += () =>
                 {
                     move.Execute(true);
 
@@ -202,7 +202,7 @@ namespace Civilization0.units
                         if (CanMove(move.cost) && move.unit.CanBeOn(Game.instance.tiles[move.x, move.y].type))
                         {
                             Button place = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.blueHighlight, true);
-                            place.Click += () =>
+                            place.RightClick += () =>
                             {
                                 move.Execute(true);
 

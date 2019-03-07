@@ -13,6 +13,8 @@ namespace Civilization0.ai
     public static class ComputerPlayer
     {
 
+        
+
         public const bool COMPUTER_INFINATE_RESOURCES = false;
 
         public static readonly List<UnitType> BUILD_ORDER_GAME = new List<UnitType>()

@@ -154,8 +154,8 @@ namespace Civilization0
 				Button b = buttons[i];
 				if (b.GetHitbox().Contains(mousePos))
 				{
-					b.Click();
-				}
+                    b.Click?.Invoke();
+                }
 			}
 
             foreach (Tile t in tiles)
@@ -171,7 +171,7 @@ namespace Civilization0
 			lReleased = false;
 		}
 
-        private void MouseDown(Point mousePos)
+        private void MouseRightDown(Point mousePos)
         {
             if (!rReleased) return;
 
@@ -180,7 +180,7 @@ namespace Civilization0
                 Button b = buttons[i];
                 if (b.GetHitbox().Contains(mousePos))
                 {
-                    b.RightClick();
+                    b.RightClick?.Invoke();
                 }
             }
 
