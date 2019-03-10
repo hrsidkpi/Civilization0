@@ -13,7 +13,11 @@ namespace Civilization0.ai
     public static class ComputerPlayer
     {
 
-        
+        public enum Task
+        {
+            improve, forward, improveForward, defend, 
+            cleanup, retreat, push, raid, destroy, trade
+        }
 
         public const bool COMPUTER_INFINATE_RESOURCES = false;
 
@@ -142,6 +146,16 @@ namespace Civilization0.ai
             }
 
             return null;
+        }
+
+        public static Task GetTask() {
+
+            Dictionary<UnitType, int> counts = PathFinder.Count(new LookupConstraint());
+
+
+
+            return Task.defend;
+
         }
 
     }

@@ -49,6 +49,24 @@ namespace Civilization0.ai
             return Math.Abs(xTarget - x) + Math.Abs(yTarget - y);
         }
 
+
+        public static Dictionary<UnitType, int> Count(LookupConstraint constraint)
+        {
+            Dictionary<UnitType, int> res = new Dictionary<UnitType, int>();
+
+            foreach (Tile t in Game.instance.tiles)
+                foreach(Unit u in t.UnitsOn)
+                {
+                    if(constraint.Check(u))
+                    {
+                        if (!res.ContainsKey(u.type)) res[u.type] = 0;
+                        res[u.type]++;
+                    }
+                }
+            return res;
+
+        }
+
         public static Dictionary<UnitType, int> CountAround(Unit counter, int range, bool player)
         {
 
