@@ -15,6 +15,17 @@ namespace Civilization0.tiles
 		 grass, mountain, water, forest
 	}
 
+    public static class TileTypeInfo
+    {
+        public static UnitType GetHarvesterType(this TileType type)
+        {
+            if (type == TileType.forest) return UnitType.lumberhouse;
+            if (type == TileType.grass) return UnitType.farm;
+            if (type == TileType.mountain) return UnitType.mine;
+            return UnitType.none;
+        }
+    }
+
 	public class Tile
 	{
 		public const int TILE_WIDTH = 50;

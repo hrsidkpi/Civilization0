@@ -14,7 +14,7 @@ namespace Civilization0.moves
 		public Unit unit;
 		public int x, y;
 
-		public MovementMove(Unit unit, int x, int y) : base(Math.Abs(unit.x/Tile.TILE_WIDTH - x) + Math.Abs(unit.y/Tile.TILE_HEIGHT - y))
+		public MovementMove(Unit unit, int x, int y) : base(Math.Abs(unit.px/Tile.TILE_WIDTH - x) + Math.Abs(unit.py/Tile.TILE_HEIGHT - y))
         {
 			this.unit = unit;
 			this.x = x;

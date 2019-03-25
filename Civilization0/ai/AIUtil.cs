@@ -1,4 +1,5 @@
 ﻿using Civilization0.tiles;
+using Civilization0.units;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,43 @@ namespace Civilization0.ai
                 }
                 dist++;
             }
+        }
+
+        public static Dictionary<UnitType,int> Add(this Dictionary<UnitType,int> a, Dictionary<UnitType,int> b)
+        {
+            foreach(KeyValuePair<UnitType, int> p in b)
+            {
+                if (a.ContainsKey(p.Key)) a[p.Key] += p.Value;
+                else a.Add(p.Key, p.Value);
+            }
+            return a;
+        }
+
+        public static Dictionary<UnitType,int> GetMissingUnits(this Dictionary<UnitType,int> container, Dictionary<UnitType,int> contained)
+        {
+            Dictionary<UnitType, int> res = new Dictionary<UnitType, int>();
+
+            foreach(KeyValuePair<UnitType,int> pair in contained)
+            {
+                if (!container.ContainsKey(pair.Key)) res.Add(pair.Key, pair.Value);
+                else if (container[pair.Key] < pair.Value) res[pair.Key] = pair.Value - container[pair.Key];
+            }
+            return res;
+        }
+
+        public static bool NoUnits(this Dictionary<UnitType, int> dict)
+        {
+            foreach (int v in dict.Values) if (v != 0) return false;
+            return true;
+        }
+
+        public static Dictionary<UnitType, int> ListToDict(List<UnitType> units)
+        {
+            Dictionary<UnitType, int> res = new Dictionary<UnitType, int>();
+            foreach (UnitType t in units)
+                if (res.ContainsKey(t)) res[t]++;
+                else res[t] = 1;
+            return res;
         }
 
     }

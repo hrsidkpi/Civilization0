@@ -17,9 +17,9 @@ namespace Civilization0.units
     public abstract class Unit
     {
 
-        public int x, y;
-        public int TileX { get { return x / Tile.TILE_WIDTH; } set { x = value * Tile.TILE_WIDTH; } }
-        public int TileY { get { return y / Tile.TILE_HEIGHT; } set { y = value * Tile.TILE_HEIGHT; } }
+        public int px, py;
+        public int TileX { get { return px / Tile.TILE_WIDTH; } set { px = value * Tile.TILE_WIDTH; } }
+        public int TileY { get { return py / Tile.TILE_HEIGHT; } set { py = value * Tile.TILE_HEIGHT; } }
 
         public UnitType type;
         private Texture2D sprite;
@@ -31,8 +31,8 @@ namespace Civilization0.units
 
         public Unit(int x, int y, UnitType type, bool player)
         {
-            this.x = x;
-            this.y = y;
+            this.px = x;
+            this.py = y;
             this.type = type;
             this.sprite = type.GetSprite();
             this.player = player;
@@ -114,8 +114,8 @@ namespace Civilization0.units
 
         private void GenerateAttackButton(AttackMove move)
         {
-            int xPixels = move.def.x + Game.instance.xScroll;
-            int yPixels = move.def.y + Game.instance.yScroll;
+            int xPixels = move.def.px + Game.instance.xScroll;
+            int yPixels = move.def.py + Game.instance.yScroll;
 
             if (CanMove(move.cost))
             {
@@ -134,8 +134,8 @@ namespace Civilization0.units
 
         private void GenerateShootButton(ShootMove move)
         {
-            int xPixels = move.def.x + Game.instance.xScroll;
-            int yPixels = move.def.y + Game.instance.yScroll;
+            int xPixels = move.def.px + Game.instance.xScroll;
+            int yPixels = move.def.py + Game.instance.yScroll;
 
             if (CanMove(move.cost))
             {
@@ -172,8 +172,10 @@ namespace Civilization0.units
             hp -= amount;
             if (hp <= 0)
             {
-                if (type.IsHuman()) Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].unitOn = null;
-                else Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].buildingOn = null;
+                if (type.IsHuman()) Game.instance.tiles[px / Tile.TILE_WIDTH, py / Tile.TILE_HEIGHT].unitOn = null;
+                else Game.instance.tiles[px / Tile.TILE_WIDTH, py / Tile.TILE_HEIGHT].buildingOn = null;
+
+                if (type == UnitType.town) Game.instance.CheckWin();
             }
         }
 
@@ -223,9 +225,9 @@ namespace Civilization0.units
 
         public virtual void Draw(SpriteBatch canvas)
         {
-            Rectangle drawLocation = new Rectangle(x + Game.instance.xScroll, y + Game.instance.yScroll, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
+            Rectangle drawLocation = new Rectangle(px + Game.instance.xScroll, py + Game.instance.yScroll, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
             canvas.Draw(sprite, drawLocation, Color.White);
-            canvas.DrawString(Assets.font, "" + hp, new Vector2(x + Game.instance.xScroll, y + Game.instance.yScroll), player ? Color.Blue : Color.Red);
+            canvas.DrawString(Assets.font, "" + hp, new Vector2(px + Game.instance.xScroll, py + Game.instance.yScroll), player ? Color.Blue : Color.Red);
             if (movesLeft == 0) canvas.Draw(Assets.done, drawLocation, Color.White);
         }
 

@@ -40,10 +40,10 @@ namespace Civilization0.units
             List<Move> moves = new List<Move>();
 
             //Get the 9 tiles around this building
-            int xStart = Math.Max(0, unit.x / Tile.TILE_WIDTH - distance);
-            int xEnd = Math.Min(Game.TILES_WIDTH - 1, unit.x / Tile.TILE_WIDTH + distance);
-            int yStart = Math.Max(0, unit.y / Tile.TILE_HEIGHT - distance);
-            int yEnd = Math.Min(Game.TILES_HEIGHT - 1, unit.y / Tile.TILE_HEIGHT + distance);
+            int xStart = Math.Max(0, unit.px / Tile.TILE_WIDTH - distance);
+            int xEnd = Math.Min(Game.TILES_WIDTH - 1, unit.px / Tile.TILE_WIDTH + distance);
+            int yStart = Math.Max(0, unit.py / Tile.TILE_HEIGHT - distance);
+            int yEnd = Math.Min(Game.TILES_HEIGHT - 1, unit.py / Tile.TILE_HEIGHT + distance);
 
             for (int x = xStart; x <= xEnd; x++)
             {
@@ -65,10 +65,10 @@ namespace Civilization0.units
             List<Move> moves = new List<Move>();
 
             //Get the 9 tiles around this building
-            int xStart = Math.Max(0, unit.x / Tile.TILE_WIDTH - distance);
-            int xEnd = Math.Min(Game.TILES_WIDTH - 1, unit.x / Tile.TILE_WIDTH + distance);
-            int yStart = Math.Max(0, unit.y / Tile.TILE_HEIGHT - distance);
-            int yEnd = Math.Min(Game.TILES_HEIGHT - 1, unit.y / Tile.TILE_HEIGHT + distance);
+            int xStart = Math.Max(0, unit.px / Tile.TILE_WIDTH - distance);
+            int xEnd = Math.Min(Game.TILES_WIDTH - 1, unit.px / Tile.TILE_WIDTH + distance);
+            int yStart = Math.Max(0, unit.py / Tile.TILE_HEIGHT - distance);
+            int yEnd = Math.Min(Game.TILES_HEIGHT - 1, unit.py / Tile.TILE_HEIGHT + distance);
 
             for (int x = xStart; x <= xEnd; x++)
             {
@@ -89,16 +89,16 @@ namespace Civilization0.units
         {
             List<Move> moves = new List<Move>();
 
-            int xStart = Math.Max(0, unit.x / Tile.TILE_WIDTH - distance);
-            int xEnd = Math.Min(Game.TILES_WIDTH - 1, unit.x / Tile.TILE_WIDTH + distance);
-            int yStart = Math.Max(0, unit.y / Tile.TILE_HEIGHT - distance);
-            int yEnd = Math.Min(Game.TILES_HEIGHT - 1, unit.y / Tile.TILE_HEIGHT + distance);
+            int xStart = Math.Max(0, unit.px / Tile.TILE_WIDTH - distance);
+            int xEnd = Math.Min(Game.TILES_WIDTH - 1, unit.px / Tile.TILE_WIDTH + distance);
+            int yStart = Math.Max(0, unit.py / Tile.TILE_HEIGHT - distance);
+            int yEnd = Math.Min(Game.TILES_HEIGHT - 1, unit.py / Tile.TILE_HEIGHT + distance);
 
             for (int x = xStart; x <= xEnd; x++)
             {
                 for (int y = yStart; y <= yEnd; y++)
                 {
-                    if (x == unit.x / Tile.TILE_WIDTH && y == unit.y / Tile.TILE_HEIGHT) continue;
+                    if (x == unit.px / Tile.TILE_WIDTH && y == unit.py / Tile.TILE_HEIGHT) continue;
                     Tile t = Game.instance.tiles[x, y];
                     if (unit.CanPlaceOn(x, y))
                     {
@@ -118,16 +118,16 @@ namespace Civilization0.units
         {
             List<Move> moves = new List<Move>();
 
-            int xStart = Math.Max(0, unit.x / Tile.TILE_WIDTH - distance);
-            int xEnd = Math.Min(Game.TILES_WIDTH - 1, unit.x / Tile.TILE_WIDTH + distance);
-            int yStart = Math.Max(0, unit.y / Tile.TILE_HEIGHT - distance);
-            int yEnd = Math.Min(Game.TILES_HEIGHT - 1, unit.y / Tile.TILE_HEIGHT + distance);
+            int xStart = Math.Max(0, unit.px / Tile.TILE_WIDTH - distance);
+            int xEnd = Math.Min(Game.TILES_WIDTH - 1, unit.px / Tile.TILE_WIDTH + distance);
+            int yStart = Math.Max(0, unit.py / Tile.TILE_HEIGHT - distance);
+            int yEnd = Math.Min(Game.TILES_HEIGHT - 1, unit.py / Tile.TILE_HEIGHT + distance);
 
             for (int x = xStart; x <= xEnd; x++)
             {
                 for (int y = yStart; y <= yEnd; y++)
                 {
-                    if (x == unit.x / Tile.TILE_WIDTH && y == unit.y / Tile.TILE_HEIGHT) continue;
+                    if (x == unit.px / Tile.TILE_WIDTH && y == unit.py / Tile.TILE_HEIGHT) continue;
                     Tile t = Game.instance.tiles[x, y];
                     if (t.UnitsOn.Count == 0) continue;
                     Unit target = t.UnitsOn[0];
@@ -147,10 +147,10 @@ namespace Civilization0.units
         {
             List<Move> moves = new List<Move>();
 
-            int xStart = Math.Max(0, unit.x / Tile.TILE_WIDTH - distance);
-            int xEnd = Math.Min(Game.TILES_WIDTH - 1, unit.x / Tile.TILE_WIDTH + distance);
-            int yStart = Math.Max(0, unit.y / Tile.TILE_HEIGHT - distance);
-            int yEnd = Math.Min(Game.TILES_HEIGHT - 1, unit.y / Tile.TILE_HEIGHT + distance);
+            int xStart = Math.Max(0, unit.px / Tile.TILE_WIDTH - distance);
+            int xEnd = Math.Min(Game.TILES_WIDTH - 1, unit.px / Tile.TILE_WIDTH + distance);
+            int yStart = Math.Max(0, unit.py / Tile.TILE_HEIGHT - distance);
+            int yEnd = Math.Min(Game.TILES_HEIGHT - 1, unit.py / Tile.TILE_HEIGHT + distance);
 
             for (int x = xStart; x <= xEnd; x++)
             {

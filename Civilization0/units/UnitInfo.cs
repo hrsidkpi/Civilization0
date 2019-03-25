@@ -1,4 +1,5 @@
-﻿using Civilization0.tiles;
+﻿using Civilization0.ai;
+using Civilization0.tiles;
 using Civilization0.units.buildings;
 using Civilization0.units.human;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,6 +13,7 @@ namespace Civilization0.units
 {
     public enum UnitType
     {
+        none,
         town,
         barracks, archeryRange, stable,
 		farm, lumberhouse, mine,
@@ -25,6 +27,20 @@ namespace Civilization0.units
 
     public static class UnitTypeInfo
     {
+
+        public static List<ALocation> AdjecentLocationsFrom(this UnitType t, int x, int y)
+        {
+            List<ALocation> res = new List<ALocation>();
+            for(int xx = x-t.GetRange(); xx <= x+t.GetRange(); xx++)
+            {
+                int yRange = t.GetRange() - (Math.Abs(xx - x));
+                for(int yy = y-yRange; yy <= y+yRange; yy++)
+                {
+                    res.Add(new ALocation(xx, yy));
+                }
+            }
+            return res;
+        }
 
 		public static List<TileType> BuildableTiles (this UnitType t)
 		{

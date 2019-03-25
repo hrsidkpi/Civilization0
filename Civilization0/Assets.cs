@@ -77,6 +77,9 @@ namespace Civilization0
         public static Texture2D wood;
         public static Texture2D iron;
 
+        public static Texture2D win;
+        public static Texture2D lose;
+
 
         public static SpriteFont font;
 
@@ -162,7 +165,10 @@ namespace Civilization0
 
             font = Game.instance.Content.Load<SpriteFont>("../res/HpFont");
 
-
+            win = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/win.png", FileMode.Open));
+            win.Tag = "Win texture";
+            lose = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/lose.png", FileMode.Open));
+            lose.Tag = "Lose texture";
         }
 
 	}

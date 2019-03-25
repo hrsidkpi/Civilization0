@@ -15,7 +15,7 @@ namespace Civilization0.ai
 
         public enum Task
         {
-            improve, forward, improveForward, defend, 
+            improve, forward, improveForward, defend,
             cleanup, retreat, push, raid, destroy, trade
         }
 
@@ -23,10 +23,11 @@ namespace Civilization0.ai
 
         public static readonly List<UnitType> BUILD_ORDER_GAME = new List<UnitType>()
         {
-            UnitType.builder, UnitType.farm, UnitType.farm, UnitType.farm,
+            UnitType.builder, UnitType.farm, UnitType.builder, UnitType.farm, UnitType.farm,
+            UnitType.builder, UnitType.farm,
             UnitType.lumberhouse, UnitType.mine, UnitType.lumberhouse,
             UnitType.farm, UnitType.mine, UnitType.farm, UnitType.barracks,
-            UnitType.swordman, UnitType.spearman, UnitType.axeman
+            UnitType.swordman, UnitType.spearman
         };
 
         public static readonly List<UnitType> BUILD_ORDER_DEBUG = new List<UnitType>()
@@ -35,62 +36,84 @@ namespace Civilization0.ai
         };
 
         public static readonly List<UnitType> BUILD_ORDER = BUILD_ORDER_GAME;
+        public static readonly Dictionary<UnitType, int> BUILD_ORDER_DICT = AIUtil.ListToDict(BUILD_ORDER);
 
-        public static bool buildOrderDone = false;
-        public static int buildOrderPosition = 0;
+        public static Dictionary<UnitType, int> buildingThisTurn = new Dictionary<UnitType, int>();
 
         public static List<Move> BestMoves()
         {
             List<Move> moves = new List<Move>();
             Game game = Game.instance;
 
+            Task task = GetTask();
+            Console.WriteLine("AI is trying to " + task);
+
             foreach (Tile t in game.tiles)
             {
                 if (t.unitOn != null && !t.unitOn.player)
                 {
-                    Move m = BestMove(t.unitOn);
+                    Move m = BestMove(t.unitOn, task);
                     if (m != null)
                         moves.Add(m);
                 }
 
                 if (t.buildingOn != null && !t.buildingOn.player)
                 {
-                    Move m = BestMove(t.buildingOn);
+                    Move m = BestMove(t.buildingOn, task);
                     if (m != null)
                         moves.Add(m);
                 }
             }
 
+            buildingThisTurn.Clear();
             return moves;
         }
 
-        public static Move BestMove(Unit u)
+        public static Move BestMove(Unit u, Task task)
         {
 
-            //Try to build the next thing in the build order
-            if (!buildOrderDone)
+            if (task == Task.improve)
             {
-                UnitType build = BUILD_ORDER[buildOrderPosition];
+                Dictionary<UnitType, int> friendlies = PathFinder.Count(new LookupConstraint(new PlayerConstraint(false)));
+                friendlies.Add(buildingThisTurn);
+
+                UnitType build = UnitType.builder;
+                bool needToBuild = false;
+                foreach (UnitType test in BUILD_ORDER)
+                {
+                    if (!friendlies.ContainsKey(test))
+                    {
+                        build = test;
+                        needToBuild = true;
+                        break;
+                    }
+                    if (friendlies[test] == 0)
+                    {
+                        build = test;
+                        needToBuild = true;
+                        break;
+                    }
+                    friendlies[test]--;
+                }
+                if (!needToBuild) return null;
+
                 if (!(build.Cost() <= Game.instance.computer.resources || COMPUTER_INFINATE_RESOURCES)) return null;
                 if (u.GetBuildable().Contains(build))
                 {
-                    List<Move> options = u.BuildAroundMove(BUILD_ORDER[buildOrderPosition], 1);
+                    List<Move> options = u.BuildAroundMove(build, 1);
                     options.RemoveAll((o) => { return o.cost > u.movesLeft; });
                     if (options.Count > 0)
                     {
                         Move res = options[0];
-                        if (res != null)
-                        {
-                            buildOrderPosition++;
-                            if (buildOrderPosition == BUILD_ORDER.Count) buildOrderDone = true;
-                            return res;
-                        }
+                        if (buildingThisTurn.ContainsKey(build)) buildingThisTurn[build]++;
+                        else buildingThisTurn.Add(build, 1);
+                        return res;
                     }
                     else
                     {
                         if (u.type == UnitType.builder)
                         {
-                            List<ALocation> path = PathFinder.PathToNearestTile(u.type, u.x / Tile.TILE_WIDTH, u.y / Tile.TILE_HEIGHT, build.BuildableTiles()[0]);
+                            List<ALocation> path = PathFinder.PathToNearestTile(u.type, u.px / Tile.TILE_WIDTH, u.py / Tile.TILE_HEIGHT, build.BuildableTiles()[0]);
                             if (path != null && path.Count != 0)
                                 return new MovementMove(u, path[0].x, path[0].y);
                         }
@@ -98,63 +121,108 @@ namespace Civilization0.ai
                 }
             }
 
-            //Fighting unit AI
-            if (u.type.GetDamage() > 0)
+            if (task == Task.forward)
             {
-                Dictionary<UnitType, int> enemiesAround = PathFinder.CountAround(u, 4, true);
-                int diff = 0;
-                foreach (KeyValuePair<UnitType, int> t in enemiesAround)
+                if (u.type == UnitType.builder)
                 {
-                    diff -= t.Value * t.Key.GetDamage();
-                }
-                //No enemies around, move towards closest enemy
-                if (enemiesAround.Count == 0)
-                {
-                    List<ALocation> path = PathFinder.PathToNearestUnit(u.type, u.TileX, u.TileY, true);
-                    if (path != null && path.Count != 0)
+                    Tile target = null;
+                    if (Game.instance.tiles[3, 2].buildingOn == null)
+                        target = Game.instance.tiles[3, 2];
+                    if (Game.instance.tiles[4, 2].buildingOn == null)
+                        target = Game.instance.tiles[4, 2];
+                    if (Game.instance.tiles[2, 3].buildingOn == null)
+                        target = Game.instance.tiles[2, 3];
+                    if (Game.instance.tiles[2, 4].buildingOn == null)
+                        target = Game.instance.tiles[2, 4];
+
+                    if (target != null)
                     {
-                        if (path.Count < u.movesLeft) return new MovementMove(u, path[path.Count - 1].x, path[path.Count - 1].y);
-                        else return new MovementMove(u, path[u.movesLeft-1].x, path[u.movesLeft-1].y);
+                        List<Move> options = u.BuildAroundMove(target.type.GetHarvesterType(), 1);
+                        options.RemoveAll((o) => { return o.cost > u.movesLeft; });
+                        if (options.Count > 0)
+                        {
+                            Move res = options[0];
+                            return res;
+                        }
+                        else
+                        {
+                            List<ALocation> path = PathFinder.PathToNearestTile(u.type, u.px / Tile.TILE_WIDTH, u.py / Tile.TILE_HEIGHT, target.type);
+                            if (path != null && path.Count != 0)
+                                return new MovementMove(u, path[0].x, path[0].y);
+
+                        }
+                    }
+
+
+                }
+            }
+
+            if (task == Task.defend)
+            {
+                if (u.type.GetDamage() > 0)
+                {
+                    if (10 - u.TileX > 4 || 10 - u.TileY > 4)
+                    {
+                        List<ALocation> path = PathFinder.PathToNearestTile(u.type, u.TileX, u.TileY, new TileLookupConstraint(new DistanceTileConstraint(10, 10, 2)));
+                        return new MovementMove(u, path[0].x, path[0].y);
+
+                    }
+                    else
+                    {
+                        List<Move> attacks = u.DefaultAttackAroundMove();
+                        if (attacks.Count > 0)
+                            return attacks[0];
+
+                        List<ALocation> path = PathFinder.PathToNearestUnit(u.type, u.TileX, u.TileY, new LookupConstraint(new PlayerConstraint(true), new DistanceConstraint(10,10,4)));
+                        if (path != null && path.Count > 0)
+                            return new MovementMove(u, path[0].x, path[0].y);
                     }
                 }
+            }
 
-
-                Dictionary<UnitType, int> friendliesAround = PathFinder.CountAround(u, 4, false);
-                foreach (KeyValuePair<UnitType, int> t in friendliesAround)
+            if (task == Task.push)
+            {
+                if (u.type.GetDamage() > 0)
                 {
-                    diff += t.Value * t.Key.GetDamage();
-                }
+                    List<Move> attacks = u.DefaultAttackAroundMove();
+                    if (attacks.Count > 0) return attacks[0];
 
-                //More friendlies around than enemies, attack
-                if (diff > 0)
-                {
-                    List<ALocation> path = PathFinder.PathToNearestUnit(u.type, u.TileX, u.TileY, true);
-                    if (path != null && path.Count <= u.movesLeft)
+                    List<ALocation> pathToEnemy = PathFinder.PathToNearestUnit(u.type, u.TileX, u.TileY, true);
+                    if (pathToEnemy != null && pathToEnemy.Count < 2)
                     {
-                        AttackMove move = new AttackMove(u, path.Last().Tile.UnitsOn[0]);
-                        return move;
+                        return new MovementMove(u, pathToEnemy[0].x, pathToEnemy[0].y);
                     }
-                    if(path != null) return new MovementMove(u, path[0].x, path[0].y);
-                }
-
-                //More enemies around than friendlies, run to closest friendly
-                else
-                {
-                    List<ALocation> path = PathFinder.PathToNearestUnit(u.type, u.TileX, u.TileY, UnitType.town, false);
-                    return new MovementMove(u, path[0].x, path[0].y);
+                    else
+                    {
+                        List<ALocation> path = PathFinder.PathToNearestTile(u.type, u.TileX, u.TileY, new TileLookupConstraint(new DistanceTileConstraint(0, 0, 3)));
+                        if(path != null && path.Count != 0) return new MovementMove(u, path[0].x, path[0].y);
+                    }
                 }
             }
 
             return null;
         }
 
-        public static Task GetTask() {
+        public static Task GetTask()
+        {
 
             Dictionary<UnitType, int> counts = PathFinder.Count(new LookupConstraint());
+            Dictionary<UnitType, int> friendlies = PathFinder.Count(new LookupConstraint(new PlayerConstraint(false)));
+            Dictionary<UnitType, int> enemies = PathFinder.Count(new LookupConstraint(new PlayerConstraint(true)));
+
+            if (!friendlies.Add(buildingThisTurn).GetMissingUnits(BUILD_ORDER_DICT).NoUnits())
+                return Task.improve;
+
+            Dictionary<UnitType, int> enemiesNearBase = PathFinder.Count(new LookupConstraint(new PlayerConstraint(true), new DistanceConstraint(10, 10, 4)));
+            if (enemiesNearBase.Sum((kv) => { return kv.Value; }) > 0)
+                return Task.defend;
+
+            if (Game.instance.tiles[3, 2].buildingOn == null || Game.instance.tiles[4, 2].buildingOn == null ||
+               Game.instance.tiles[2, 3].buildingOn == null || Game.instance.tiles[2, 4].buildingOn == null)
+                return Task.forward;
 
 
-
-            return Task.defend;
+            return Task.push;
 
         }
 
