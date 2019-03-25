@@ -1,4 +1,5 @@
 ﻿using Civilization0.moves;
+using Civilization0.tiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Civilization0.units.human
     public class Cavelry : Unit
     {
 
-        public Cavelry(int x, int y, bool player) : base(x, y, UnitType.cavelry, player)
+        public Cavelry(int x, int y, bool player, Tile[,] board) : base(x, y, UnitType.cavelry, player, board)
         {
 
         }

@@ -11,8 +11,8 @@ namespace Civilization0.units.human
 {
 	class Builder : Unit
 	{
-		public Builder(int x, int y, bool player) : base(x, y, UnitType.builder, player)
-		{
+        public Builder(int x, int y, bool player, Tile[,] board) : base(x, y, UnitType.builder, player, board)
+        {
 		}
 
 		public override List<UnitType> GetBuildable()

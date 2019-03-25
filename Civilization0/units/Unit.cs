@@ -29,7 +29,7 @@ namespace Civilization0.units
 
         public int hp;
 
-        public Unit(int x, int y, UnitType type, bool player)
+        public Unit(int x, int y, UnitType type, bool player, Tile[,] board)
         {
             this.px = x;
             this.py = y;
@@ -39,8 +39,8 @@ namespace Civilization0.units
 
             hp = type.GetMaxHp();
 
-            if (type.IsBuilding()) Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].buildingOn = this;
-            else Game.instance.tiles[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].unitOn = this;
+            if (type.IsBuilding()) board[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].buildingOn = this;
+            else board[x / Tile.TILE_WIDTH, y / Tile.TILE_HEIGHT].unitOn = this;
 
             movesLeft = 0;
         }

@@ -21,11 +21,15 @@ namespace Civilization0.moves
 			this.unit = type;
 		}
 
-		public override void Execute(bool playerCall)
-		{
-			Unit u = unit.BuildOnTile(x, y, playerCall);
-            Console.WriteLine((playerCall ? "Human" : "Computer") + " player built " + u);
+        public override int CostBoard(Tile[,] board)
+        {
+            return cost;
+        }
 
+        public override void Execute(bool playerCall, Tile[,] board)
+		{
+            Unit u = unit.BuildOnTile(x, y, board, playerCall);
+            Console.WriteLine((playerCall ? "Human" : "Computer") + " player built " + u);
         }
     }
 }

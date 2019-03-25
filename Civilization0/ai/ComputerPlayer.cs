@@ -27,7 +27,7 @@ namespace Civilization0.ai
             UnitType.builder, UnitType.farm,
             UnitType.lumberhouse, UnitType.mine, UnitType.lumberhouse,
             UnitType.farm, UnitType.mine, UnitType.farm, UnitType.barracks,
-            UnitType.swordman, UnitType.spearman
+            UnitType.spearman
         };
 
         public static readonly List<UnitType> BUILD_ORDER_DEBUG = new List<UnitType>()
@@ -40,6 +40,8 @@ namespace Civilization0.ai
 
         public static Dictionary<UnitType, int> buildingThisTurn = new Dictionary<UnitType, int>();
 
+        public static List<Move> pendingMoves = new List<Move>();
+
         public static List<Move> BestMoves()
         {
             List<Move> moves = new List<Move>();
@@ -48,20 +50,17 @@ namespace Civilization0.ai
             Task task = GetTask();
             Console.WriteLine("AI is trying to " + task);
 
-            foreach (Tile t in game.tiles)
-            {
-                if (t.unitOn != null && !t.unitOn.player)
-                {
-                    Move m = BestMove(t.unitOn, task);
-                    if (m != null)
-                        moves.Add(m);
-                }
+            pendingMoves.Clear();
 
-                if (t.buildingOn != null && !t.buildingOn.player)
+            foreach (Unit u in game.GetUnits())
+            {
+                if (u.player) continue;
+
+                Move m = BestMove(u, task);
+                if (m != null)
                 {
-                    Move m = BestMove(t.buildingOn, task);
-                    if (m != null)
-                        moves.Add(m);
+                    moves.Add(m);
+                    pendingMoves.Add(m);
                 }
             }
 
@@ -173,7 +172,7 @@ namespace Civilization0.ai
                         if (attacks.Count > 0)
                             return attacks[0];
 
-                        List<ALocation> path = PathFinder.PathToNearestUnit(u.type, u.TileX, u.TileY, new LookupConstraint(new PlayerConstraint(true), new DistanceConstraint(10,10,4)));
+                        List<ALocation> path = PathFinder.PathToNearestUnit(u.type, u.TileX, u.TileY, new LookupConstraint(new PlayerConstraint(true), new DistanceConstraint(10, 10, 4)));
                         if (path != null && path.Count > 0)
                             return new MovementMove(u, path[0].x, path[0].y);
                     }
@@ -184,19 +183,7 @@ namespace Civilization0.ai
             {
                 if (u.type.GetDamage() > 0)
                 {
-                    List<Move> attacks = u.DefaultAttackAroundMove();
-                    if (attacks.Count > 0) return attacks[0];
-
-                    List<ALocation> pathToEnemy = PathFinder.PathToNearestUnit(u.type, u.TileX, u.TileY, true);
-                    if (pathToEnemy != null && pathToEnemy.Count < 2)
-                    {
-                        return new MovementMove(u, pathToEnemy[0].x, pathToEnemy[0].y);
-                    }
-                    else
-                    {
-                        List<ALocation> path = PathFinder.PathToNearestTile(u.type, u.TileX, u.TileY, new TileLookupConstraint(new DistanceTileConstraint(0, 0, 3)));
-                        if(path != null && path.Count != 0) return new MovementMove(u, path[0].x, path[0].y);
-                    }
+                    return Minmax.GetBestMoveMin(u, pendingMoves);
                 }
             }
 
@@ -219,7 +206,8 @@ namespace Civilization0.ai
 
             if (Game.instance.tiles[3, 2].buildingOn == null || Game.instance.tiles[4, 2].buildingOn == null ||
                Game.instance.tiles[2, 3].buildingOn == null || Game.instance.tiles[2, 4].buildingOn == null)
-                return Task.forward;
+                //return Task.forward;
+                return Task.push;
 
 
             return Task.push;

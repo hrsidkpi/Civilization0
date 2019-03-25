@@ -44,6 +44,8 @@ namespace Civilization0
         public List<Button> buttons = new List<Button>();
         public List<Button> selectionButtons = new List<Button>();
 
+        public List<Panel> panels = new List<Panel>();
+
         public Button turnButton;
         public bool playerTurn = PLAYER_START;
 
@@ -91,9 +93,8 @@ namespace Civilization0
             IWorldGenerator generator = new DefaultWorldGenerator();
             tiles = generator.Generate(TILES_WIDTH, TILES_HEIGHT);
 
-            Town t = new Town(0, 0, true);
-            t.NewTurn();
-            new Town((TILES_WIDTH - 1) * Tile.TILE_WIDTH, (TILES_HEIGHT - 1) * Tile.TILE_HEIGHT, false);
+            new Town(0, 0, true, tiles).NewTurn();
+            new Town((TILES_WIDTH - 1) * Tile.TILE_WIDTH, (TILES_HEIGHT - 1) * Tile.TILE_HEIGHT, false, tiles);
             turnButton = new Button(new Rectangle(GAME_WIDTH - 300 - 80, GAME_HEIGHT - 80, 80, 80), PLAYER_START ? Assets.myTurn : Assets.enemyTurn);
             turnButton.Click += SwitchTurn;
 
@@ -202,6 +203,7 @@ namespace Civilization0
             rReleased = false;
         }
 
+        public void ForceDraw(GameTime t) { Draw(t); }
         protected override void Draw(GameTime gameTime)
         {
 
@@ -236,6 +238,10 @@ namespace Civilization0
                 {
                     b.Draw(spriteBatch);
                 }
+                foreach(Panel p in panels)
+                {
+                    p.Draw(spriteBatch);
+                }
 
                 spriteBatch.DrawString(Assets.font, "" + player.resources.food, new Vector2(70, GAME_HEIGHT - 80 + 60), Color.Black);
                 spriteBatch.Draw(Assets.food, new Rectangle(60, GAME_HEIGHT - 80 + 10, 50, 50), Color.White);
@@ -263,6 +269,7 @@ namespace Civilization0
             foreach (Button b in selectionButtons) b.Delete();
             selectionButtons.Clear();
 
+            Console.WriteLine("Player turn ended, player map control: " + Minmax.CalculateMapControl(tiles));
             DoComputerTurn();
         }
 
@@ -276,6 +283,8 @@ namespace Civilization0
 
             playerTurn = true;
             turnButton.texture = Assets.myTurn;
+
+            Console.WriteLine("Computer turn ended, player map control: " + Minmax.CalculateMapControl(tiles));
         }
 
         public void CheckWin()
@@ -300,6 +309,13 @@ namespace Civilization0
                 playerWon = true;
             }
 
+        }
+
+        public List<Unit> GetUnits()
+        {
+            List<Unit> res = new List<Unit>();
+            foreach (Tile t in tiles) foreach (Unit u in t.UnitsOn) res.Add(u);
+            return res;
         }
 
     }

@@ -13,8 +13,8 @@ namespace Civilization0.units.buildings
 	public class Town : Unit
 	{
 
-		public Town(int x, int y, bool player) : base(x, y, UnitType.town, player)
-		{
+		public Town(int x, int y, bool player, Tile[,] board) : base(x, y, UnitType.town, player, board)
+        {
 			
 		}
 

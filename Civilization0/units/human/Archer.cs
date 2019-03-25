@@ -1,4 +1,5 @@
 ﻿using Civilization0.moves;
+using Civilization0.tiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Civilization0.units.human
 {
     public class Archer : Unit
     {
-        public Archer(int x, int y, bool player) : base(x, y, UnitType.archer, player)
+        public Archer(int x, int y, bool player, Tile[,] board) : base(x, y, UnitType.archer, player, board)
         {
 
         }

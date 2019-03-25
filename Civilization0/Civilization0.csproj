@@ -78,6 +78,7 @@
     <Compile Include="ai\AIUtil.cs" />
     <Compile Include="ai\ComputerPlayer.cs" />
     <Compile Include="ai\LookupConstraint.cs" />
+    <Compile Include="ai\Minmax.cs" />
     <Compile Include="ai\PathFinder.cs" />
     <Compile Include="Assets.cs" />
     <Compile Include="Game.cs" />

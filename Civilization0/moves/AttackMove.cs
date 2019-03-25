@@ -19,11 +19,35 @@ namespace Civilization0.moves
             this.def = def;
         }
 
-		public override void Execute(bool playerCall)
+        public override int CostBoard(Tile[,] board)
+        {
+            Unit att1 = att;
+            Unit def1 = def;
+
+            if (board != Game.instance.tiles)
+            {
+                att1 = board[att.TileX, att.TileY].unitOn;
+                def1 = board[def.TileX, def.TileY].UnitsOn[0];
+            }
+
+            return Math.Abs(att1.px - def1.px) / Tile.TILE_WIDTH + Math.Abs(att1.py - def1.py) / Tile.TILE_HEIGHT;
+        } 
+
+		public override void Execute(bool playerCall, Tile[,] board)
 		{
-			att.Charge(def);
-            att.movesLeft = 0;
-            Console.WriteLine((playerCall ? "Human" : "Computer") + " player has attacked " + def + " with " + att);
+            Unit att1 = att;
+            Unit def1 = def;
+
+            if (board != Game.instance.tiles)
+            {
+                att1 = board[att.TileX, att.TileY].unitOn;
+                def1 = board[def.TileX, def.TileY].UnitsOn[0];
+            }
+
+            att1.Charge(def1);
+            att1.movesLeft = 0;
+            if(board == Game.instance.tiles)
+                Console.WriteLine((playerCall ? "Human" : "Computer") + " player has attacked " + def1 + " with " + att1);
 
         }
 

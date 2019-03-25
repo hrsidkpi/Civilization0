@@ -222,7 +222,7 @@ namespace Civilization0.units
                 case UnitType.catapult:
                     return 4;
                 case UnitType.spearman:
-                    return 9;
+                    return 8;
                 case UnitType.chariot:
                     return 4;
                 case UnitType.levy:
@@ -350,68 +350,68 @@ namespace Civilization0.units
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.GetSprite(this UnitType)");
         }
 
-        public static Unit Build(this UnitType t, int x, int y)
+        public static Unit Build(this UnitType t, int x, int y, Tile[,] board)
         {
             switch (t)
             {
                 case UnitType.town:
-                    return new Town(x, y, true);
+                    return new Town(x, y, true, board);
                 case UnitType.builder:
-                    return new Builder(x, y, true);
+                    return new Builder(x, y, true, board);
                 case UnitType.barracks:
-                    return new Barracks(x, y, true);
+                    return new Barracks(x, y, true, board);
                 case UnitType.swordman:
-                    return new Axeman(x, y, true);
+                    return new Axeman(x, y, true, board);
                 case UnitType.archer:
-                    return new Archer(x, y, true);
+                    return new Archer(x, y, true, board);
                 case UnitType.archeryRange:
-                    return new ArcheryRange(x, y, true);
+                    return new ArcheryRange(x, y, true, board);
                 case UnitType.stable:
-                    return new Stable(x, y, true);
+                    return new Stable(x, y, true, board);
             }
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.Build(this UnitType)");
         }
 
-        public static Unit BuildOnTile(this UnitType t, int xTile, int yTile, bool player = true)
+        public static Unit BuildOnTile(this UnitType t, int xTile, int yTile, Tile[,] board, bool player = true)
         {
             int x = xTile * Tile.TILE_WIDTH;
             int y = yTile * Tile.TILE_HEIGHT;
             switch (t)
             {
                 case UnitType.town:
-                    return new Town(x, y, player);
+                    return new Town(x, y, player, board);
                 case UnitType.builder:
-                    return new Builder(x, y, player);
+                    return new Builder(x, y, player, board);
                 case UnitType.barracks:
-                    return new Barracks(x, y, player);
+                    return new Barracks(x, y, player, board);
                 case UnitType.swordman:
-                    return new Swordman(x, y, player);
+                    return new Swordman(x, y, player, board);
                 case UnitType.spearman:
-                    return new Spearman(x, y, player);
+                    return new Spearman(x, y, player, board);
                 case UnitType.axeman:
-                    return new Axeman(x, y, player);
-				case UnitType.farm:
-					return new Farm(x, y, player);
+                    return new Axeman(x, y, player, board);
+                case UnitType.farm:
+					return new Farm(x, y, player, board);
                 case UnitType.mine:
-                    return new Mine(x, y, player);
+                    return new Mine(x, y, player, board);
                 case UnitType.lumberhouse:
-                    return new Lumberhouse(x, y, player);
+                    return new Lumberhouse(x, y, player, board);
                 case UnitType.archer:
-                    return new Archer(x, y, player);
+                    return new Archer(x, y, player, board);
                 case UnitType.archeryRange:
-                    return new ArcheryRange(x, y, player);
+                    return new ArcheryRange(x, y, player, board);
                 case UnitType.stable:
-                    return new Stable(x, y, player);
+                    return new Stable(x, y, player, board);
                 case UnitType.catapracht:
-                    return new Catapracht(x, y, player);
+                    return new Catapracht(x, y, player, board);
                 case UnitType.levy:
-                    return new Levy(x, y, player);
+                    return new Levy(x, y, player, board);
                 case UnitType.crossbowman:
-                    return new Crossbowman(x, y, player);
+                    return new Crossbowman(x, y, player, board);
                 case UnitType.cavelry:
-                    return new Cavelry(x, y, player);
+                    return new Cavelry(x, y, player, board);
                 case UnitType.chariot:
-                    return new Chariot(x, y, player);
+                    return new Chariot(x, y, player, board);
 
             }
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.Build(this UnitType)");

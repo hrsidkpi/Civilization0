@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Civilization0.moves;
+using Civilization0.tiles;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Civilization0.units.human
@@ -11,8 +12,8 @@ namespace Civilization0.units.human
 	public class Swordman : Unit
 	{
 
-		public Swordman(int x, int y, bool player) : base(x, y, UnitType.swordman, player)
-		{
+		public Swordman(int x, int y, bool player, Tile[,] board) : base(x, y, UnitType.swordman, player, board)
+        {
 			
 		}
 

@@ -11,8 +11,8 @@ namespace Civilization0.units.buildings
 	public class Barracks : Unit
 	{
 
-		public Barracks(int x, int y, bool player) : base(x, y, UnitType.barracks, player)
-		{
+		public Barracks(int x, int y, bool player, Tile[,] board) : base(x, y, UnitType.barracks, player, board)
+        {
 
 		}
 

@@ -75,5 +75,12 @@ namespace Civilization0.ai
             return res;
         }
 
+        public static List<Unit> UnitsFromBoard(Tile[,] board)
+        {
+            List<Unit> res = new List<Unit>();
+            foreach (Tile t in board) foreach (Unit u in t.UnitsOn) res.Add(u);
+            return res;
+        }
+
     }
 }

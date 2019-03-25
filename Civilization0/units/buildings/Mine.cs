@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Civilization0.moves;
+using Civilization0.tiles;
 using Civilization0.units;
 
 namespace Civilization0.units.buildings
 {
     public class Mine : Unit
     {
-        public Mine(int x, int y, bool player) : base(x, y, UnitType.mine, player)
+        public Mine(int x, int y, bool player, Tile[,] board) : base(x, y, UnitType.mine, player, board)
         {
 
         }

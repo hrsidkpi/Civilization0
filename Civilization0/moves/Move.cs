@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Civilization0.tiles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,14 @@ namespace Civilization0.moves
             this.cost = cost;
         }
 
-		public abstract void Execute(bool playerCall);
+        public abstract int CostBoard(Tile[,] board);
+
+        public virtual void Execute(bool playerCall)
+        {
+            Execute(playerCall, Game.instance.tiles);
+        }
+
+        public abstract void Execute(bool playerCall, Tile[,] tiles);
 
     }
 }
