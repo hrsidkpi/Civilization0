@@ -61,7 +61,7 @@ namespace Civilization0.units
             if (movesLeft == 0) return;
             if (!player) return;
 
-            GenerateMoves();
+            GenerateMoves(Game.instance.tiles);
             GenerateContextMenu();
 
             Button deselect = new Button(new Rectangle(Game.GAME_WIDTH - 200, Game.GAME_HEIGHT - 50, 50, 50), Assets.done);
@@ -80,9 +80,9 @@ namespace Civilization0.units
         private List<Button> buildButtons = new List<Button>();
 
 
-        public virtual void GenerateMoves()
+        public virtual void GenerateMoves(Tile[,] board)
         {
-            foreach (Move m in GetMoves())
+            foreach (Move m in GetMoves(board))
             {
                 if (m is MovementMove) GenerateMovementButton(m as MovementMove);
                 if (m is AttackMove) GenerateAttackButton(m as AttackMove);
@@ -152,28 +152,28 @@ namespace Civilization0.units
             }
         }
 
-        public void Charge(Unit unit)
+        public void Charge(Tile[,] board, Unit unit)
         {
             int RealDamage = type.GetDamage() - unit.type.GetArmor();
-            unit.Damage(RealDamage);
+            unit.Damage(board, RealDamage);
 
             int reflect = (int)(RealDamage * unit.type.GetReflect());
-            Damage(reflect);
+            Damage(board, reflect);
         }
 
-        public void Shoot(Unit unit)
+        public void Shoot(Tile[,] board, Unit unit)
         {
             int RealDamage = type.GetDamage() - unit.type.GetArmor();
-            unit.Damage(RealDamage);
+            unit.Damage(board, RealDamage);
         }
 
-        public void Damage(int amount)
+        public void Damage(Tile[,] board, int amount)
         {
             hp -= amount;
             if (hp <= 0)
             {
-                if (type.IsHuman()) Game.instance.tiles[px / Tile.TILE_WIDTH, py / Tile.TILE_HEIGHT].unitOn = null;
-                else Game.instance.tiles[px / Tile.TILE_WIDTH, py / Tile.TILE_HEIGHT].buildingOn = null;
+                if (type.IsHuman()) board[px / Tile.TILE_WIDTH, py / Tile.TILE_HEIGHT].unitOn = null;
+                else board[px / Tile.TILE_WIDTH, py / Tile.TILE_HEIGHT].buildingOn = null;
 
                 if (type == UnitType.town) Game.instance.CheckWin();
             }
@@ -191,7 +191,7 @@ namespace Civilization0.units
                     foreach (Button del in movementButtons) del.Delete();
                     foreach (Button del in buildButtons) del.Delete();
 
-                    foreach (Move m in GetMoves())
+                    foreach (Move m in GetMoves(Game.instance.tiles))
                     {
                         if (!(m is BuildMove)) continue;
                         BuildMove move = m as BuildMove;
@@ -201,7 +201,7 @@ namespace Civilization0.units
 
                         if (move.unit != t) continue;
 
-                        if (CanMove(move.cost) && move.unit.CanBeOn(Game.instance.tiles[move.x, move.y].type))
+                        if (CanMove(move.cost) && move.unit.CanBeOn(Game.instance.tiles, Game.instance.tiles[move.x, move.y].type))
                         {
                             Button place = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.blueHighlight, true);
                             place.RightClick += () =>
@@ -231,7 +231,7 @@ namespace Civilization0.units
             if (movesLeft == 0) canvas.Draw(Assets.done, drawLocation, Color.White);
         }
 
-        public abstract List<Move> GetMoves();
+        public abstract List<Move> GetMoves(in Tile[,] boarad);
         public abstract List<UnitType> GetBuildable();
 
         private bool CanMove(int amount)

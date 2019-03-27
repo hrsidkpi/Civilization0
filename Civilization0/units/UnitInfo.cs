@@ -28,7 +28,7 @@ namespace Civilization0.units
     public static class UnitTypeInfo
     {
 
-        public static List<ALocation> AdjecentLocationsFrom(this UnitType t, int x, int y)
+        public static List<ALocation> AdjecentLocationsFrom(this UnitType t, Tile[,] board, int x, int y)
         {
             List<ALocation> res = new List<ALocation>();
             for(int xx = x-t.GetRange(); xx <= x+t.GetRange(); xx++)
@@ -165,7 +165,7 @@ namespace Civilization0.units
             return !t.IsBuilding();
         }
 
-        public static bool CanBeOn(this UnitType t, TileType tile)
+        public static bool CanBeOn(this UnitType t, Tile[,] board, TileType tile)
         {
 
             if (t == UnitType.farm) return tile == TileType.grass;
@@ -231,11 +231,17 @@ namespace Civilization0.units
                     return 3;
                 case UnitType.ram:
                     return 2;
+                case UnitType.town:
+                    return 25;
                 default:
-                    return 10;
+                    return 4;
             }
         }
 
+        public static bool IsTraining(this UnitType t)
+        {
+            return t == UnitType.barracks || t == UnitType.archeryRange || t == UnitType.stable;
+        }
         public static int GetDamage(this UnitType t)
         {
             switch (t)

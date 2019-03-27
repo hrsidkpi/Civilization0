@@ -11,31 +11,31 @@ namespace Civilization0.units
     public static class BasicUnitMoves
     {
 
-        public static bool CanPlaceOn(this UnitType unit, int x, int y)
+        public static bool CanPlaceOn(this UnitType unit, Tile[,] board, int x, int y)
         {
-            Tile t = Game.instance.tiles[x, y];
-            if (!unit.CanBeOn(t.type)) return false;
+            Tile t = board[x, y];
+            if (!unit.CanBeOn(board, t.type)) return false;
             if ((unit.IsBuilding() && t.buildingOn != null) || (unit.IsHuman() && t.unitOn != null)) return false;
             return true;
         }
 
-        public static bool CanPlaceOn(this UnitType unit, int x, int y, bool player)
+        public static bool CanPlaceOn(this UnitType unit, Tile[,] board, int x, int y, bool player)
         {
-            Tile t = Game.instance.tiles[x, y];
-            if (!unit.CanBeOn(t.type)) return false;
+            Tile t = board[x, y];
+            if (!unit.CanBeOn(board, t.type)) return false;
             if ((unit.IsBuilding() && t.buildingOn != null) || (unit.IsHuman() && t.unitOn != null)) return false;
             if (t.buildingOn != null && t.buildingOn.player != player) return false;
             return true;
         }
 
-        public static bool CanPlaceOn(this Unit unit, int x, int y)
+        public static bool CanPlaceOn(this Unit unit,Tile[,] board, int x, int y)
         {
-            return CanPlaceOn(unit.type, x, y, unit.player);
+            return CanPlaceOn(unit.type, board, x, y, unit.player);
         }
 
 
 
-        public static List<Move> BuildAroundMove(this Unit unit, UnitType type, int distance)
+        public static List<Move> BuildAroundMove(this Unit unit, Tile[,] board, UnitType type, int distance)
         {
             List<Move> moves = new List<Move>();
 
@@ -49,9 +49,8 @@ namespace Civilization0.units
             {
                 for (int y = yStart; y <= yEnd; y++)
                 {
-                    Tile t = Game.instance.tiles[x, y];
 
-                    if (type.CanPlaceOn(x, y))
+                    if (type.CanPlaceOn(board, x, y))
                         moves.Add(new BuildMove(unit, x, y, type));
 
                 }
@@ -60,7 +59,7 @@ namespace Civilization0.units
             return moves;
         }
 
-        public static List<Move> BuildAroundMoveAll(this Unit unit, int distance)
+        public static List<Move> BuildAroundMoveAll(this Unit unit, Tile[,] board, int distance)
         {
             List<Move> moves = new List<Move>();
 
@@ -74,10 +73,9 @@ namespace Civilization0.units
             {
                 for (int y = yStart; y <= yEnd; y++)
                 {
-                    Tile t = Game.instance.tiles[x, y];
 
                     foreach (UnitType type in unit.GetBuildable())
-                        if (type.CanPlaceOn(x, y))
+                        if (type.CanPlaceOn(board, x, y))
                             moves.Add(new BuildMove(unit, x, y, type));
 
                 }
@@ -85,7 +83,7 @@ namespace Civilization0.units
 
             return moves;
         }
-        public static List<Move> MoveAroundMove(this Unit unit, int distance)
+        public static List<Move> MoveAroundMove(this Unit unit, in Tile[,] board, int distance)
         {
             List<Move> moves = new List<Move>();
 
@@ -100,7 +98,7 @@ namespace Civilization0.units
                 {
                     if (x == unit.px / Tile.TILE_WIDTH && y == unit.py / Tile.TILE_HEIGHT) continue;
                     Tile t = Game.instance.tiles[x, y];
-                    if (unit.CanPlaceOn(x, y))
+                    if (unit.CanPlaceOn(board, x, y))
                     {
                         moves.Add(new MovementMove(unit, x, y));
                     }
@@ -109,12 +107,12 @@ namespace Civilization0.units
             return moves;
         }
 
-        public static List<Move> DefaultMoveAroundMove(this Unit unit)
+        public static List<Move> DefaultMoveAroundMove(this Unit unit, in Tile[,] board)
         {
-            return MoveAroundMove(unit, unit.type.GetMaxMoves());
+            return MoveAroundMove(unit, board, unit.type.GetMaxMoves());
         }
 
-        public static List<Move> AttackAroundMove(this Unit unit, int distance)
+        public static List<Move> AttackAroundMove(this Unit unit, in Tile[,] board, int distance)
         {
             List<Move> moves = new List<Move>();
 
@@ -128,7 +126,7 @@ namespace Civilization0.units
                 for (int y = yStart; y <= yEnd; y++)
                 {
                     if (x == unit.px / Tile.TILE_WIDTH && y == unit.py / Tile.TILE_HEIGHT) continue;
-                    Tile t = Game.instance.tiles[x, y];
+                    Tile t = board[x, y];
                     if (t.UnitsOn.Count == 0) continue;
                     Unit target = t.UnitsOn[0];
                     if (target.player == unit.player) continue;
@@ -138,12 +136,12 @@ namespace Civilization0.units
             return moves;
         }
 
-        public static List<Move> DefaultAttackAroundMove(this Unit unit)
+        public static List<Move> DefaultAttackAroundMove(this Unit unit, Tile[,] board)
         {
-            return AttackAroundMove(unit, 1);
+            return unit.AttackAroundMove(board, 1);
         }
 
-        public static List<Move> ShootAroundMove(this Unit unit, int distance)
+        public static List<Move> ShootAroundMove(this Unit unit, Tile[,] board, int distance)
         {
             List<Move> moves = new List<Move>();
 
@@ -157,7 +155,7 @@ namespace Civilization0.units
                 for (int y = yStart; y <= yEnd; y++)
                 {
                     if (x == unit.TileX && y == unit.TileY) continue;
-                    Tile t = Game.instance.tiles[x, y];
+                    Tile t = board[x, y];
                     if (t.unitOn != null)
                     {
                         Unit target = t.unitOn;
@@ -175,9 +173,9 @@ namespace Civilization0.units
             return moves;
         }
 
-        public static List<Move> DefaultShootAroundMove(this Unit unit)
+        public static List<Move> DefaultShootAroundMove(this Unit unit, Tile[,] board)
         {
-            return ShootAroundMove(unit, unit.type.GetRange());
+            return unit.ShootAroundMove(board, unit.type.GetRange());
         }
 
     }

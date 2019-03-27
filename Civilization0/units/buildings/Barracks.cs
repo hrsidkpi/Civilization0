@@ -18,12 +18,12 @@ namespace Civilization0.units.buildings
 
 		public override List<UnitType> GetBuildable()
 		{
-			return new List<UnitType>() { UnitType.swordman, UnitType.spearman, UnitType.axeman};
+			return new List<UnitType>() { UnitType.swordman, UnitType.spearman, UnitType.axeman}.Shuffle();
 		}
 
-		public override List<Move> GetMoves()
+		public override List<Move> GetMoves(in Tile[,] board)
 		{
-            return this.BuildAroundMoveAll(1);
+            return this.BuildAroundMoveAll(Game.instance.tiles, 1);
         }
 
         public override void Initialize()

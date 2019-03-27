@@ -74,7 +74,23 @@ namespace Civilization0.ai
     }
     #endregion
 
-    #region 
+    #region Tile Sub Constraints 
+
+    public class TileTypeConstraint : ISubTileConstraint
+    {
+        public TileType type;
+
+        public TileTypeConstraint(TileType type)
+        {
+            this.type = type;
+        }
+
+        public bool Check(Tile t)
+        {
+            return t.type == type;
+        }
+    }
+
     public class DistanceTileConstraint : ISubTileConstraint
     {
 

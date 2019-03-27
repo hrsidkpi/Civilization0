@@ -17,40 +17,49 @@ namespace Civilization0.ai
         public const bool DEBUG_CONTROLS = false;
 
 
+
         public static Move GetBestMoveMin(Unit u, List<Move> pending)
+        {
+            return GetBestMoveMin(u, Game.instance.tiles, pending, 3).move;
+        }
+
+        public static (Move move, int control) GetBestMoveMin(Unit u, Tile[,] board, List<Move> pending, int level)
         {
             Tile[,] clone;
 
             int minControl = 1000;
             Move best = null;
-            foreach (Move m in u.GetMoves())
+
+            foreach (Move m in u.GetMoves(board))
             {
-
-                clone = CopyBoard(Game.instance.tiles);
+                clone = CopyBoard(board);
                 foreach (Move p in pending) p.Execute(false, clone);
+                Unit cloneUnit = clone[u.TileX, u.TileY].UnitsOn[0];
 
-                if (u.movesLeft < m.CostBoard(clone)) continue;
+                if (cloneUnit.type.GetMaxMoves() < m.CostBoard(clone)) continue;
                 m.Execute(false, clone);
 
-                int control = CalculateMapControl(clone);
+                int control = 0;
+                if (level == 1) control = CalculateMapControl(clone);
+                else control = GetBestMoveMin(cloneUnit, clone, new List<Move>(), level - 1).control;
                 if (control < minControl)
                 {
                     minControl = control;
                     best = m;
                 }
-                else if(control == minControl)
+                else if (control == minControl)
                 {
-                    if(m is AttackMove)
+                    if (m is AttackMove)
                     {
                         minControl = control;
                         best = m;
                     }
-                    else if(best is MovementMove && m is MovementMove)
+                    else if (best is MovementMove && m is MovementMove)
                     {
                         MovementMove bb = best as MovementMove;
                         MovementMove mm = m as MovementMove;
 
-                        if(mm.x + mm.y < bb.x + bb.y)
+                        if (mm.x + mm.y < bb.x + bb.y)
                         {
                             minControl = control;
                             best = m;
@@ -58,28 +67,7 @@ namespace Civilization0.ai
                     }
                 }
             }
-            return best;
-        }
-
-        public static Move GetBestMoveMax(Unit u)
-        {
-            Tile[,] clone;
-
-            int maxControl = -1000;
-            Move best = null;
-            foreach (Move m in u.GetMoves())
-            {
-                clone = CopyBoard(Game.instance.tiles);
-                m.Execute(false, clone);
-
-                int control = CalculateMapControl(clone);
-                if (control > maxControl)
-                {
-                    maxControl = control;
-                    best = m;
-                }
-            }
-            return best;
+            return (best, minControl);
         }
 
         public static Tile[,] CopyBoard(Tile[,] board)

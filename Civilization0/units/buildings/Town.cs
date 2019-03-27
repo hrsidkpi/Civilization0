@@ -23,9 +23,9 @@ namespace Civilization0.units.buildings
 			return new List<UnitType>() { UnitType.builder };
 		}
 
-		public override List<Move> GetMoves()
+		public override List<Move> GetMoves(in Tile[,] board)
 		{
-            return this.BuildAroundMove(UnitType.builder, 1);
+            return this.BuildAroundMove(board, UnitType.builder, 1);
         }
 
 		public override void Initialize()

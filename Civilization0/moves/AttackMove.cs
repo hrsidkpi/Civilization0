@@ -38,13 +38,13 @@ namespace Civilization0.moves
             Unit att1 = att;
             Unit def1 = def;
 
-            if (board != Game.instance.tiles)
+            if (board[att.TileX, att.TileY] != Game.instance.tiles[att.TileX, att.TileY] || board[def.TileX, def.TileY] != Game.instance.tiles[def.TileX, def.TileY])
             {
                 att1 = board[att.TileX, att.TileY].unitOn;
                 def1 = board[def.TileX, def.TileY].UnitsOn[0];
             }
 
-            att1.Charge(def1);
+            att1.Charge(board, def1);
             att1.movesLeft = 0;
             if(board == Game.instance.tiles)
                 Console.WriteLine((playerCall ? "Human" : "Computer") + " player has attacked " + def1 + " with " + att1);

@@ -21,7 +21,6 @@ namespace Civilization0.ai
         }
 
         public int x, y;
-        public int f, g, h;
 
         public ALocation parent;
 
@@ -42,79 +41,11 @@ namespace Civilization0.ai
     public static class PathFinder
     {
 
-        public const int MAX_PATH_LENGTH = 25;
+        public const int MAX_PATH_LENGTH = 221;
 
-        public static int FindHScore(int x, int y, int xTarget, int yTarget)
-        {
-            return Math.Abs(xTarget - x) + Math.Abs(yTarget - y);
-        }
-
-
-        public static Dictionary<UnitType, int> Count(LookupConstraint constraint)
-        {
-            Dictionary<UnitType, int> res = new Dictionary<UnitType, int>();
-
-            foreach (Tile t in Game.instance.tiles)
-                foreach (Unit u in t.UnitsOn)
-                {
-                    if (constraint.Check(u))
-                    {
-                        if (!res.ContainsKey(u.type)) res[u.type] = 0;
-                        res[u.type]++;
-                    }
-                }
-            return res;
-
-        }
-
-        public static Dictionary<UnitType, int> CountAround(Unit counter, int range, bool player)
-        {
-
-            Dictionary<UnitType, int> res = new Dictionary<UnitType, int>();
-
-            ALocation start = new ALocation(counter.TileX, counter.TileY);
-
-            Stack<ALocation> current = new Stack<ALocation>();
-            Stack<ALocation> next = new Stack<ALocation>();
-
-            current.Push(start);
-            for (int i = 0; i < range; i++)
-            {
-                foreach (ALocation test in current)
-                {
-
-                    if (test.Tile.unitOn != null && test.Tile.unitOn.player == player)
-                    {
-                        if (!res.ContainsKey(test.Tile.unitOn.type)) res[test.Tile.unitOn.type] = 0;
-                        res[test.Tile.unitOn.type]++;
-                    }
-
-                    if (test.Tile.buildingOn != null && test.Tile.buildingOn.player == player)
-                    {
-                        if (!res.ContainsKey(test.Tile.buildingOn.type)) res[test.Tile.buildingOn.type] = 0;
-                        res[test.Tile.buildingOn.type]++;
-                    }
-
-                    foreach (ALocation l in GetAdjacentSquares(counter.type, test.x, test.y))
-                    {
-                        if (!l.Tile.flag)
-                        {
-                            l.parent = test;
-                            next.Push(l);
-                            l.Tile.flag = true;
-                        }
-                    }
-                }
-                current = next;
-                next = new Stack<ALocation>();
-            }
-
-            foreach (Tile t in Game.instance.tiles) t.flag = false;
-
-            return res;
-        }
-
-        public static List<ALocation> PathToNearestTile(UnitType traveler, int xStart, int yStart, TileLookupConstraint constraint)
+        /**
+         */
+        public static List<ALocation> PathToNearestTile(UnitType traveler,Tile[,] board, int xStart, int yStart, TileLookupConstraint constraint)
         {
             if (traveler == UnitType.swordman)
                 traveler = UnitType.swordman;
@@ -144,10 +75,10 @@ namespace Civilization0.ai
                         return res;
                     }
 
-                    if (!traveler.CanPlaceOn(test.x, test.y) && test != start)
+                    if (!traveler.CanPlaceOn(Game.instance.tiles, test.x, test.y) && test != start)
                         continue;
 
-                    foreach (ALocation l in GetAdjacentSquares(traveler, test.x, test.y))
+                    foreach (ALocation l in GetAdjacentSquares(traveler, board, test.x, test.y))
                         if (!Game.instance.tiles[l.x, l.y].flag)
                         {
                             l.parent = test;
@@ -163,100 +94,19 @@ namespace Civilization0.ai
             return null;
         }
 
-        public static List<ALocation> PathToNearestTile(UnitType traveler, int xStart, int yStart, TileType tile)
+        public static List<ALocation> PathToNearestTile(UnitType traveler,Tile[,] board, int xStart, int yStart, TileType tile)
         {
-            ALocation start = new ALocation(xStart, yStart);
-
-            Stack<ALocation> current = new Stack<ALocation>();
-            Stack<ALocation> next = new Stack<ALocation>();
-
-            current.Push(start);
-            for (int i = 0; i < MAX_PATH_LENGTH; i++)
-            {
-                foreach (ALocation test in current)
-                {
-                    if (Game.instance.tiles[test.x, test.y].type == tile && test.Tile.buildingOn == null)
-                    {
-                        Console.WriteLine("Found " + tile + " in " + test.x + ", " + test.y);
-                        List<ALocation> res = new List<ALocation>();
-                        ALocation curr = test;
-                        while (curr != null)
-                        {
-                            res.Add(curr);
-                            curr = curr.parent;
-                        }
-                        foreach (Tile t in Game.instance.tiles) t.flag = false;
-                        res.Reverse();
-                        res.RemoveAt(0);
-                        return res;
-                    }
-
-                    if (!traveler.CanPlaceOn(test.x, test.y) && test != start)
-                        continue;
-
-                    foreach (ALocation l in GetAdjacentSquares(traveler, test.x, test.y))
-                        if (!Game.instance.tiles[l.x, l.y].flag)
-                        {
-                            l.parent = test;
-                            next.Push(l);
-                            Game.instance.tiles[l.x, l.y].flag = true;
-                        }
-                }
-                current = next;
-                next = new Stack<ALocation>();
-            }
-            foreach (Tile t in Game.instance.tiles) t.flag = false;
-
-            return null;
+            return PathToNearestTile(traveler, board, xStart, yStart, new TileLookupConstraint(new TileTypeConstraint(tile)));
         }
 
-        public static List<ALocation> PathToCoordinates(UnitType traveler, int xStart, int yStart, int xGoal, int yGoal)
+        public static List<ALocation> PathToCoordinates(UnitType traveler, Tile[,] board, int xStart, int yStart, int xGoal, int yGoal)
         {
-            ALocation start = new ALocation(xStart, yStart);
-
-            Stack<ALocation> current = new Stack<ALocation>();
-            Stack<ALocation> next = new Stack<ALocation>();
-
-            current.Push(start);
-            for (int i = 0; i < MAX_PATH_LENGTH; i++)
-            {
-                foreach (ALocation test in current)
-                {
-                    if (test.x == xGoal && test.y == yGoal)
-                    {
-                        List<ALocation> res = new List<ALocation>();
-                        ALocation curr = test;
-                        while (curr != null)
-                        {
-                            res.Add(curr);
-                            curr = curr.parent;
-                        }
-                        foreach (Tile t in Game.instance.tiles) t.flag = false;
-                        res.Reverse();
-                        res.RemoveAt(0);
-                        return res;
-                    }
-
-                    if (!traveler.CanPlaceOn(test.x, test.y) && test != start)
-                        continue;
-
-                    foreach (ALocation l in GetAdjacentSquares(traveler, test.x, test.y))
-                        if (!Game.instance.tiles[l.x, l.y].flag)
-                        {
-                            l.parent = test;
-                            next.Push(l);
-                            Game.instance.tiles[l.x, l.y].flag = true;
-                        }
-                }
-                current = next;
-                next = new Stack<ALocation>();
-            }
-            foreach (Tile t in Game.instance.tiles) t.flag = false;
-
-            return null;
+            return PathToNearestTile(traveler, board, xStart, yStart, new TileLookupConstraint(new DistanceTileConstraint(xGoal, yGoal, 1)));
         }
 
-        public static List<ALocation> PathToNearestUnit(UnitType traveler, int xStart, int yStart, LookupConstraint lookup)
+
+
+        public static List<ALocation> PathToNearestUnit(UnitType traveler,Tile[,] board, int xStart, int yStart, LookupConstraint lookup)
         {
             ALocation start = new ALocation(xStart, yStart);
 
@@ -278,59 +128,60 @@ namespace Civilization0.ai
                                 res.Add(curr);
                                 curr = curr.parent;
                             }
-                            foreach (Tile t in Game.instance.tiles) t.flag = false;
+                            foreach (Tile t in board) t.flag = false;
                             res.Reverse();
                             res.RemoveAt(0);
                             return res;
                         }
 
-                    if (!traveler.CanPlaceOn(test.x, test.y) && test != start)
+                    if (!traveler.CanPlaceOn(board, test.x, test.y) && test != start)
                         continue;
 
-                    foreach (ALocation l in GetAdjacentSquares(traveler, test.x, test.y))
-                        if (!Game.instance.tiles[l.x, l.y].flag)
+                    foreach (ALocation l in GetAdjacentSquares(traveler, board, test.x, test.y))
+                        if (!board[l.x, l.y].flag)
                         {
                             l.parent = test;
                             next.Push(l);
-                            Game.instance.tiles[l.x, l.y].flag = true;
+                            board[l.x, l.y].flag = true;
                         }
                 }
                 current = next;
                 next = new Stack<ALocation>();
             }
-            foreach (Tile t in Game.instance.tiles) t.flag = false;
+            foreach (Tile t in board) t.flag = false;
 
             return null;
         }
-
-
-        public static List<ALocation> PathToNearestUnit(UnitType traveler, int xStart, int yStart, bool player)
+                                                                          
+        public static List<ALocation> PathToNearestUnit(UnitType traveler,Tile[,] board, int xStart, int yStart, bool player)
         {
-            return PathToNearestUnit(traveler, xStart, yStart, new LookupConstraint(new PlayerConstraint(player)));
+            return PathToNearestUnit(traveler,board, xStart, yStart, new LookupConstraint(new PlayerConstraint(player)));
+        }
+                                                                          
+        public static List<ALocation> PathToNearestUnit(UnitType traveler,Tile[,] board, int xStart, int yStart, UnitType unit, bool player)
+        {
+            return PathToNearestUnit(traveler, board,xStart, yStart, new LookupConstraint(new PlayerConstraint(player), new UnitTypeConstraint(unit)));
+        }
+                                                                          
+        public static List<ALocation> PathToNearestUnit(UnitType traveler,Tile[,] board, int xStart, int yStart, UnitType search)
+        {
+            return PathToNearestUnit(traveler,board, xStart, yStart, new LookupConstraint(new UnitTypeConstraint(search)));
         }
 
-        public static List<ALocation> PathToNearestUnit(UnitType traveler, int xStart, int yStart, UnitType unit, bool player)
-        {
-            return PathToNearestUnit(traveler, xStart, yStart, new LookupConstraint(new PlayerConstraint(player), new UnitTypeConstraint(unit)));
-        }
 
-        public static List<ALocation> PathToNearestUnit(UnitType traveler, int xStart, int yStart, UnitType search)
-        {
-            return PathToNearestUnit(traveler, xStart, yStart, new LookupConstraint(new UnitTypeConstraint(search)));
-        }
 
-        public static List<ALocation> GetWalkableAdjacentSquares(UnitType traveler, int x, int y)
+        public static List<ALocation> GetWalkableAdjacentSquares(UnitType traveler, Tile[,] board, int x, int y)
         {
-            List<ALocation> proposedLocations = traveler.AdjecentLocationsFrom(x, y);
+            List<ALocation> proposedLocations = traveler.AdjecentLocationsFrom(board, x, y);
 
             return proposedLocations.Where(
                 l => l.x < Game.TILES_WIDTH && l.y < Game.TILES_HEIGHT && l.x >= 0 && l.y >= 0 && Game.instance.tiles[l.x, l.y].type == tiles.TileType.grass).ToList();
         }
 
-        public static List<ALocation> GetAdjacentSquares(UnitType traveler, int x, int y)
+        public static List<ALocation> GetAdjacentSquares(UnitType traveler, Tile[,] board, int x, int y)
         {
 
-            List<ALocation> proposedLocations = traveler.AdjecentLocationsFrom(x, y);
+            List<ALocation> proposedLocations = traveler.AdjecentLocationsFrom(board, x, y);
             return proposedLocations.Where(
                 l => l.x < Game.TILES_WIDTH && l.y < Game.TILES_HEIGHT && l.x >= 0 && l.y >= 0).ToList();
         }

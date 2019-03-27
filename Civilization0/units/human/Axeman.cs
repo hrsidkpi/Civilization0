@@ -21,9 +21,9 @@ namespace Civilization0.units.human
 			return new List<UnitType>();
 		}
 
-		public override List<Move> GetMoves()
-		{
-            return this.DefaultMoveAroundMove().Union(this.DefaultAttackAroundMove()).ToList();
+        public override List<Move> GetMoves(in Tile[,] board)
+        {
+            return this.DefaultMoveAroundMove(board).Union(this.DefaultAttackAroundMove(board)).ToList();
         }
 
         public override void Initialize()

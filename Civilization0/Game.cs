@@ -278,6 +278,11 @@ namespace Civilization0
             List<Move> moves = ComputerPlayer.BestMoves();
             foreach (Move m in moves)
             {
+                if(m is MovementMove)
+                {
+                    MovementMove mm = m as MovementMove;
+                    if (tiles[mm.x, mm.y].unitOn != null) continue;
+                }
                 m.Execute(false);
             }
 

@@ -18,12 +18,12 @@ namespace Civilization0.units.buildings
 
         public override List<UnitType> GetBuildable()
         {
-            return new List<UnitType>() { UnitType.catapracht, UnitType.chariot, UnitType.cavelry  };
+            return new List<UnitType>() { UnitType.catapracht, UnitType.chariot, UnitType.cavelry  }.Shuffle();
         }
 
-        public override List<Move> GetMoves()
+        public override List<Move> GetMoves(in Tile[,] board)
         {
-            return this.BuildAroundMoveAll(1);
+            return this.BuildAroundMoveAll(board, 1);
         }
 
         public override void Initialize()

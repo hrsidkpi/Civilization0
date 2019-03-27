@@ -19,7 +19,7 @@ namespace Civilization0.units.buildings
 			return new List<UnitType>();
 		}
 
-		public override List<Move> GetMoves()
+		public override List<Move> GetMoves(in Tile[,] board)
 		{
 			return new List<Move>();
 		}

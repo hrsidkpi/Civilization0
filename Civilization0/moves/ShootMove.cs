@@ -44,7 +44,7 @@ namespace Civilization0.moves
                 def1 = board[def.TileX, def.TileY].unitOn;
             }
 
-            att1.Shoot(def1);
+            att1.Shoot(board, def1);
             Console.WriteLine((playerCall ? "Human" : "Computer") + " player has shot " + def1 + " with " + att1);
         }
 

@@ -82,5 +82,70 @@ namespace Civilization0.ai
             return res;
         }
 
+
+        public static Dictionary<UnitType, int> Count(Tile[,] board, LookupConstraint constraint)
+        {
+            Dictionary<UnitType, int> res = new Dictionary<UnitType, int>();
+
+            foreach (Tile t in board)
+                foreach (Unit u in t.UnitsOn)
+                {
+                    if (constraint.Check(u))
+                    {
+                        if (!res.ContainsKey(u.type)) res[u.type] = 0;
+                        res[u.type]++;
+                    }
+                }
+            return res;
+
+        }
+
+        public static Dictionary<UnitType, int> CountAround(Unit counter, Tile[,] board, int range, bool player)
+        {
+
+            Dictionary<UnitType, int> res = new Dictionary<UnitType, int>();
+
+            ALocation start = new ALocation(counter.TileX, counter.TileY);
+
+            Stack<ALocation> current = new Stack<ALocation>();
+            Stack<ALocation> next = new Stack<ALocation>();
+
+            current.Push(start);
+            for (int i = 0; i < range; i++)
+            {
+                foreach (ALocation test in current)
+                {
+
+                    if (test.Tile.unitOn != null && test.Tile.unitOn.player == player)
+                    {
+                        if (!res.ContainsKey(test.Tile.unitOn.type)) res[test.Tile.unitOn.type] = 0;
+                        res[test.Tile.unitOn.type]++;
+                    }
+
+                    if (test.Tile.buildingOn != null && test.Tile.buildingOn.player == player)
+                    {
+                        if (!res.ContainsKey(test.Tile.buildingOn.type)) res[test.Tile.buildingOn.type] = 0;
+                        res[test.Tile.buildingOn.type]++;
+                    }
+
+                    foreach (ALocation l in PathFinder.GetAdjacentSquares(counter.type, board, test.x, test.y))
+                    {
+                        if (!l.Tile.flag)
+                        {
+                            l.parent = test;
+                            next.Push(l);
+                            l.Tile.flag = true;
+                        }
+                    }
+                }
+                current = next;
+                next = new Stack<ALocation>();
+            }
+
+            foreach (Tile t in Game.instance.tiles) t.flag = false;
+
+            return res;
+        }
+
     }
 }
