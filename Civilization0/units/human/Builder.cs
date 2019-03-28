@@ -22,7 +22,7 @@ namespace Civilization0.units.human
                 UnitType.farm, UnitType.mine, UnitType.lumberhouse };
 		}
 
-        public override List<Move> GetMoves(in Tile[,] board)
+        public override List<Move> GetMoves(Tile[,] board)
         {
             List<Move> moves = this.MoveAroundMove(board, 1);
             foreach (UnitType t in GetBuildable())

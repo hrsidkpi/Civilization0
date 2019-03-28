@@ -145,7 +145,10 @@ namespace Civilization0
         protected override void Update(GameTime gameTime)
         {
             //If the game is over there is no need to get input.
-            if (gameOver) return;
+            if (gameOver)
+            {
+                return;
+            }
 
             //Escape press exits the game
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -208,8 +211,10 @@ namespace Civilization0
         /// <param name="mousePos">The position of the mouse on the screen.</param>
         private void MouseDown(Point mousePos)
         {
+            //Check that the button has been released (so only the first click counts).
             if (!lReleased) return;
 
+            //Check click on buttons
             for (int i = 0; i < buttons.Count; i++)
             {
                 Button b = buttons[i];
@@ -219,6 +224,7 @@ namespace Civilization0
                 }
             }
 
+            //Check click on units (selecting unit)
             foreach (Tile t in tiles)
             {
                 if (t.GetHitbox().Contains(mousePos))
@@ -228,14 +234,21 @@ namespace Civilization0
                 }
             }
 
-
+            //Set released to false, so that no new events can be fired until the button is released.
             lReleased = false;
         }
 
+
+        /// <summary>
+        /// Event called the first time the right mouse button is pressed. Handles selecting moves.
+        /// </summary>
+        /// <param name="mousePos">The position of the mouse on the screen.</param>
         private void MouseRightDown(Point mousePos)
         {
+            //Check that the button has been released (so only the first click counts).
             if (!rReleased) return;
 
+            //Check click on buttons
             for (int i = 0; i < buttons.Count; i++)
             {
                 Button b = buttons[i];
@@ -245,6 +258,7 @@ namespace Civilization0
                 }
             }
 
+            //Check click on units (selecting unit)
             foreach (Tile t in tiles)
             {
                 if (t.GetHitbox().Contains(mousePos))
@@ -254,31 +268,44 @@ namespace Civilization0
                 }
             }
 
-
+            //Set released to false, so that no new events can be fired until the button is released.
             rReleased = false;
         }
 
+
+        //Force a redraw of the screen (instead of 60 times per second).
         public void ForceDraw(GameTime t) { Draw(t); }
+
+
+        /// <summary>
+        /// Draw the game. Called by the framework 60 times per second.
+        /// </summary>
+        /// <param name="gameTime">The amount of time since the beggining of the game</param>
         protected override void Draw(GameTime gameTime)
         {
 
+            //Clear the previous frame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            //Insruct the framework to begin drawing
             spriteBatch.Begin();
 
+            //Used for scrolling- the corners of the board that are inside the current view.
             int xTileStart = Math.Max(0, -xScroll / Tile.TILE_WIDTH - 1);
             int yTileStart = Math.Max(0, -yScroll / Tile.TILE_HEIGHT - 1);
             int xTileEnd = Math.Min(TILES_WIDTH, xTileStart + GAME_WIDTH / Tile.TILE_WIDTH + 1);
             int yTileEnd = Math.Min(TILES_HEIGHT, yTileStart + GAME_HEIGHT / Tile.TILE_HEIGHT + 2);
 
-
+            //Game over screen
             if (gameOver)
             {
                 Texture2D t = playerWon ? Assets.win : Assets.lose;
                 spriteBatch.Draw(t, new Rectangle(170, 150, 500, 300), Color.White);
             }
+
             else
             {
+                //Draw the tiles. Tile.Draw also draws the units on the tile.
                 for (int x = xTileStart; x < xTileEnd; x++)
                 {
                     for (int y = yTileStart; y < yTileEnd; y++)
@@ -287,8 +314,11 @@ namespace Civilization0
                     }
                 }
 
+                //Draw the menu
                 spriteBatch.Draw(Assets.menu, new Rectangle(GAME_WIDTH - 300, 0, 300, GAME_HEIGHT), Color.White);
                 spriteBatch.Draw(Assets.menu, new Rectangle(0, GAME_HEIGHT - 80, GAME_WIDTH - 300, 80), Color.White);
+
+                //Draw the buttons and panels
                 foreach (Button b in buttons)
                 {
                     b.Draw(spriteBatch);
@@ -298,6 +328,7 @@ namespace Civilization0
                     p.Draw(spriteBatch);
                 }
 
+                //Draw the resources of the player
                 spriteBatch.DrawString(Assets.font, "" + player.resources.food, new Vector2(70, GAME_HEIGHT - 80 + 60), Color.Black);
                 spriteBatch.Draw(Assets.food, new Rectangle(60, GAME_HEIGHT - 80 + 10, 50, 50), Color.White);
                 spriteBatch.DrawString(Assets.font, "" + player.resources.wood, new Vector2(140, GAME_HEIGHT - 80 + 60), Color.Black);
@@ -305,39 +336,54 @@ namespace Civilization0
                 spriteBatch.DrawString(Assets.font, "" + player.resources.iron, new Vector2(210, GAME_HEIGHT - 80 + 60), Color.Black);
                 spriteBatch.Draw(Assets.iron, new Rectangle(200, GAME_HEIGHT - 80 + 10, 50, 50), Color.White);
             }
+            //Finish drawing
             spriteBatch.End();
 
+            //Call the framwork's draw method.
             base.Draw(gameTime);
         }
 
+        /// <summary>
+        /// Called when the player click the "end turn" button. Switches the turn to the computer player.
+        /// </summary>
         public void SwitchTurn()
         {
             playerTurn = false;
             turnButton.texture = Assets.enemyTurn;
 
+            //Reset the turns left per turn variables.
             foreach (Tile t in tiles)
             {
                 if (t.unitOn != null) t.unitOn.NewTurn();
                 if (t.buildingOn != null) t.buildingOn.NewTurn();
             }
 
+            //Delete all move selection buttons.
             foreach (Button b in selectionButtons) b.Delete();
             selectionButtons.Clear();
+            
 
             Console.WriteLine("Player turn ended, player map control: " + Minmax.CalculateMapControl(tiles));
             DoComputerTurn();
         }
 
+        //Find the best move to do and execute it on the board
         public void DoComputerTurn()
         {
+            //Find the list of the best moves to do (1 per unit).
             List<Move> moves = ComputerPlayer.BestMoves();
+            
+
             foreach (Move m in moves)
             {
+                //Ignore duplicate movement moves
                 if(m is MovementMove)
                 {
                     MovementMove mm = m as MovementMove;
                     if (tiles[mm.x, mm.y].unitOn != null) continue;
                 }
+
+                //Execute every move
                 m.Execute(false);
             }
 
@@ -347,6 +393,9 @@ namespace Civilization0
             Console.WriteLine("Computer turn ended, player map control: " + Minmax.CalculateMapControl(tiles));
         }
 
+        /// <summary>
+        /// Check if the game has ended, and if it did who won.
+        /// </summary>
         public void CheckWin()
         {
             bool playerLost = true;
@@ -371,6 +420,10 @@ namespace Civilization0
 
         }
 
+        /// <summary>
+        /// Utility method, gets the units on the board.
+        /// </summary>
+        /// <returns>A list of all units on the board</returns>
         public List<Unit> GetUnits()
         {
             List<Unit> res = new List<Unit>();

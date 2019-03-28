@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Civilization0
 {
+    /// <summary>
+    /// Static class with all the assets used in the game.
+    /// </summary>
 	public static class Assets
 	{
 		public static Texture2D grass;
@@ -83,6 +86,9 @@ namespace Civilization0
 
         public static SpriteFont font;
 
+        /// <summary>
+        /// Load all the content.
+        /// </summary>
 		public static void Load()
 		{
             grass = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/grass.jpg", FileMode.Open));

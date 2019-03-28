@@ -105,12 +105,9 @@ namespace Civilization0.tiles
             switch(type)
             {
                 case TileType.grass:
-                    return u.type.IsLand();
-                case TileType.mountain:
-                    return u.type.IsFlying();
-                default:
-                    return false;
+                    return true;
             }
+            return false;
         }
 
 		public int TileX

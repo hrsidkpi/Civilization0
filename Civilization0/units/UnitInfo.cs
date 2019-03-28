@@ -11,6 +11,10 @@ using System.Threading.Tasks;
 
 namespace Civilization0.units
 {
+
+    /// <summary>
+    /// All possible types of units
+    /// </summary>
     public enum UnitType
     {
         none,
@@ -21,16 +25,28 @@ namespace Civilization0.units
         swordman, spearman, axeman,
         archer, levy, crossbowman,
         cavelry, catapracht, chariot,
-        ram, catapult, airship,
 
     }
 
+    /// <summary>
+    /// Static class with utility methods to get stats of different units
+    /// </summary>
     public static class UnitTypeInfo
     {
 
+        /// <summary>
+        /// Get the locations a unit can move to on a board
+        /// </summary>
+        /// <param name="t">The unit type that needs to move</param>
+        /// <param name="board">The board to move on</param>
+        /// <param name="x">The x position of the unit on the board</param>
+        /// <param name="y">The y position of the unit on the board</param>
+        /// <returns></returns>
         public static List<ALocation> AdjecentLocationsFrom(this UnitType t, Tile[,] board, int x, int y)
         {
+            //Prepare the list
             List<ALocation> res = new List<ALocation>();
+
             for(int xx = x-t.GetRange(); xx <= x+t.GetRange(); xx++)
             {
                 int yRange = t.GetRange() - (Math.Abs(xx - x));
@@ -39,9 +55,15 @@ namespace Civilization0.units
                     res.Add(new ALocation(xx, yy));
                 }
             }
+            //Return the possibilities
             return res;
         }
 
+        /// <summary>
+        /// Get the tiles the unit type can be built on.
+        /// </summary>
+        /// <param name="t">The unit to build</param>
+        /// <returns></returns>
 		public static List<TileType> BuildableTiles (this UnitType t)
 		{
 			switch(t)
@@ -56,6 +78,11 @@ namespace Civilization0.units
 			return new List<TileType>() { TileType.grass };
 		}
 
+        /// <summary>
+        /// Get the cost of the unit
+        /// </summary>
+        /// <param name="t">The unit to get the cost of</param>
+        /// <returns>Resources object with the cost to build the unit</returns>
         public static Resources Cost(this UnitType t)
         {
             int food = 0, wood = 0, iron = 0;
@@ -100,18 +127,6 @@ namespace Civilization0.units
                     food = 80; wood = 90;
                     break;
 
-                case UnitType.catapult:
-                    food = 60; wood = 200;
-                    break;
-
-                case UnitType.ram:
-                    food = 60; wood = 200; iron = 100;
-                    break;
-
-                case UnitType.airship:
-                    food = 200; wood = 400; iron = 300;
-                    break;
-
                 case UnitType.town:
                     wood = 400;
                     break;
@@ -133,21 +148,11 @@ namespace Civilization0.units
             };
         }
 
-        public static bool IsLand(this UnitType t)
-        {
-            return true;
-        }
-
-        public static bool IsFlying(this UnitType t)
-        {
-            return t == UnitType.airship;
-        }
-
-		public static bool IsWater(this UnitType t)
-		{
-			return false;
-		}
-
+        /// <summary>
+        /// Checks if the unit type is a building
+        /// </summary>
+        /// <param name="t">The unit type to check</param>
+        /// <returns>True if t is a building and false otherwise</returns>
         public static bool IsBuilding(this UnitType t)
         {
             return
@@ -160,25 +165,37 @@ namespace Civilization0.units
                 t == UnitType.stable;
         }
 
+        /// <summary>
+        /// Checks if the unit type is human.
+        /// </summary>
+        /// <param name="t">The unit type to check</param>
+        /// <returns>True if t is a human unit and false otherwise</returns>
         public static bool IsHuman(this UnitType t)
         {
             return !t.IsBuilding();
         }
 
-        public static bool CanBeOn(this UnitType t, Tile[,] board, TileType tile)
+        /// <summary>
+        /// Checks if the unit can be on the tile type
+        /// </summary>
+        /// <param name="t">The unit to check</param>
+        /// <param name="tile">The tile type to check</param>
+        /// <returns>true if t can be on tile</returns>
+        public static bool CanBeOn(this UnitType t, TileType tile)
         {
 
             if (t == UnitType.farm) return tile == TileType.grass;
             if (t == UnitType.mine) return tile == TileType.mountain;
             if (t == UnitType.lumberhouse) return tile == TileType.forest;
 
-			if (t.IsLand() && !t.IsFlying()) return tile == TileType.grass;
-			if (t.IsFlying()) return true;
-			if (t.IsWater()) return tile == TileType.water;
-
-            return true;
+            return tile == TileType.grass;
         }
 
+        /// <summary>
+        /// Get the maximum amount of tiles the unit type can move in one turn
+        /// </summary>
+        /// <param name="t">The unit type to check</param>
+        /// <returns>The amount of maximum moves he can move in one turn</returns>
         public static int GetMaxMoves(this UnitType t)
         {
             switch (t)
@@ -195,9 +212,6 @@ namespace Civilization0.units
                 case UnitType.axeman:
                 case UnitType.crossbowman:
                     return 2;
-                case UnitType.catapult:
-                case UnitType.ram:
-                case UnitType.airship:
                 default:
                     return 1;
             }
@@ -207,8 +221,6 @@ namespace Civilization0.units
         {
             switch (t)
             {
-                case UnitType.airship:
-                    return 20;
                 case UnitType.axeman:
                     return 6;
                 case UnitType.swordman:
@@ -219,8 +231,6 @@ namespace Civilization0.units
                     return 8;
                 case UnitType.archer:
                     return 3;
-                case UnitType.catapult:
-                    return 4;
                 case UnitType.spearman:
                     return 8;
                 case UnitType.chariot:
@@ -229,8 +239,6 @@ namespace Civilization0.units
                     return 2;
                 case UnitType.cavelry:
                     return 3;
-                case UnitType.ram:
-                    return 2;
                 case UnitType.town:
                     return 25;
                 default:
@@ -246,8 +254,6 @@ namespace Civilization0.units
         {
             switch (t)
             {
-                case UnitType.airship:
-                    return 20;
                 case UnitType.axeman:
                     return 6;
                 case UnitType.swordman:
@@ -255,15 +261,11 @@ namespace Civilization0.units
                     return 5;
                 case UnitType.catapracht:
                 case UnitType.archer:
-                case UnitType.catapult:
-                    return 4;
                 case UnitType.spearman:
                 case UnitType.chariot:
                 case UnitType.levy:
                     return 3;
                 case UnitType.cavelry:
-                case UnitType.ram:
-                    return 2;
                 default:
                     return 0;
             }
@@ -306,8 +308,6 @@ namespace Civilization0.units
                     return 3;
                 case UnitType.crossbowman:
                     return 4;
-                case UnitType.catapult:
-                    return 5;
                 default:
                     return 1;
             }

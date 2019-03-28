@@ -231,7 +231,7 @@ namespace Civilization0.units
             if (movesLeft == 0) canvas.Draw(Assets.done, drawLocation, Color.White);
         }
 
-        public abstract List<Move> GetMoves(in Tile[,] boarad);
+        public abstract List<Move> GetMoves(Tile[,] boarad);
         public abstract List<UnitType> GetBuildable();
 
         private bool CanMove(int amount)

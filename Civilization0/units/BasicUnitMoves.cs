@@ -83,7 +83,7 @@ namespace Civilization0.units
 
             return moves;
         }
-        public static List<Move> MoveAroundMove(this Unit unit, in Tile[,] board, int distance)
+        public static List<Move> MoveAroundMove(this Unit unit, Tile[,] board, int distance)
         {
             List<Move> moves = new List<Move>();
 
@@ -107,12 +107,12 @@ namespace Civilization0.units
             return moves;
         }
 
-        public static List<Move> DefaultMoveAroundMove(this Unit unit, in Tile[,] board)
+        public static List<Move> DefaultMoveAroundMove(this Unit unit, Tile[,] board)
         {
             return MoveAroundMove(unit, board, unit.type.GetMaxMoves());
         }
 
-        public static List<Move> AttackAroundMove(this Unit unit, in Tile[,] board, int distance)
+        public static List<Move> AttackAroundMove(this Unit unit, Tile[,] board, int distance)
         {
             List<Move> moves = new List<Move>();
 

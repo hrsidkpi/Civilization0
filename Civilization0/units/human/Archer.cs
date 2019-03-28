@@ -20,7 +20,7 @@ namespace Civilization0.units.human
             return new List<UnitType>();
         }
 
-        public override List<Move> GetMoves(in Tile[,] board)
+        public override List<Move> GetMoves(Tile[,] board)
         {
             return this.DefaultMoveAroundMove(board).Union(this.DefaultShootAroundMove(board)).ToList();
         }

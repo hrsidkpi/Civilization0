@@ -21,7 +21,7 @@ namespace Civilization0.units.buildings
 			return new List<UnitType>() { UnitType.swordman, UnitType.spearman, UnitType.axeman}.Shuffle();
 		}
 
-		public override List<Move> GetMoves(in Tile[,] board)
+		public override List<Move> GetMoves(Tile[,] board)
 		{
             return this.BuildAroundMoveAll(Game.instance.tiles, 1);
         }

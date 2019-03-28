@@ -16,14 +16,22 @@ namespace Civilization0.ai
 
         public const bool DEBUG_CONTROLS = false;
 
+        public static Move move(this Tuple<Move,int> t)
+        {
+            return t.Item1;
+        }
+        public static int control(this Tuple<Move, int> t)
+        {
+            return t.Item2;
+        }
 
 
         public static Move GetBestMoveMin(Unit u, List<Move> pending)
         {
-            return GetBestMoveMin(u, Game.instance.tiles, pending, 3).move;
+            return GetBestMoveMin(u, Game.instance.tiles, pending, 3).move();
         }
 
-        public static (Move move, int control) GetBestMoveMin(Unit u, Tile[,] board, List<Move> pending, int level)
+        public static Tuple<Move,int> GetBestMoveMin(Unit u, Tile[,] board, List<Move> pending, int level)
         {
             Tile[,] clone;
 
@@ -41,7 +49,7 @@ namespace Civilization0.ai
 
                 int control = 0;
                 if (level == 1) control = CalculateMapControl(clone);
-                else control = GetBestMoveMin(cloneUnit, clone, new List<Move>(), level - 1).control;
+                else control = GetBestMoveMin(cloneUnit, clone, new List<Move>(), level - 1).control();
                 if (control < minControl)
                 {
                     minControl = control;
@@ -67,7 +75,7 @@ namespace Civilization0.ai
                     }
                 }
             }
-            return (best, minControl);
+            return new Tuple<Move, int>(best, minControl);
         }
 
         public static Tile[,] CopyBoard(Tile[,] board)
