@@ -34,6 +34,55 @@ namespace Civilization0.units
     public static class UnitTypeInfo
     {
 
+
+        /// <summary>
+        /// Checks if a unit type can be placed in a location on a board
+        /// </summary>
+        /// <param name="unit">The unit type to check</param>
+        /// <param name="board">The board to check</param>
+        /// <param name="x">The x position to check, in tiles</param>
+        /// <param name="y">The y position to check, in tiles</param>
+        /// <returns>True if the unit type can be placed on the location on the board</returns>
+        public static bool CanPlaceOn(this UnitType unit, Tile[,] board, int x, int y)
+        {
+            Tile t = board[x, y];
+            if (!unit.CanBeOn(t.type)) return false;
+            if ((unit.IsBuilding() && t.buildingOn != null) || (unit.IsHuman() && t.unitOn != null)) return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Checks if a unit type can be placed in a location on the board
+        /// </summary>
+        /// <param name="unit">The unit type to check</param>
+        /// <param name="board">The boarad to check</param>
+        /// <param name="x">The x position to check, in tiles</param>
+        /// <param name="y">The y position to check, in tiles</param>
+        /// <param name="player">The player index of the unit to check</param>
+        /// <returns>True if the unit type can be placed on the location on the board</returns>
+        public static bool CanPlaceOn(this UnitType unit, Tile[,] board, int x, int y, bool player)
+        {
+            Tile t = board[x, y];
+            if (!unit.CanBeOn(t.type)) return false;
+            if ((unit.IsBuilding() && t.buildingOn != null) || (unit.IsHuman() && t.unitOn != null)) return false;
+            if (t.buildingOn != null && t.buildingOn.player != player) return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Checks if a unit can be placed in a location on the board
+        /// </summary>
+        /// <param name="unit">The unit to check</param>
+        /// <param name="board">The boarad to check</param>
+        /// <param name="x">The x position to check, in tiles</param>
+        /// <param name="y">The y position to check, in tiles</param>
+        /// <returns>True if the unit can be placed on the location on the board</returns>
+        public static bool CanPlaceOn(this Unit unit, Tile[,] board, int x, int y)
+        {
+            return CanPlaceOn(unit.type, board, x, y, unit.player);
+        }
+
+
         /// <summary>
         /// Get the locations a unit can move to on a board
         /// </summary>
@@ -217,6 +266,11 @@ namespace Civilization0.units
             }
         }
 
+        /// <summary>
+        /// Get the starting hp of a unit type
+        /// </summary>
+        /// <param name="t">The unit type to check</param>
+        /// <returns>The starting (maximal) amount of hp the unit type has</returns>
         public static int GetMaxHp(this UnitType t)
         {
             switch (t)
@@ -246,10 +300,21 @@ namespace Civilization0.units
             }
         }
 
+        /// <summary>
+        /// Checks whether the unit type is a millitary training building
+        /// </summary>
+        /// <param name="t">The unit type to check</param>
+        /// <returns>True if t is a barracks, archery range or stable.</returns>
         public static bool IsTraining(this UnitType t)
         {
             return t == UnitType.barracks || t == UnitType.archeryRange || t == UnitType.stable;
         }
+
+        /// <summary>
+        /// Gets the amount of damage the unit deals when attacking an enemy.
+        /// </summary>
+        /// <param name="t">The unit type to check</param>
+        /// <returns>The amount of damage the unit deals per one attack on an enemy</returns>
         public static int GetDamage(this UnitType t)
         {
             switch (t)
@@ -266,24 +331,18 @@ namespace Civilization0.units
                 case UnitType.levy:
                     return 3;
                 case UnitType.cavelry:
-                default:
-                    return 0;
-            }
-        }
-
-        public static int GetArmor(this UnitType t)
-        {
-            switch (t)
-            {
-                case UnitType.swordman:
                     return 2;
-                case UnitType.spearman:
-                    return 1;
                 default:
                     return 0;
             }
         }
 
+
+        /// <summary>
+        /// Get the amount of damage the unit reflects back to the attacker
+        /// </summary>
+        /// <param name="t">The unit type to check</param>
+        /// <returns>Fraction of damage to be reflected to the attacking enemy.</returns>
         public static double GetReflect(this UnitType t)
         {
             switch (t)
@@ -297,6 +356,11 @@ namespace Civilization0.units
             }
         }
 
+        /// <summary>
+        /// Get the range of a unit.
+        /// </summary>
+        /// <param name="t">The unit type to check</param>
+        /// <returns>The maximum amount of tiles an enemy can be away from the unit and still be targeted</returns>
         public static int GetRange(this UnitType t)
         {
             switch(t)
@@ -313,6 +377,11 @@ namespace Civilization0.units
             }
         }
 
+        /// <summary>
+        /// Get the 2D sprite that corresponds to the unit type
+        /// </summary>
+        /// <param name="t">The unit type to check</param>
+        /// <returns>A Monogame Texture2D object with the sprite of the unit type</returns>
         public static Texture2D GetSprite(this UnitType t)
         {
             switch (t)
@@ -356,6 +425,14 @@ namespace Civilization0.units
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.GetSprite(this UnitType)");
         }
 
+        /// <summary>
+        /// Creates and places a new unit on a given board
+        /// </summary>
+        /// <param name="t">The unit type to create</param>
+        /// <param name="x">The x position to create the unit in, in pixels</param>
+        /// <param name="y">The y position to creaate the unit in, in pixels</param>
+        /// <param name="board">The board to place the unit on</param>
+        /// <returns>The unit that was created and placed</returns>
         public static Unit Build(this UnitType t, int x, int y, Tile[,] board)
         {
             switch (t)
@@ -378,6 +455,15 @@ namespace Civilization0.units
             throw new Exception("UnitTypeNotConfigured Exception- add unit info to units.UnitTypeInfi.Build(this UnitType)");
         }
 
+        /// <summary>
+        /// Creates and places a new unit on a given board
+        /// </summary>
+        /// <param name="t">The unit type to create</param>
+        /// <param name="xTile">The x position to create the unit in, in tiles</param>
+        /// <param name="yTile">The y position to creaate the unit in, in tiles</param>
+        /// <param name="board">The board to place the unit on</param>
+        /// <param name="player">The player index to create the unit with</param>
+        /// <returns>The unit that was created and placed</returns>
         public static Unit BuildOnTile(this UnitType t, int xTile, int yTile, Tile[,] board, bool player = true)
         {
             int x = xTile * Tile.TILE_WIDTH;

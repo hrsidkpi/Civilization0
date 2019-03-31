@@ -8,33 +8,22 @@ using System.Threading.Tasks;
 
 namespace Civilization0.units
 {
+
+    /// <summary>
+    /// Static class for generating common lists of moves, like movement in range moves.
+    /// </summary>
     public static class BasicUnitMoves
     {
 
-        public static bool CanPlaceOn(this UnitType unit, Tile[,] board, int x, int y)
-        {
-            Tile t = board[x, y];
-            if (!unit.CanBeOn(board, t.type)) return false;
-            if ((unit.IsBuilding() && t.buildingOn != null) || (unit.IsHuman() && t.unitOn != null)) return false;
-            return true;
-        }
 
-        public static bool CanPlaceOn(this UnitType unit, Tile[,] board, int x, int y, bool player)
-        {
-            Tile t = board[x, y];
-            if (!unit.CanBeOn(board, t.type)) return false;
-            if ((unit.IsBuilding() && t.buildingOn != null) || (unit.IsHuman() && t.unitOn != null)) return false;
-            if (t.buildingOn != null && t.buildingOn.player != player) return false;
-            return true;
-        }
-
-        public static bool CanPlaceOn(this Unit unit,Tile[,] board, int x, int y)
-        {
-            return CanPlaceOn(unit.type, board, x, y, unit.player);
-        }
-
-
-
+        /// <summary>
+        /// Return build moves around the unit of the selected type and in a specified maximum distance
+        /// </summary>
+        /// <param name="unit">The unit that will build</param>
+        /// <param name="board">The board to build on</param>
+        /// <param name="type">The type of unit to build</param>
+        /// <param name="distance">The maximum distance to build in</param>
+        /// <returns>A list of movement moves that unit can do, of units of type 'type' and in distance 'distance'</returns>
         public static List<Move> BuildAroundMove(this Unit unit, Tile[,] board, UnitType type, int distance)
         {
             List<Move> moves = new List<Move>();
@@ -59,6 +48,14 @@ namespace Civilization0.units
             return moves;
         }
 
+        /// <summary>
+        /// Return build moves around the unit of all possible types and in a specified maximum distance
+        /// </summary>
+        /// <param name="unit">The unit that will build</param>
+        /// <param name="board">The board to build on</param>
+        /// <param name="type">The type of unit to build</param>
+        /// <param name="distance">The maximum distance to build in</param>
+        /// <returns>A list of movement moves that unit can do, of all types the unit can build, and in distance 'distance'</returns>
         public static List<Move> BuildAroundMoveAll(this Unit unit, Tile[,] board, int distance)
         {
             List<Move> moves = new List<Move>();
@@ -83,6 +80,14 @@ namespace Civilization0.units
 
             return moves;
         }
+
+        /// <summary>
+        /// Get movement moves around a unit in a specified distance.
+        /// </summary>
+        /// <param name="unit">The moving unit</param>
+        /// <param name="board">The board to creaate moves on</param>
+        /// <param name="distance">The maximum distance for moving</param>
+        /// <returns></returns>
         public static List<Move> MoveAroundMove(this Unit unit, Tile[,] board, int distance)
         {
             List<Move> moves = new List<Move>();
@@ -107,11 +112,24 @@ namespace Civilization0.units
             return moves;
         }
 
+        /// <summary>
+        /// Get the default movement moves for a unit on a board
+        /// </summary>
+        /// <param name="unit">The unit to generate moves for</param>
+        /// <param name="board">The board to generate moves on</param>
+        /// <returns>A list of movement moves around the unit with maximum distance based on the unit's max moves.</returns>
         public static List<Move> DefaultMoveAroundMove(this Unit unit, Tile[,] board)
         {
             return MoveAroundMove(unit, board, unit.type.GetMaxMoves());
         }
 
+        /// <summary>
+        /// Get attack moves on all enemies around a unit in a specified maximum distance on a board
+        /// </summary>
+        /// <param name="unit">The unit that will attack</param>
+        /// <param name="board">The board to generate moves on</param>
+        /// <param name="distance">The maximum distance an enemy can be in from the unit to generate attack move on him</param>
+        /// <returns>A list of attack moves on enemies around the unit in a specified maximum distance.</returns>
         public static List<Move> AttackAroundMove(this Unit unit, Tile[,] board, int distance)
         {
             List<Move> moves = new List<Move>();
@@ -136,11 +154,24 @@ namespace Civilization0.units
             return moves;
         }
 
+        /// <summary>
+        /// Get the default attack moves for a unit on a board
+        /// </summary>
+        /// <param name="unit">The unit to generate moves for</param>
+        /// <param name="board">The board to generate moves on</param>
+        /// <returns>A list of attack moves around the unit with melee attack range of 1</returns>
         public static List<Move> DefaultAttackAroundMove(this Unit unit, Tile[,] board)
         {
             return unit.AttackAroundMove(board, 1);
         }
 
+        /// <summary>
+        /// Get shoot moves on all enemies around a unit in a specified maximum distance on a board
+        /// </summary>
+        /// <param name="unit">The unit that will attack</param>
+        /// <param name="board">The board to generate moves on</param>
+        /// <param name="distance">The maximum distance an enemy can be in from the unit to generate shoot move on him</param>
+        /// <returns>A list of shoot moves on enemies around the unit in a specified maximum distance.</returns>
         public static List<Move> ShootAroundMove(this Unit unit, Tile[,] board, int distance)
         {
             List<Move> moves = new List<Move>();
@@ -173,6 +204,12 @@ namespace Civilization0.units
             return moves;
         }
 
+        /// <summary>
+        /// Get the default shoot moves for a unit on a board
+        /// </summary>
+        /// <param name="unit">The unit to generate moves for</param>
+        /// <param name="board">The board to generate moves on</param>
+        /// <returns>A list of shoot moves around the unit in maximum distance based on the unit's range</returns>
         public static List<Move> DefaultShootAroundMove(this Unit unit, Tile[,] board)
         {
             return unit.ShootAroundMove(board, unit.type.GetRange());

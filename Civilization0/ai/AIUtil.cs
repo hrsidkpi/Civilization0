@@ -8,51 +8,25 @@ using System.Threading.Tasks;
 
 namespace Civilization0.ai
 {
+
+    /// <summary>
+    /// Static class with utility methods used by the AI.
+    /// </summary>
     public static class AIUtil
     {
 
-        public static Tuple<int, int> NearestTileOfType(int xStart, int yStart, TileType tile)
-        {
-            int dist = 0;
-            while(true)
-            {
-                //top and bottom rows
-                for(int x = Math.Max(0,xStart - dist); x < Math.Min(xStart + dist, Game.instance.tiles.GetLength(0)); x++)
-                {
-                    if (yStart - dist >= 0)
-                        if (Game.instance.tiles[x, yStart - dist].type == tile) return new Tuple<int, int>(x, yStart - dist);
-                    
-                    if (yStart + dist < Game.instance.tiles.GetLength(0))
-                        if(Game.instance.tiles[x, yStart + dist].type == tile) return new Tuple<int, int>(x, yStart + dist);
-                }
-                //left and right columns
-                for (int y = Math.Max(0, yStart - dist); y < Math.Min(yStart + dist, Game.instance.tiles.GetLength(0)); y++)
-                {
-                    if (xStart - dist >= 0)
-                        if (Game.instance.tiles[xStart - dist, y].type == tile) return new Tuple<int, int>(xStart - dist, y);
 
-                    if (xStart + dist < Game.instance.tiles.GetLength(0))
-                        if (Game.instance.tiles[xStart + dist, y].type == tile) return new Tuple<int, int>(xStart + dist, y);
-                }
-                dist++;
-            }
-        }
-
-        public static Dictionary<UnitType,int> Add(this Dictionary<UnitType,int> a, Dictionary<UnitType,int> b)
-        {
-            foreach(KeyValuePair<UnitType, int> p in b)
-            {
-                if (a.ContainsKey(p.Key)) a[p.Key] += p.Value;
-                else a.Add(p.Key, p.Value);
-            }
-            return a;
-        }
-
-        public static Dictionary<UnitType,int> GetMissingUnits(this Dictionary<UnitType,int> container, Dictionary<UnitType,int> contained)
+        /// <summary>
+        /// Get a dictionary with the units that need to be added to container so that it will contain all units in contained.
+        /// </summary>
+        /// <param name="container">The dictionary that units need to be added to</param>
+        /// <param name="contained">The dictionary with the goal amount of units</param>
+        /// <returns></returns>
+        public static Dictionary<UnitType, int> GetMissingUnits(this Dictionary<UnitType, int> container, Dictionary<UnitType, int> contained)
         {
             Dictionary<UnitType, int> res = new Dictionary<UnitType, int>();
 
-            foreach(KeyValuePair<UnitType,int> pair in contained)
+            foreach (KeyValuePair<UnitType, int> pair in contained)
             {
                 if (!container.ContainsKey(pair.Key)) res.Add(pair.Key, pair.Value);
                 else if (container[pair.Key] < pair.Value) res[pair.Key] = pair.Value - container[pair.Key];
@@ -60,12 +34,22 @@ namespace Civilization0.ai
             return res;
         }
 
+        /// <summary>
+        /// Checks if the dictionary represents no units
+        /// </summary>
+        /// <param name="dict">The dictionary to check</param>
+        /// <returns>True if the dictionary has no units</returns>
         public static bool NoUnits(this Dictionary<UnitType, int> dict)
         {
             foreach (int v in dict.Values) if (v != 0) return false;
             return true;
         }
 
+        /// <summary>
+        /// Creates a dictionary of unit types from a list of units
+        /// </summary>
+        /// <param name="units">The list of units to convert</param>
+        /// <returns>A dictionary where the keys are the unit types in the list of units and the values are how many units there are from the type</returns>
         public static Dictionary<UnitType, int> ListToDict(List<UnitType> units)
         {
             Dictionary<UnitType, int> res = new Dictionary<UnitType, int>();
@@ -75,6 +59,11 @@ namespace Civilization0.ai
             return res;
         }
 
+        /// <summary>
+        /// Gets the units on a board
+        /// </summary>
+        /// <param name="board">The 2D array of tiles of the board</param>
+        /// <returns>A list of all units on tiles on the board</returns>
         public static List<Unit> UnitsFromBoard(Tile[,] board)
         {
             List<Unit> res = new List<Unit>();
@@ -82,7 +71,12 @@ namespace Civilization0.ai
             return res;
         }
 
-
+        /// <summary>
+        /// Counts the units on a board that satisfy a constraint
+        /// </summary>
+        /// <param name="board">The board to count units on</param>
+        /// <param name="constraint">The constraint units need to satisfy</param>
+        /// <returns>Dictionary with the amount of each unit type of units that satisfied the constraint on the board.</returns>
         public static Dictionary<UnitType, int> Count(Tile[,] board, LookupConstraint constraint)
         {
             Dictionary<UnitType, int> res = new Dictionary<UnitType, int>();
@@ -100,52 +94,6 @@ namespace Civilization0.ai
 
         }
 
-        public static Dictionary<UnitType, int> CountAround(Unit counter, Tile[,] board, int range, bool player)
-        {
-
-            Dictionary<UnitType, int> res = new Dictionary<UnitType, int>();
-
-            ALocation start = new ALocation(counter.TileX, counter.TileY);
-
-            Stack<ALocation> current = new Stack<ALocation>();
-            Stack<ALocation> next = new Stack<ALocation>();
-
-            current.Push(start);
-            for (int i = 0; i < range; i++)
-            {
-                foreach (ALocation test in current)
-                {
-
-                    if (test.Tile.unitOn != null && test.Tile.unitOn.player == player)
-                    {
-                        if (!res.ContainsKey(test.Tile.unitOn.type)) res[test.Tile.unitOn.type] = 0;
-                        res[test.Tile.unitOn.type]++;
-                    }
-
-                    if (test.Tile.buildingOn != null && test.Tile.buildingOn.player == player)
-                    {
-                        if (!res.ContainsKey(test.Tile.buildingOn.type)) res[test.Tile.buildingOn.type] = 0;
-                        res[test.Tile.buildingOn.type]++;
-                    }
-
-                    foreach (ALocation l in PathFinder.GetAdjacentSquares(counter.type, board, test.x, test.y))
-                    {
-                        if (!l.Tile.flag)
-                        {
-                            l.parent = test;
-                            next.Push(l);
-                            l.Tile.flag = true;
-                        }
-                    }
-                }
-                current = next;
-                next = new Stack<ALocation>();
-            }
-
-            foreach (Tile t in Game.instance.tiles) t.flag = false;
-
-            return res;
-        }
 
     }
 }

@@ -11,50 +11,77 @@ using System.Threading.Tasks;
 
 namespace Civilization0.ai
 {
-    public static class Minmax
+    public static class DepthSearch
     {
-
+        //Debug setting. Used to debug the process of calculating map control of a board.
         public const bool DEBUG_CONTROLS = false;
 
-        public static Move move(this Tuple<Move,int> t)
+        //Get the move property from a Tuple<Move,int>
+        public static Move Move(this Tuple<Move,int> t)
         {
             return t.Item1;
         }
-        public static int control(this Tuple<Move, int> t)
+
+        //Get the control (the int) property from a Tuple<Move,int>
+        public static int Control(this Tuple<Move, int> t)
         {
             return t.Item2;
         }
 
-
-        public static Move GetBestMoveMin(Unit u, List<Move> pending)
+        /// <summary>
+        /// Utility method to call GetBestMoveMin(Unit, board, level) and get the best move
+        /// </summary>
+        /// <param name="u">The unit to move</param>
+        /// <param name="board">The board to move on</param>
+        /// <returns>The best move to execute for unit u on board</returns>
+        public static Move GetBestMoveMin(Unit u, Tile[,] board)
         {
-            return GetBestMoveMin(u, Game.instance.tiles, pending, 3).move();
+            return GetBestMoveMin(u, board, 3).Move();
         }
 
-        public static Tuple<Move,int> GetBestMoveMin(Unit u, Tile[,] board, List<Move> pending, int level)
+        /// <summary>
+        /// Find the best move for a unit to execute on a board, using Depth first search, forcasting a few moves ahead.
+        /// </summary>
+        /// <param name="u">The unit to move</param>
+        /// <param name="board">The board for the unit to move on</param>
+        /// <param name="level">The amount of levels the algorithm still needs to go through</param>
+        /// <returns>The best move for unit u and the amount of map control this move will yield eventually (using DFS)</returns>
+        public static Tuple<Move,int> GetBestMoveMin(Unit u, Tile[,] board, int level)
         {
             Tile[,] clone;
 
             int minControl = 1000;
             Move best = null;
 
+            //Get all moves possible and check each one
             foreach (Move m in u.GetMoves(board))
             {
+                //Clone the boarad
                 clone = CopyBoard(board);
-                foreach (Move p in pending) p.Execute(false, clone);
+                //Find the cloned unit
                 Unit cloneUnit = clone[u.TileX, u.TileY].UnitsOn[0];
 
+                //Check that the move can actually be executed. If it can, execute it on the clone.
                 if (cloneUnit.type.GetMaxMoves() < m.CostBoard(clone)) continue;
                 m.Execute(false, clone);
 
-                int control = 0;
+
+                int control;
+
+                //If this is the final search level, find the map control of the current state.
                 if (level == 1) control = CalculateMapControl(clone);
-                else control = GetBestMoveMin(cloneUnit, clone, new List<Move>(), level - 1).control();
+                //Otherwise, get the best move after this one and the control will be the result from there.
+                else control = GetBestMoveMin(cloneUnit, clone, level - 1).Control();
+
+                //If the control of this move is better than the best one found so far, switch them.
                 if (control < minControl)
                 {
                     minControl = control;
                     best = m;
                 }
+
+                //If the current move is equal control-wise to the best so far, prioritize attack moves, or movement moves to places
+                //Closer to the enemy base.
                 else if (control == minControl)
                 {
                     if (m is AttackMove)
@@ -75,12 +102,19 @@ namespace Civilization0.ai
                     }
                 }
             }
+            //Return the best move found and the control it yields.
             return new Tuple<Move, int>(best, minControl);
         }
 
+        /// <summary>
+        /// Copy a board and all the units on it.
+        /// </summary>
+        /// <param name="board">The board to copy</param>
+        /// <returns>A deep copy of the board- all tiles will be copied, and all units will be copied and placed on the clone</returns>
         public static Tile[,] CopyBoard(Tile[,] board)
         {
             Tile[,] clone = new Tile[Game.TILES_WIDTH, Game.TILES_HEIGHT];
+            //Copy tiles
             for (int x = 0; x < Game.TILES_WIDTH; x++)
             {
                 for (int y = 0; y < Game.TILES_HEIGHT; y++)
@@ -89,6 +123,7 @@ namespace Civilization0.ai
                     clone[x, y] = new Tile(t.type, t.x, t.y);
                 }
             }
+            //Copy units
             for (int x = 0; x < Game.TILES_WIDTH; x++)
             {
                 for (int y = 0; y < Game.TILES_HEIGHT; y++)
@@ -103,12 +138,21 @@ namespace Civilization0.ai
             return clone;
         }
 
+        /// <summary>
+        /// Calculate the map control value of a board. High map control is good for the human player, and low map control is good for
+        /// the computer player.
+        /// </summary>
+        /// <param name="tiles">The board to check</param>
+        /// <returns>The amount of tiles the player controls (has more, stronger units nearby) minus the amount of tiles the 
+        /// computer player controls. </returns>
         public static int CalculateMapControl(Tile[,] tiles)
         {
 
             if (DEBUG_CONTROLS) Game.instance.panels.Clear();
 
             int[,] control = new int[tiles.GetLength(0), tiles.GetLength(1)];
+
+            //For each unit, mark the tiles around it as affected by its presence. 
             foreach (Tile t in tiles) foreach (Unit u in t.UnitsOn)
                 {
                     control[u.TileX, u.TileY] += u.hp * (u.player ? 1 : -1);
@@ -141,6 +185,8 @@ namespace Civilization0.ai
                     }
                 }
 
+            //For each tile, if there is more human player presence than computer player, increase map control by 1.
+            //If the computer player has more presence, decrease the map control by 1. Otherwise don't change it.
             int MapControl = 0;
             for (int x = 0; x < Game.TILES_WIDTH; x++)
                 for (int y = 0; y < Game.TILES_HEIGHT; y++)

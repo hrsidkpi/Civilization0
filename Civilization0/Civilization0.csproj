@@ -121,6 +121,7 @@
     <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Questions.txt" />
     <None Include="App.config" />
     <None Include="bin\Debug\Content.mgcb" />
     <None Include="bin\Debug\Font.spritefont" />

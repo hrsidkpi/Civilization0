@@ -363,7 +363,7 @@ namespace Civilization0
             selectionButtons.Clear();
             
 
-            Console.WriteLine("Player turn ended, player map control: " + Minmax.CalculateMapControl(tiles));
+            Console.WriteLine("Player turn ended, player map control: " + DepthSearch.CalculateMapControl(tiles));
             DoComputerTurn();
         }
 
@@ -390,7 +390,7 @@ namespace Civilization0
             playerTurn = true;
             turnButton.texture = Assets.myTurn;
 
-            Console.WriteLine("Computer turn ended, player map control: " + Minmax.CalculateMapControl(tiles));
+            Console.WriteLine("Computer turn ended, player map control: " + DepthSearch.CalculateMapControl(tiles));
         }
 
         /// <summary>

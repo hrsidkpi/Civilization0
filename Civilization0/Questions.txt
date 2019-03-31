@@ -1,0 +1,1 @@
+﻿Should child classes of unit (like swordman.cs or archer.cs) be commented fully?
