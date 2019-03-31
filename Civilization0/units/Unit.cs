@@ -219,6 +219,8 @@ namespace Civilization0.units
 
             int reflect = (int)(RealDamage * unit.type.GetReflect());
             Damage(board, reflect);
+
+            Console.WriteLine(this + " charged " + unit + ", dealing " + RealDamage + " damage and receiving " + reflect + " reflect damage.");
         }
 
         /// <summary>
@@ -265,7 +267,7 @@ namespace Civilization0.units
                 if (!(t.Cost() <= Game.instance.player.resources)) continue;
 
                 //Create the type to build button
-                Button b = new Button(new Rectangle(Game.GAME_WIDTH - 300 + x * 50, 0, 50, 50), t.GetSprite());
+                Button b = new Button(new Rectangle(Game.GAME_WIDTH - 400 + x * 50, 0, 50, 50), t.GetSprite());
                 //Create an event for when the button is clicked:
                 b.Click += () =>
                 {

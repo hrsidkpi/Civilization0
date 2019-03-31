@@ -89,6 +89,7 @@ namespace Civilization0.ai
                 //Check every tile in the current list
                 foreach (ALocation test in current)
                 {
+                    Console.WriteLine("Checking " + test);
                     //Check if the tile satisfies the constraint
                     if (constraint.Check(test.Tile(board)))
                     {
@@ -114,9 +115,9 @@ namespace Civilization0.ai
                         continue;
 
                     //This tile is not final but may be in the shortest path. Check all tiles adjecent to it.
-                    foreach (ALocation l in GetWalkableAdjacentSquares(traveler, board, test.x, test.y))
+                    foreach (ALocation l in GetAdjacentSquares(traveler, board, test.x, test.y))
                         //Only check tiles that weren't checked yet.
-                        if (!Game.instance.tiles[l.x, l.y].flag)
+                        if (!board[l.x, l.y].flag)
                         {
                             l.parent = test;
                             next.Push(l);
@@ -199,9 +200,9 @@ namespace Civilization0.ai
                         continue;
 
                     //This tile is not final but may be in the shortest path. Check all tiles adjecent to it.
-                    foreach (ALocation l in GetWalkableAdjacentSquares(traveler, board, test.x, test.y))
+                    foreach (ALocation l in GetAdjacentSquares(traveler, board, test.x, test.y))
                         //Only check tiles that weren't checked yet.
-                        if (!Game.instance.tiles[l.x, l.y].flag)
+                        if (!board[l.x, l.y].flag)
                         {
                             l.parent = test;
                             next.Push(l);
@@ -253,6 +254,22 @@ namespace Civilization0.ai
 
             return proposedLocations.Where(
                 l => l.x < Game.TILES_WIDTH && l.y < Game.TILES_HEIGHT && l.x >= 0 && l.y >= 0 && board[l.x, l.y].type == tiles.TileType.grass).ToList();
+        }
+
+        /// <summary>
+        /// Get a list of locations a unit can walk to from a position in a single turn disregarding mountains water and trees.
+        /// </summary>
+        /// <param name="traveler">The unit that moves</param>
+        /// <param name="board">The board to move on</param>
+        /// <param name="x">The starting x location</param>
+        /// <param name="y">The starting y location</param>
+        /// <returns>A list of tiles the traveler can move to in one turn</returns>
+        public static List<ALocation> GetAdjacentSquares(UnitType traveler, Tile[,] board, int x, int y)
+        {
+            List<ALocation> proposedLocations = traveler.AdjecentLocationsFrom(board, x, y);
+
+            return proposedLocations.Where(
+                l => l.x < Game.TILES_WIDTH && l.y < Game.TILES_HEIGHT && l.x >= 0 && l.y >= 0).ToList();
         }
 
     }

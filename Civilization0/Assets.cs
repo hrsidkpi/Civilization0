@@ -82,7 +82,8 @@ namespace Civilization0
 
         public static Texture2D win;
         public static Texture2D lose;
-
+        public static Texture2D instructions;
+        public static Texture2D instructionsSide;
 
         public static SpriteFont font;
 
@@ -175,6 +176,11 @@ namespace Civilization0
             win.Tag = "Win texture";
             lose = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/lose.png", FileMode.Open));
             lose.Tag = "Lose texture";
+            instructions = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/instructions.png", FileMode.Open));
+            instructions.Tag = "Instructions texture";
+
+            instructionsSide = Texture2D.FromStream(Game.instance.GraphicsDevice, new FileStream("res/instrSide.png", FileMode.Open));
+            instructionsSide.Tag = "instructionsSide texture";
         }
 
 	}

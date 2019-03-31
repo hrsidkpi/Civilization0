@@ -62,7 +62,8 @@ namespace Civilization0.ai
             {
                 if (u.player) continue;
 
-                Move m = BestMove(u, clone, GetTask(u, clone));
+                Task t = GetTask(u, clone);
+                Move m = BestMove(u, clone, t);
                 if (m != null)
                 {
                     moves.Add(m);

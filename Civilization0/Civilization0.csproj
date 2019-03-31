@@ -168,6 +168,12 @@
     <Content Include="res\food.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="res\instrSide.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\instructions.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="res\lose.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
