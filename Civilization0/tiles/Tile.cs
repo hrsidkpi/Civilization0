@@ -109,23 +109,6 @@ namespace Civilization0.tiles
 
 
         /// <summary>
-        /// Required by Monogame. Unused.
-        /// </summary>
-		public void Initialize()
-		{
-
-		}
-
-        /// <summary>
-        /// Updates the tile and the units on it
-        /// </summary>
-		public void Update()
-		{
-            if(unitOn != null) unitOn.Update();
-            if(buildingOn != null) buildingOn.Update();
-		}
-
-        /// <summary>
         /// Draw the tile on the screen
         /// </summary>
         /// <param name="canvas">Monogame's Canvas object to draw on</param>

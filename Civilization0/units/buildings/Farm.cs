@@ -24,15 +24,6 @@ namespace Civilization0.units.buildings
 			return new List<Move>();
 		}
 
-		public override void Initialize()
-		{
-			throw new NotImplementedException();
-		}
-
-		public override void Update()
-		{
-		}
-
         public override void NewTurn()
         {
             base.NewTurn();

@@ -26,13 +26,5 @@ namespace Civilization0.units.buildings
             return this.BuildAroundMoveAll(board, 1);
         }
 
-        public override void Initialize()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Update()
-        {
-        }
     }
 }

@@ -31,11 +31,10 @@ namespace Civilization0.gui
         /// <param name="texture">The texture to draw the panel with</param>
         /// <param name="scrolled">True if the panel should scroll with the board or false if it should stay fixed</param>
         /// <param name="add">True to add the panel to the screen automatically, false to ignore</param>
-        public Panel(Rectangle hitbox, Texture2D texture, bool scrolled = false, bool add = true)
+        public Panel(Rectangle hitbox, Texture2D texture, bool add = true)
         {
             this.hitbox = hitbox;
             this.texture = texture;
-            this.scrolled = scrolled;
 
             if (add) Game.instance.panels.Add(this);
         }

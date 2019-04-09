@@ -66,16 +66,6 @@ namespace Civilization0.units
         }
 
         /// <summary>
-        /// Required by Monogame for all graphics objects, unused.
-        /// </summary>
-        public abstract void Initialize();
-
-        /// <summary>
-        /// Called 30 times per second, handles logic.
-        /// </summary>
-        public abstract void Update();
-
-        /// <summary>
         /// Called when the unit is right clicked.
         /// </summary>
         public virtual void RightClick() { }

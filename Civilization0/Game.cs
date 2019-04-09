@@ -194,9 +194,6 @@ namespace Civilization0
                 yScroll -= SCROLL_SPEED;
             }
 
-            //Update the tiles (the tiles will update the units on them).
-            foreach (Tile t in tiles) t.Update();
-
             //Get mouse position and state (buttons pressed)
             MouseState mouse = Mouse.GetState();
             Point mousePos = mouse.Position;
@@ -291,10 +288,6 @@ namespace Civilization0
             //Set released to false, so that no new events can be fired until the button is released.
             rReleased = false;
         }
-
-
-        //Force a redraw of the screen (instead of 60 times per second).
-        public void ForceDraw(GameTime t) { Draw(t); }
 
 
         /// <summary>

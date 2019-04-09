@@ -30,12 +30,5 @@ namespace Civilization0.units.human
             return moves;
 		}
 
-		public override void Initialize()
-		{
-		}
-
-		public override void Update()
-		{
-		}
 	}
 }

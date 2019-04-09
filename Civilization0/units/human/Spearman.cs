@@ -26,13 +26,6 @@ namespace Civilization0.units.human
             return this.DefaultMoveAroundMove(board).Union(this.DefaultAttackAroundMove(board)).ToList();
         }
 
-        public override void Initialize()
-		{
-			throw new NotImplementedException();
-		}
 
-		public override void Update()
-		{
-		}
 	}
 }

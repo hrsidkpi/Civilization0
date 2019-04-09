@@ -46,22 +46,6 @@ namespace Civilization0.gui
 		}
 
         /// <summary>
-        /// Create a new button
-        /// </summary>
-        /// <param name="hitbox">The hitbox (location and size) of the button</param>
-        /// <param name="texture">The texture to draw the button with</param>
-        /// <param name="scrolled">True if the button should be scrolled with the board, false if it should be in a static position.</param>
-        /// <param name="add">True if the button should be added automatically to the screen</param>
-		public Button(Rectangle hitbox, Texture2D texture, bool scrolled, bool add = true)
-		{
-			this.hitbox = hitbox;
-			this.texture = texture;
-			this.scrolled = scrolled;
-
-			if(add) Game.instance.buttons.Add(this);
-		}
-
-        /// <summary>
         /// Draws the button on the screen.
         /// </summary>
         /// <param name="canvas">The Monogam's Canvas object to draw on</param>

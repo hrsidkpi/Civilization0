@@ -27,11 +27,7 @@ namespace Civilization0.units.buildings
 		{
             return this.BuildAroundMove(board, UnitType.builder, 1);
         }
-
-		public override void Initialize()
-		{
-			throw new NotImplementedException();
-		}
+		
 
 		public override void Draw(SpriteBatch canvas)
 		{
@@ -43,8 +39,5 @@ namespace Civilization0.units.buildings
 			return base.ToString();
 		}
 
-		public override void Update()
-		{
-		}
 	}
 }
