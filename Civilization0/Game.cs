@@ -299,16 +299,6 @@ namespace Civilization0
                 }
             }
 
-            //Check click on units (selecting unit)
-            foreach (Tile t in tiles)
-            {
-                if (t.GetHitbox().Contains(mousePos))
-                {
-                    if (t.unitOn != null && t.unitOn.player) t.unitOn.RightClick();
-                    else if (t.buildingOn != null && t.buildingOn.player) t.buildingOn.RightClick();
-                }
-            }
-
             //Set released to false, so that no new events can be fired until the button is released.
             rReleased = false;
         }
