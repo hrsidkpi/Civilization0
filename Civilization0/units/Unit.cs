@@ -66,11 +66,6 @@ namespace Civilization0.units
         }
 
         /// <summary>
-        /// Called when the unit is right clicked.
-        /// </summary>
-        public virtual void RightClick() { }
-
-        /// <summary>
         /// Called when the unit is left clicked.
         /// </summary>
         public virtual void Click()
@@ -136,7 +131,7 @@ namespace Civilization0.units
             //Only create the button if there are enough moves left for making the move.
             if (CanMove(move.cost))
             {
-                Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.greenHighlight, true);
+                Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.greenHighlight);
                 select.RightClick += () =>
                 {
                     move.Execute(true);
@@ -160,7 +155,7 @@ namespace Civilization0.units
 
             if (CanMove(move.cost))
             {
-                Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.yellowHighlight, true);
+                Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.yellowHighlight);
                 select.RightClick += () =>
                 {
                     move.Execute(true);
@@ -184,7 +179,7 @@ namespace Civilization0.units
 
             if (CanMove(move.cost))
             {
-                Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.yellowHighlight, true);
+                Button select = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.yellowHighlight);
                 select.RightClick += () =>
                 {
                     move.Execute(true);
@@ -281,7 +276,7 @@ namespace Civilization0.units
                         if (CanMove(move.cost) && move.unit.CanBeOn(Game.instance.tiles[move.x, move.y].type))
                         {
                             //If all checks are good, create the final build button on the screen.
-                            Button place = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.blueHighlight, true);
+                            Button place = new Button(new Rectangle(xPixels, yPixels, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), Assets.blueHighlight);
                             place.RightClick += () =>
                             {
                                 move.Execute(true);

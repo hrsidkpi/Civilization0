@@ -37,12 +37,12 @@ namespace Civilization0.gui
         /// <param name="hitbox">The hitbox (location and size) of the button</param>
         /// <param name="texture">The texture to draw the button with</param>
         /// <param name="add">True if the button should be added automatically to the screen</param>
-		public Button(Rectangle hitbox, Texture2D texture, bool add = true)
+		public Button(Rectangle hitbox, Texture2D texture)
 		{
 			this.hitbox = hitbox;
 			this.texture = texture;
 
-			if(add) Game.instance.buttons.Add(this);
+			Game.instance.buttons.Add(this);
 		}
 
         /// <summary>

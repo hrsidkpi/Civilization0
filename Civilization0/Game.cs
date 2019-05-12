@@ -2,7 +2,6 @@
 using Civilization0.gui;
 using Civilization0.moves;
 using Civilization0.tiles;
-using Civilization0.tiles.world_gen;
 using Civilization0.units;
 using Civilization0.units.buildings;
 using Civilization0.units.human;
@@ -115,21 +114,46 @@ namespace Civilization0
             Assets.Load();
         }
 
-        /// <summary>
-        /// Called when the game is closed. Nothing is saved on disc so there is nothing to unload.
-        /// </summary>
-        protected override void UnloadContent()
-        {
+		/// <summary>
+		/// Generates the default world map with the given width and height
+		/// </summary>
+		/// <param name="width">The width of the map in tiles</param>
+		/// <param name="height">The height of the map in tiles</param>
+		/// <returns></returns>
+		public Tile[,] GenerateWorld(int width, int height)
+		{
+			Tile[,] tiles = new Tile[width, height];
 
-        }
+			for (int x = 0; x < width; x++)
+			{
+				for (int y = 0; y < height; y++)
+				{
+					if (x > width / 2 - 2 && width / 2 + 2 > x && y > height / 2 - 2 && height / 2 + 2 > y)
+						tiles[x, y] = new Tile(TileType.water, x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT);
 
-        /// <summary>
-        /// Setup the board and the units.
-        /// </summary>
-        private void SetupGame()
+					else if ((x == 3 && y == 2) || (x == 2 && y == 3) || (x == width - 4 && y == height - 3) || (x == width - 3 && y == height - 4))
+						tiles[x, y] = new Tile(TileType.mountain, x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT);
+
+					else if ((x == 4 && y == 2) || (x == 2 && y == 4) || (x == width - 5 && y == height - 3) || (x == width - 3 && y == height - 5))
+						tiles[x, y] = new Tile(TileType.forest, x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT);
+
+					else
+						tiles[x, y] = new Tile(TileType.grass, x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT);
+
+
+
+				}
+			}
+
+			return tiles;
+		}
+
+		/// <summary>
+		/// Setup the board and the units.
+		/// </summary>
+		private void SetupGame()
         {
-            IWorldGenerator generator = new DefaultWorldGenerator();
-            tiles = generator.Generate(TILES_WIDTH, TILES_HEIGHT);
+			tiles = GenerateWorld(TILES_WIDTH, TILES_HEIGHT);
 
             playerTurn = PLAYER_START;
             buttons.Clear();
